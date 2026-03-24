@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PSIR 308 - The Dworkin Auction</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+h1 { color: #1a1a1a; font-size: 1.5em; margin-bottom: 10px; }
+h2 { color: #1a1a1a; font-size: 1.3em; margin-bottom: 8px; }
+h3 { color: #333; font-size: 1.1em; margin-bottom: 6px; }
+p { margin-bottom: 12px; color: #333; }
+
+.box {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.blue-box {
+  background: #eff6ff;
+  border: 1px solid #3b82f6;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.gold-box {
+  background: #fffbeb;
+  border: 1px solid #d97706;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.green-box {
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.red-box {
+  background: #fef2f2;
+  border: 1px solid #dc2626;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.btn-blue { background: #1d4ed8; color: white; }
+.btn-gray { background: #e5e5e5; color: #333; border: 1px solid #ccc; }
+.btn-green { background: #15803d; color: white; }
+
+.choice {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: #f8f8f8;
+  color: #333;
+  font-size: 15px;
+  font-family: Georgia, 'Times New Roman', serif;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.choice-selected {
+  border-color: #1d4ed8;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.bid-area {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin: 16px 0;
+}
+.bid-circle {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  background: #f8f8f8;
+  color: #1a1a1a;
+  font-size: 22px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.bid-number {
+  font-size: 2em;
+  font-weight: bold;
+  color: #1d4ed8;
+  min-width: 70px;
+  text-align: center;
+}
+
+.bar-bg {
+  background: #e5e5e5;
+  border-radius: 6px;
+  height: 28px;
+  margin: 8px 0;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: #1d4ed8;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  padding-left: 8px;
+  font-size: 13px;
+  font-weight: bold;
+  color: white;
+  transition: width 0.3s;
+}
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+.row:last-child { border: none; }
+
+.dots {
+  display: flex;
+  gap: 6px;
+  justify-content: center;
+  margin: 10px 0;
+}
+.dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #ddd;
+}
+.dot-done { background: #1d4ed8; }
+.dot-now { background: #3b82f6; box-shadow: 0 0 6px #3b82f6; }
+
+.big-text {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 3px;
+}
+.tag-blue { background: #eff6ff; color: #1d4ed8; }
+.tag-green { background: #f0fdf4; color: #15803d; }
+.tag-red { background: #fef2f2; color: #b91c1c; }
+.tag-amber { background: #fffbeb; color: #b45309; }
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+var app = document.getElementById('app');
+
+var GOODS = [
+  { name: 'Quality Healthcare', desc: 'Comprehensive medical care, preventive treatment, and mental health support for life on the island.' },
+  { name: 'Education and Knowledge', desc: 'Access to the island library, teaching resources, and structured learning opportunities.' },
+  { name: 'Fertile Land and Housing', desc: 'A prime plot of land for shelter and food production. Location and size depend on your bid.' },
+  { name: 'Leisure and Creative Freedom', desc: 'Time and resources for art, music, exploration, and rest. Freedom from constant labor.' },
+  { name: 'Political Influence', desc: 'A stronger voice in collective decision-making. Higher bids mean more weight in governance.' },
+  { name: 'Security and Insurance Reserve', desc: 'A safety net against future misfortune. Stored resources you can draw on if things go wrong.' }
+];
+
+var ALT_BUNDLES = [
+  { label: 'The Materialist', bids: [30, 5, 35, 5, 15, 10] },
+  { label: 'The Scholar', bids: [15, 35, 15, 20, 5, 10] },
+  { label: 'The Politician', bids: [10, 15, 15, 5, 40, 15] },
+  { label: 'The Artist', bids: [15, 10, 20, 35, 5, 15] },
+  { label: 'The Cautious Planner', bids: [25, 10, 20, 5, 5, 35] },
+  { label: 'The Balanced Thinker', bids: [18, 18, 18, 18, 14, 14] }
+];
+
+var SHOCKS = [
+  { text: 'A severe storm destroys your shelter and half your stored food. You had no warning and no way to predict it. You must rebuild from scratch while others are unaffected.', type: 'brute' },
+  { text: 'You develop a chronic illness that reduces your ability to work. It is genetic and was completely unforeseeable. Your productivity drops by half while your needs increase.', type: 'brute' },
+  { text: 'You invested significant time exploring the island interior hoping to find valuable resources. You found nothing. Meanwhile, others who stayed behind made steady progress on their farms.', type: 'ambiguous' },
+  { text: 'You chose to specialize in a single crop, betting it would thrive. A blight wipes it out entirely. Those who diversified their farming are fine.', type: 'ambiguous' }
+];
+
+var budget = 100;
+var currentGood = 0;
+var currentBid = 10;
+var bids = [];
+var envyChoice = '';
+var insurance1 = '';
+var insurance2 = '';
+var shock1 = null;
+var shock2 = null;
+var altB = null;
+var altC = null;
+
+function shuffle(arr) {
+  var a = arr.slice();
+  for (var i = a.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var t = a[i]; a[i] = a[j]; a[j] = t;
+  }
+  return a;
+}
+
+function pickShocks() {
+  var brutes = SHOCKS.filter(function(s) { return s.type === 'brute'; });
+  var ambs = SHOCKS.filter(function(s) { return s.type === 'ambiguous'; });
+  shock1 = brutes[Math.floor(Math.random() * brutes.length)];
+  shock2 = ambs[Math.floor(Math.random() * ambs.length)];
+}
+
+function pickAlts() {
+  var s = shuffle(ALT_BUNDLES);
+  altB = s[0];
+  altC = s[1];
+}
+
+function showIntro() {
+  app.innerHTML =
+    '<h1>The Dworkin Auction</h1>' +
+    '<p style="color:#1d4ed8;font-size:13px;">PSIR 308 — Week 4 — Liberal Egalitarianism (Kymlicka, Chapter 3)</p>' +
+    '<div class="box" style="margin-top:14px;">' +
+      '<h3>The Scenario</h3>' +
+      '<p>You and other survivors have been shipwrecked on a deserted island. Nobody has any prior claims to the island resources. You must divide them fairly.</p>' +
+      '<p>The auctioneer gives everyone an <strong style="color:#1d4ed8">equal budget of 100 clamshells</strong> to bid on bundles of social goods.</p>' +
+    '</div>' +
+    '<div class="blue-box">' +
+      '<h3>Dworkin\'s Key Idea</h3>' +
+      '<p>A distribution is <strong>equal</strong> only if it passes the <strong style="color:#1d4ed8">envy test</strong> — no one would prefer anyone else\'s bundle to their own. The auction achieves this because everyone starts with equal purchasing power and bids according to their own ambitions.</p>' +
+    '</div>' +
+    '<div class="box">' +
+      '<h3>How This Works</h3>' +
+      '<p><strong>Phase 1:</strong> Bid on 6 social goods using your 100 clamshells.</p>' +
+      '<p><strong>Phase 2:</strong> Face the envy test — would you trade your bundle?</p>' +
+      '<p><strong>Phase 3:</strong> Brute luck strikes. Decide about insurance.</p>' +
+    '</div>' +
+    '<button class="btn btn-blue" id="startBtn">Begin the Auction</button>';
+  document.getElementById('startBtn').onclick = function() {
+    budget = 100; currentGood = 0; currentBid = 10; bids = [];
+    envyChoice = ''; insurance1 = ''; insurance2 = '';
+    pickShocks(); pickAlts(); showAuction();
+  };
+}
+
+function showAuction() {
+  var g = GOODS[currentGood];
+  var dots = '';
+  for (var i = 0; i < 6; i++) {
+    if (i < currentGood) dots += '<div class="dot dot-done"></div>';
+    else if (i === currentGood) dots += '<div class="dot dot-now"></div>';
+    else dots += '<div class="dot"></div>';
+  }
+  var pct = Math.max((budget / 100) * 100, 3);
+  currentBid = Math.min(10, budget);
+  app.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<h2>Phase 1: Auction</h2>' +
+      '<span style="color:#1d4ed8;font-weight:bold;">' + (currentGood + 1) + '/6</span>' +
+    '</div>' +
+    '<div class="dots">' + dots + '</div>' +
+    '<div class="box">' +
+      '<p style="color:#888;font-size:13px;margin-bottom:4px;">Now bidding on:</p>' +
+      '<h3>' + g.name + '</h3>' +
+      '<p style="color:#666;font-size:14px;">' + g.desc + '</p>' +
+    '</div>' +
+    '<div class="blue-box">' +
+      '<p style="text-align:center;margin-bottom:6px;font-size:14px;">Your remaining budget</p>' +
+      '<div class="bar-bg"><div class="bar-fill" style="width:' + pct + '%">' + budget + ' clamshells</div></div>' +
+    '</div>' +
+    '<div class="box">' +
+      '<p style="text-align:center;color:#666;font-size:14px;">How many clamshells will you bid?</p>' +
+      '<div class="bid-area">' +
+        '<div class="bid-circle" id="m5">-5</div>' +
+        '<div class="bid-circle" id="m1">-1</div>' +
+        '<div class="bid-number" id="bidNum">' + currentBid + '</div>' +
+        '<div class="bid-circle" id="p1">+1</div>' +
+        '<div class="bid-circle" id="p5">+5</div>' +
+      '</div>' +
+      '<p style="text-align:center;color:#888;font-size:13px;">' + (6 - currentGood) + ' goods remaining. Budget wisely.</p>' +
+    '</div>' +
+    '<button class="btn btn-blue" id="bidBtn">Place Bid</button>' +
+    '<button class="btn btn-gray" id="skipBtn">Skip — Bid 0</button>';
+  document.getElementById('m5').onclick = function() { adjustBid(-5); };
+  document.getElementById('m1').onclick = function() { adjustBid(-1); };
+  document.getElementById('p1').onclick = function() { adjustBid(1); };
+  document.getElementById('p5').onclick = function() { adjustBid(5); };
+  document.getElementById('bidBtn').onclick = function() { doBid(currentBid); };
+  document.getElementById('skipBtn').onclick = function() { doBid(0); };
+}
+
+function adjustBid(d) {
+  currentBid = currentBid + d;
+  if (currentBid < 0) currentBid = 0;
+  if (currentBid > budget) currentBid = budget;
+  document.getElementById('bidNum').textContent = currentBid;
+}
+
+function doBid(amount) {
+  bids.push(amount);
+  budget = budget - amount;
+  currentGood = currentGood + 1;
+  if (currentGood >= 6) { showBundle(); } else { showAuction(); }
+}
+
+function showBundle() {
+  var rows = '';
+  var total = 0;
+  for (var i = 0; i < 6; i++) {
+    total = total + bids[i];
+    rows += '<div class="row"><span>' + GOODS[i].name + '</span><span style="color:#1d4ed8;font-weight:bold;">' + bids[i] + '</span></div>';
+  }
+  var unspent = 100 - total;
+  var note = '';
+  if (unspent > 0) {
+    note = '<div class="gold-box"><p>You left <strong>' + unspent + ' clamshells</strong> unspent. In Dworkin\'s auction, unspent currency means resources lost to you forever.</p></div>';
+  }
+  app.innerHTML =
+    '<h2>Your Bundle</h2>' +
+    '<p>Here is what you purchased with your 100 clamshells:</p>' +
+    '<div class="box">' + rows + '</div>' +
+    note +
+    '<button class="btn btn-blue" id="envyBtn">Proceed to the Envy Test</button>';
+  document.getElementById('envyBtn').onclick = showEnvy;
+}
+
+function bundleRows(b) {
+  var r = '';
+  for (var i = 0; i < 6; i++) {
+    r += '<div class="row"><span>' + GOODS[i].name + '</span><span style="color:#1d4ed8;font-weight:bold;">' + b[i] + '</span></div>';
+  }
+  return r;
+}
+
+function showEnvy() {
+  envyChoice = '';
+  app.innerHTML =
+    '<h2>Phase 2: The Envy Test</h2>' +
+    '<div class="box"><p>Dworkin argues a distribution is only just if <strong style="color:#1d4ed8">no one envies another\'s bundle</strong>. Below is your bundle and two alternatives. Be honest: would you prefer one of theirs?</p></div>' +
+    '<div class="blue-box"><h3>Your Bundle</h3>' + bundleRows(bids) + '</div>' +
+    '<div class="box"><h3>Person B (' + altB.label + ')</h3>' + bundleRows(altB.bids) + '</div>' +
+    '<div class="box"><h3>Person C (' + altC.label + ')</h3>' + bundleRows(altC.bids) + '</div>' +
+    '<p style="font-weight:bold;">Which bundle would you prefer to live with?</p>' +
+    '<button class="choice" id="eOwn">I would keep my own bundle</button>' +
+    '<button class="choice" id="eB">I would prefer Person B\'s bundle</button>' +
+    '<button class="choice" id="eC">I would prefer Person C\'s bundle</button>' +
+    '<button class="btn btn-blue" id="envyNext" style="display:none;">See Your Envy Test Result</button>';
+  document.getElementById('eOwn').onclick = function() { pickEnvy('own'); };
+  document.getElementById('eB').onclick = function() { pickEnvy('B'); };
+  document.getElementById('eC').onclick = function() { pickEnvy('C'); };
+}
+
+function pickEnvy(c) {
+  envyChoice = c;
+  document.getElementById('eOwn').className = 'choice';
+  document.getElementById('eB').className = 'choice';
+  document.getElementById('eC').className = 'choice';
+  if (c === 'own') document.getElementById('eOwn').className = 'choice choice-selected';
+  if (c === 'B') document.getElementById('eB').className = 'choice choice-selected';
+  if (c === 'C') document.getElementById('eC').className = 'choice choice-selected';
+  document.getElementById('envyNext').style.display = 'block';
+  document.getElementById('envyNext').onclick = showEnvyResult;
+}
+
+function showEnvyResult() {
+  var html = '';
+  if (envyChoice === 'own') {
+    html = '<div class="green-box"><div class="big-text" style="color:#15803d;">PASSED</div><h3>You passed the envy test</h3><p>You prefer your own bundle. According to Dworkin, the auction produced a genuinely equal distribution for you.</p><p style="color:#666;font-size:14px;">But consider: did you pass because the auction captured your preferences, or because the alternatives happened to be unappealing?</p></div>';
+  } else {
+    html = '<div class="red-box"><div class="big-text" style="color:#b91c1c;">FAILED</div><h3>You failed the envy test</h3><p>You would prefer Person ' + envyChoice + '\'s bundle. The auction has not yet produced an envy-free distribution. In Dworkin\'s model, prices would adjust and the auction would re-run.</p><p style="color:#666;font-size:14px;">Why didn\'t your bids capture what you actually value? Were you strategizing? Being cautious? Did you not know your own preferences?</p></div>';
+  }
+  app.innerHTML =
+    '<h2>Envy Test Result</h2>' + html +
+    '<button class="btn btn-blue" id="luckBtn">Proceed to Phase 3: Brute Luck</button>';
+  document.getElementById('luckBtn').onclick = showLuck1;
+}
+
+function showLuck1() {
+  insurance1 = '';
+  app.innerHTML =
+    '<h2>Phase 3: Brute Luck</h2>' +
+    '<div class="gold-box"><h3>Disaster Strikes</h3><p>' + shock1.text + '</p></div>' +
+    '<div class="box">' +
+      '<h3>Dworkin\'s Key Distinction</h3>' +
+      '<p><strong style="color:#1d4ed8">Option luck</strong> arises from deliberate gambles — you chose to take a risk.</p>' +
+      '<p><strong style="color:#b45309">Brute luck</strong> is a risk you did not choose — illness, storms, being born with a disability.</p>' +
+      '<p>Dworkin argues justice requires compensation for brute luck but not option luck.</p>' +
+    '</div>' +
+    '<p style="font-weight:bold;">Would you have purchased insurance against this before it happened?</p>' +
+    '<button class="choice" id="i1y">Yes — I would have bought insurance. This was unforeseeable.</button>' +
+    '<button class="choice" id="i1n">No — I accept this outcome. Life involves risks.</button>' +
+    '<button class="choice" id="i1u">I am not sure the brute/option luck distinction is clear here.</button>' +
+    '<button class="btn btn-blue" id="luck1Next" style="display:none;">Next Scenario</button>';
+  document.getElementById('i1y').onclick = function() { pickIns1('yes'); };
+  document.getElementById('i1n').onclick = function() { pickIns1('no'); };
+  document.getElementById('i1u').onclick = function() { pickIns1('unsure'); };
+}
+
+function pickIns1(c) {
+  insurance1 = c;
+  document.getElementById('i1y').className = 'choice';
+  document.getElementById('i1n').className = 'choice';
+  document.getElementById('i1u').className = 'choice';
+  if (c === 'yes') document.getElementById('i1y').className = 'choice choice-selected';
+  if (c === 'no') document.getElementById('i1n').className = 'choice choice-selected';
+  if (c === 'unsure') document.getElementById('i1u').className = 'choice choice-selected';
+  document.getElementById('luck1Next').style.display = 'block';
+  document.getElementById('luck1Next').onclick = showLuck2;
+}
+
+function showLuck2() {
+  insurance2 = '';
+  app.innerHTML =
+    '<h2>Phase 3: Brute Luck (continued)</h2>' +
+    '<div class="gold-box"><h3>A Second Event</h3><p>' + shock2.text + '</p></div>' +
+    '<div class="box"><p>Is this <strong style="color:#1d4ed8">option luck</strong> (a gamble you chose) or <strong style="color:#b45309">brute luck</strong> (beyond your control)?</p></div>' +
+    '<button class="choice" id="i2b">Brute luck — I did not choose this risk. Insurance is justified.</button>' +
+    '<button class="choice" id="i2o">Option luck — I took a known risk. No compensation is owed.</button>' +
+    '<button class="choice" id="i2x">The line between brute and option luck is blurry here.</button>' +
+    '<button class="btn btn-blue" id="luck2Next" style="display:none;">See Your Full Results</button>';
+  document.getElementById('i2b').onclick = function() { pickIns2('brute'); };
+  document.getElementById('i2o').onclick = function() { pickIns2('option'); };
+  document.getElementById('i2x').onclick = function() { pickIns2('blurry'); };
+}
+
+function pickIns2(c) {
+  insurance2 = c;
+  document.getElementById('i2b').className = 'choice';
+  document.getElementById('i2o').className = 'choice';
+  document.getElementById('i2x').className = 'choice';
+  if (c === 'brute') document.getElementById('i2b').className = 'choice choice-selected';
+  if (c === 'option') document.getElementById('i2o').className = 'choice choice-selected';
+  if (c === 'blurry') document.getElementById('i2x').className = 'choice choice-selected';
+  document.getElementById('luck2Next').style.display = 'block';
+  document.getElementById('luck2Next').onclick = showResults;
+}
+
+function getProfile() {
+  var maxVal = 0; var maxIdx = 0;
+  for (var i = 0; i < 6; i++) { if (bids[i] > maxVal) { maxVal = bids[i]; maxIdx = i; } }
+  var profiles = [
+    { label: 'The Welfare Prioritarian', desc: 'You invested most in healthcare — suggesting security against bodily vulnerability is the foundation of a good life.' },
+    { label: 'The Knowledge Seeker', desc: 'You prioritized education — suggesting autonomy requires informed agency and intellectual capacity.' },
+    { label: 'The Materialist', desc: 'You invested most in land and housing — suggesting material security is the precondition for everything else.' },
+    { label: 'The Aesthete', desc: 'You prioritized leisure and creative freedom — suggesting a good life is defined by self-expression.' },
+    { label: 'The Civic Republican', desc: 'You invested most in political influence — suggesting a voice in collective decisions matters most.' },
+    { label: 'The Prudent Insurer', desc: 'You invested most in your safety net — suggesting protecting against misfortune matters more than maximizing any single good.' }
+  ];
+  return profiles[maxIdx];
+}
+
+function showResults() {
+  var profile = getProfile();
+  var bundleHtml = '';
+  for (var i = 0; i < 6; i++) {
+    var w = Math.max(bids[i], 2);
+    bundleHtml += '<div style="margin:8px 0;"><div style="display:flex;justify-content:space-between;font-size:14px;"><span>' + GOODS[i].name + '</span><span style="color:#1d4ed8;font-weight:bold;">' + bids[i] + '</span></div><div class="bar-bg" style="height:10px;margin-top:4px;"><div class="bar-fill" style="width:' + w + '%;height:100%;"></div></div></div>';
+  }
+  var envyHtml = '';
+  if (envyChoice === 'own') {
+    envyHtml = '<div class="green-box"><h3>Envy Test: PASSED</h3><p>You preferred your own bundle. The distribution was envy-free from your perspective.</p></div>';
+  } else {
+    envyHtml = '<div class="red-box"><h3>Envy Test: FAILED</h3><p>You preferred Person ' + envyChoice + '\'s bundle. The auction did not achieve an envy-free outcome.</p></div>';
+  }
+  var i1 = insurance1 === 'yes' ? 'Would insure' : insurance1 === 'no' ? 'Would not insure' : 'Uncertain';
+  var i2 = insurance2 === 'brute' ? 'Brute luck — insure' : insurance2 === 'option' ? 'Option luck — no compensation' : 'Boundary is blurry';
+  var tags = '';
+  if (envyChoice === 'own') tags += '<span class="tag tag-green">Envy-Free</span>';
+  else tags += '<span class="tag tag-red">Envious</span>';
+  if (insurance1 === 'yes') tags += '<span class="tag tag-blue">Pro-Insurance</span>';
+  if (insurance2 === 'blurry') tags += '<span class="tag tag-amber">Luck-Skeptic</span>';
+  if (bids[5] >= 20) tags += '<span class="tag tag-blue">Risk-Averse</span>';
+
+  app.innerHTML =
+    '<h1>Your Auction Results</h1>' +
+    '<p style="color:#1d4ed8;font-size:13px;">PSIR 308 — Screenshot this for your Weekly Brief</p>' +
+    '<div class="box"><h3>Your Final Bundle</h3>' + bundleHtml + '</div>' +
+    envyHtml +
+    '<div class="box"><h3>Brute Luck Responses</h3>' +
+      '<div class="row"><span>Scenario 1</span><span style="color:#1d4ed8;">' + i1 + '</span></div>' +
+      '<div class="row"><span>Scenario 2</span><span style="color:#1d4ed8;">' + i2 + '</span></div>' +
+    '</div>' +
+    '<div class="blue-box"><h3>Your Values Profile</h3><div class="big-text" style="color:#1d4ed8;">' + profile.label + '</div><p>' + profile.desc + '</p><div style="margin-top:10px;">' + tags + '</div></div>' +
+    '<div class="box"><h3>Weekly Brief Prompt</h3>' +
+      '<p><strong>1.</strong> Report your final bundle. Why did you allocate clamshells the way you did? What does your bundle reveal about your conception of a good life?</p>' +
+      '<p><strong>2.</strong> Did you pass the envy test? If not, what does that tell you about achieving an "ambition-sensitive, endowment-insensitive" distribution?</p>' +
+      '<p><strong>3.</strong> When brute luck struck, were your insurance choices consistent? Was the brute/option luck distinction always clear? What does this suggest about Dworkin\'s framework?</p>' +
+    '</div>' +
+    '<button class="btn btn-green" id="copyBtn">Copy Summary to Clipboard</button>' +
+    '<button class="btn btn-gray" id="restartBtn">Run the Auction Again</button>';
+  document.getElementById('copyBtn').onclick = copyResults;
+  document.getElementById('restartBtn').onclick = showIntro;
+}
+
+function copyResults() {
+  var profile = getProfile();
+  var t = '=== PSIR 308 DWORKIN AUCTION RESULTS ===\n\n';
+  t += 'BUNDLE:\n';
+  for (var i = 0; i < 6; i++) { t += GOODS[i].name + ': ' + bids[i] + ' clamshells\n'; }
+  t += '\nENVY TEST: ' + (envyChoice === 'own' ? 'PASSED' : 'FAILED (preferred Person ' + envyChoice + ')') + '\n';
+  t += '\nBRUTE LUCK:\nScenario 1: ' + insurance1 + '\nScenario 2: ' + insurance2 + '\n';
+  t += '\nVALUES PROFILE: ' + profile.label + '\n' + profile.desc + '\n';
+  try {
+    navigator.clipboard.writeText(t).then(function() { alert('Results copied!'); });
+  } catch(e) {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); alert('Results copied!');
+  }
+}
+
+showIntro();
+</script>
+
+</body>
+</html>
