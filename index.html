@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#1d4ed8">
+<link rel="manifest" href="manifest.json">
+<title>PSIR 308 - The Veil of Ignorance</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+h1 { color: #1a1a1a; font-size: 1.5em; margin-bottom: 10px; }
+h2 { color: #1a1a1a; font-size: 1.3em; margin-bottom: 8px; }
+h3 { color: #333; font-size: 1.1em; margin-bottom: 6px; }
+p { margin-bottom: 12px; color: #333; }
+
+.box {
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.blue-box {
+  background: #eff6ff;
+  border: 1px solid #3b82f6;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.gold-box {
+  background: #fffbeb;
+  border: 1px solid #d97706;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.green-box {
+  background: #f0fdf4;
+  border: 1px solid #22c55e;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.red-box {
+  background: #fef2f2;
+  border: 1px solid #dc2626;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  font-family: Georgia, 'Times New Roman', serif;
+}
+.btn-blue { background: #1d4ed8; color: white; }
+.btn-gray { background: #e5e5e5; color: #333; border: 1px solid #ccc; }
+.btn-green { background: #15803d; color: white; }
+
+.choice {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #ddd;
+  border-radius: 10px;
+  background: #f8f8f8;
+  color: #333;
+  font-size: 15px;
+  font-family: Georgia, 'Times New Roman', serif;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.choice-selected {
+  border-color: #1d4ed8;
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.tracker {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  padding: 10px;
+  background: #f8f8f8;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.tracker-item {
+  text-align: center;
+  font-size: 12px;
+  color: #666;
+}
+.tracker-num {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+.t-blue { color: #1d4ed8; }
+.t-amber { color: #b45309; }
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 14px;
+}
+.row:last-child { border: none; }
+
+.big-text {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 3px;
+}
+.tag-blue { background: #eff6ff; color: #1d4ed8; }
+.tag-green { background: #f0fdf4; color: #15803d; }
+.tag-red { background: #fef2f2; color: #b91c1c; }
+.tag-amber { background: #fffbeb; color: #b45309; }
+
+.scenario-num {
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+
+.bar-bg {
+  background: #e5e5e5;
+  border-radius: 6px;
+  height: 12px;
+  margin: 6px 0;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  border-radius: 6px;
+  transition: width 0.3s;
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+var app = document.getElementById('app');
+
+var SCENARIOS = [
+  {
+    title: "Distributing Income",
+    setup: "You are behind the veil of ignorance. You do not know whether you will be talented or untalented, born rich or poor, healthy or disabled. You must choose the income structure for your society.",
+    options: [
+      { text: "Maximize average income. The economy grows fastest this way. Average earnings are highest, but the bottom 20% live in poverty with no safety net.", tag: "utilitarian", label: "Utilitarian reasoning" },
+      { text: "Allow inequality only if it benefits the worst off. Top earners may earn more, but only if their productivity raises the floor for everyone — through taxes funding healthcare, education, and a minimum standard of living.", tag: "rawls", label: "Maximin / Difference Principle" },
+      { text: "Strict equality. Everyone earns the same regardless of effort, talent, or contribution.", tag: "strict-equal", label: "Strict egalitarian" }
+    ],
+    rawls_answer: 1,
+    principle: "Rawls argues that rational agents behind the veil would not gamble on being in the top 20%. Because you could end up as the worst off, you would choose the arrangement that makes the worst position as good as possible. This is the maximin strategy — maximize the minimum. It leads directly to the difference principle: inequalities are permitted only if they benefit the least advantaged members of society."
+  },
+  {
+    title: "Healthcare Access",
+    setup: "Still behind the veil. You do not know whether you will be born healthy or with a chronic illness, whether you will develop cancer at 30 or live to 90 without seeing a doctor. You must design the healthcare system.",
+    options: [
+      { text: "Private healthcare only. Those who can afford better treatment get it. No public system. This keeps taxes low and rewards economic success.", tag: "libertarian", label: "Libertarian reasoning" },
+      { text: "Universal public healthcare funded by progressive taxation. Everyone receives the same standard of care regardless of income. Those who earn more pay more in taxes to fund the system.", tag: "rawls", label: "Maximin / Difference Principle" },
+      { text: "Basic public healthcare for emergencies only. Beyond that, individuals buy private insurance. A middle ground between freedom and security.", tag: "compromise", label: "Compromise position" }
+    ],
+    rawls_answer: 1,
+    principle: "Behind the veil, you do not know your health status. You might be the person who develops a chronic condition at birth. Rawls would argue that rational agents would guarantee comprehensive healthcare for everyone, because the risk of being the worst off — sick and unable to afford treatment — is too catastrophic to gamble on. Healthcare is a primary good: a precondition for pursuing any conception of the good life."
+  },
+  {
+    title: "Education",
+    setup: "Behind the veil. You do not know whether your parents will be professors or illiterate, whether you will grow up in a city with excellent schools or a village with none. You must design the education system.",
+    options: [
+      { text: "Meritocratic system. The best schools and universities are open to the most talented students, selected by competitive examination. This produces excellence and rewards ability.", tag: "meritocrat", label: "Meritocratic reasoning" },
+      { text: "Equal funding for all schools. No private schools. University admission considers disadvantaged backgrounds. The goal is to equalize opportunity so that no one's life chances are determined by the family they happen to be born into.", tag: "rawls", label: "Maximin / Fair equality of opportunity" },
+      { text: "Market-driven education. Parents choose schools, schools compete for students. Quality rises through competition. Government provides vouchers for those who cannot pay.", tag: "market", label: "Market-liberal reasoning" }
+    ],
+    rawls_answer: 1,
+    principle: "Rawls insists on fair equality of opportunity: positions must be open to all, and society must actively counteract the advantages of birth. A child born to wealthy parents in a good school district has done nothing to deserve better life chances than a child born into poverty. Behind the veil, where you do not know which child you will be, you would design a system that compensates for these arbitrary starting points rather than rewarding them."
+  },
+  {
+    title: "Natural Talent",
+    setup: "Behind the veil. You do not know whether you will be born with extraordinary athletic ability, musical genius, high intelligence, or no particular talent at all. How should society treat the advantages that flow from natural talent?",
+    options: [
+      { text: "Talent belongs to the individual. If you are gifted and work hard, you deserve everything you earn. Taxing the talented to help the untalented is punishing success.", tag: "libertarian", label: "Self-ownership reasoning" },
+      { text: "Natural talent is morally arbitrary — you did nothing to deserve it. The benefits of talent should be shared: the talented may earn more, but only within a system where their productivity improves conditions for everyone, especially the least advantaged.", tag: "rawls", label: "Maximin / Talent as common asset" },
+      { text: "Talent gives you a right to higher earnings, but society can tax a modest portion for public goods. A balance between personal reward and social contribution.", tag: "compromise", label: "Moderate position" }
+    ],
+    rawls_answer: 1,
+    principle: "This is one of Rawls's most controversial claims. He argues that the distribution of natural talents is morally arbitrary — no one deserves to be born brilliant or beautiful. Therefore the benefits flowing from talent are not deserved either. This does not mean the talented cannot earn more — but it means the extra earnings are justified only if the system that produces them also benefits the worst off. Nozick calls this treating people's talents as a 'common asset,' which he sees as a violation of self-ownership."
+  },
+  {
+    title: "Freedom of Religion and Conscience",
+    setup: "Behind the veil. You do not know whether you will be Muslim, Christian, atheist, Hindu, or hold beliefs that are deeply unpopular with the majority. You must design the rules for religious freedom.",
+    options: [
+      { text: "The majority religion receives state support and public recognition. Minority religions are tolerated but receive no accommodation. This reflects the will of the people.", tag: "majoritarian", label: "Majoritarian reasoning" },
+      { text: "Complete separation of religion and state. All religions are equally protected. No religion receives special treatment. The state is neutral between conceptions of the good life.", tag: "rawls", label: "First Principle / Equal basic liberties" },
+      { text: "Religious freedom for all, but the state may promote shared civic values that override religious practices when they conflict with public order.", tag: "civic", label: "Civic republican reasoning" }
+    ],
+    rawls_answer: 1,
+    principle: "This connects to Rawls's first principle of justice, which has priority over the second: equal basic liberties for all. Behind the veil, you do not know which religion you will hold — or whether you will hold one at all. You might be the person whose beliefs are despised by the majority. Rational agents would therefore guarantee equal religious liberty for everyone, with the state remaining neutral between different conceptions of the good life."
+  },
+  {
+    title: "Inherited Wealth",
+    setup: "Behind the veil. You do not know whether your parents will leave you millions or nothing. You must decide the rules for inheritance.",
+    options: [
+      { text: "No limits on inheritance. Parents have the right to pass on everything they earned to their children. This respects family bonds and property rights.", tag: "libertarian", label: "Libertarian / Property rights" },
+      { text: "Heavy inheritance tax. Large fortunes are taxed at high rates and redistributed to fund equal opportunity for all children — public education, healthcare, and a minimum endowment for every young adult entering society.", tag: "rawls", label: "Maximin / Fair equality of opportunity" },
+      { text: "Moderate inheritance tax. Families keep most of their wealth, but a portion funds public services. A compromise between family rights and social fairness.", tag: "compromise", label: "Moderate position" }
+    ],
+    rawls_answer: 1,
+    principle: "Rawls argues that inherited wealth is one of the clearest examples of morally arbitrary advantage. A child born into a wealthy family has done nothing to deserve better life prospects than a child born into poverty. Behind the veil, you do not know which child you will be. Fair equality of opportunity requires that the advantages of birth be substantially reduced."
+  },
+  {
+    title: "Criminal Justice",
+    setup: "Behind the veil. You do not know whether you will grow up in a safe neighbourhood or a violent one, whether you will be a victim of crime, a person falsely accused, or someone driven to crime by desperate circumstances. You must design the criminal justice system.",
+    options: [
+      { text: "Maximum deterrence. Harsh sentences, strict policing, zero tolerance. Crime is a choice and must be punished severely to protect law-abiding citizens.", tag: "deterrence", label: "Deterrence reasoning" },
+      { text: "Rehabilitative justice within a system that addresses root causes. Invest in the social conditions — education, employment, mental health — that prevent crime. Treat offenders as capable of reform. Protect the rights of the accused as rigorously as the rights of victims.", tag: "rawls", label: "Maximin / Structural justice" },
+      { text: "Restorative justice. Focus on repairing harm rather than punishment. Bring offenders and victims together. Community-based solutions rather than incarceration.", tag: "restorative", label: "Restorative reasoning" }
+    ],
+    rawls_answer: 1,
+    principle: "Behind the veil, you might be the person falsely accused, or the person whose poverty and lack of opportunity led them into crime. Rawls would argue that a just society addresses the structural conditions that produce crime — inequality, lack of opportunity, inadequate education — rather than simply punishing individuals."
+  },
+  {
+    title: "The Gambling Question",
+    setup: "Final scenario. You are still behind the veil. A voice offers you a choice: you can enter a society where there is a 10% chance you will be extremely wealthy and a 90% chance you will live in severe poverty with no safety net. Alternatively, you can enter a society where everyone lives at a comfortable middle-class level with no extremes of wealth or poverty.",
+    options: [
+      { text: "Take the gamble. A 10% chance at great wealth is worth the risk. Life without the possibility of extraordinary success is not worth living.", tag: "gambler", label: "Risk-taking reasoning" },
+      { text: "Choose the safe society. The potential upside of wealth is not worth the 90% chance of misery. When the stakes are this high — your entire life — rational people do not gamble.", tag: "rawls", label: "Maximin reasoning" },
+      { text: "Neither. I want a society where there is some chance of doing very well but also a guaranteed minimum below which no one falls — even if that minimum is modest.", tag: "floor", label: "Safety floor reasoning" }
+    ],
+    rawls_answer: 1,
+    principle: "This is the core psychological argument for maximin. Rawls claims that when the stakes are existential — your entire life plan, your health, your freedom — rational agents do not gamble. You would not bet your life on a 10% chance. Critics like Harsanyi argue that rational agents would maximize expected utility (the average), not the minimum. This debate — maximin vs. expected utility — is one of the deepest disagreements in the foundations of Rawls's theory."
+  }
+];
+
+var currentScenario = 0;
+var choices = [];
+var rawlsCount = 0;
+var otherCounts = { utilitarian: 0, libertarian: 0, compromise: 0, other: 0 };
+
+function showIntro() {
+  app.innerHTML =
+    '<h1>The Veil of Ignorance</h1>' +
+    '<p style="color:#1d4ed8;font-size:13px;">PSIR 308 — Rawls and the Original Position (Kymlicka, Chapter 3)</p>' +
+    '<div class="box" style="margin-top:14px;">' +
+      '<h3>The Thought Experiment</h3>' +
+      '<p>You are about to enter a new society. But you do not know who you will be in it. You do not know your talents, your class, your gender, your health, your religion, or your conception of the good life.</p>' +
+      '<p>You are behind what Rawls calls the <strong style="color:#1d4ed8;">veil of ignorance</strong>. From this position, you must choose the basic principles that will govern the society you are about to enter.</p>' +
+    '</div>' +
+    '<div class="blue-box">' +
+      '<h3>Rawls\'s Prediction</h3>' +
+      '<p>Rawls argues that rational agents in this position would choose two principles:</p>' +
+      '<p><strong>First Principle:</strong> Equal basic liberties for all — freedom of speech, religion, conscience, and political participation.</p>' +
+      '<p><strong>Second Principle:</strong> Social and economic inequalities are permitted only if they (a) benefit the least advantaged members of society (the <strong style="color:#1d4ed8;">difference principle</strong>) and (b) are attached to positions open to all under conditions of fair equality of opportunity.</p>' +
+      '<p style="margin-bottom:0;">The strategy behind this is <strong style="color:#1d4ed8;">maximin</strong> — maximize the minimum. Because you could end up as the worst off, you secure the best possible worst-case outcome.</p>' +
+    '</div>' +
+    '<div class="box">' +
+      '<h3>How This Works</h3>' +
+      '<p>You will face <strong>8 scenarios</strong> behind the veil of ignorance. Each one asks you to design an aspect of society without knowing your position in it.</p>' +
+      '<p>After each choice, the simulation shows you what Rawls would choose and why. At the end, you see how closely your reasoning matched the maximin strategy.</p>' +
+      '<p style="margin-bottom:0;">There are no right answers. But there are <strong>Rawlsian</strong> answers — and the gap between yours and his is where the interesting thinking begins.</p>' +
+    '</div>' +
+    '<button class="btn btn-blue" id="startBtn">Step Behind the Veil</button>';
+  document.getElementById('startBtn').onclick = function() {
+    currentScenario = 0;
+    choices = [];
+    rawlsCount = 0;
+    otherCounts = { utilitarian: 0, libertarian: 0, compromise: 0, other: 0 };
+    showScenario();
+  };
+}
+
+function showScenario() {
+  var s = SCENARIOS[currentScenario];
+  var optionsHtml = '';
+  for (var i = 0; i < s.options.length; i++) {
+    optionsHtml += '<button class="choice" id="opt' + i + '">' + s.options[i].text + '</button>';
+  }
+  app.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<h2>Scenario ' + (currentScenario + 1) + ' of 8</h2>' +
+      '<span style="color:#1d4ed8;font-weight:bold;">' + (currentScenario + 1) + '/8</span>' +
+    '</div>' +
+    '<div class="tracker">' +
+      '<div class="tracker-item"><div class="tracker-num t-blue">' + rawlsCount + '</div>With Rawls</div>' +
+      '<div class="tracker-item"><div class="tracker-num t-amber">' + (choices.length - rawlsCount) + '</div>Other paths</div>' +
+    '</div>' +
+    '<div class="blue-box">' +
+      '<div class="scenario-num">SCENARIO ' + (currentScenario + 1) + '</div>' +
+      '<h3>' + s.title + '</h3>' +
+      '<p>' + s.setup + '</p>' +
+    '</div>' +
+    '<p style="font-weight:bold;">What do you choose?</p>' +
+    optionsHtml +
+    '<button class="btn btn-blue" id="confirmBtn" style="display:none;">Confirm Choice</button>';
+  for (var j = 0; j < s.options.length; j++) {
+    (function(idx) {
+      document.getElementById('opt' + idx).onclick = function() {
+        for (var k = 0; k < s.options.length; k++) {
+          document.getElementById('opt' + k).className = 'choice';
+        }
+        document.getElementById('opt' + idx).className = 'choice choice-selected';
+        document.getElementById('confirmBtn').style.display = 'block';
+        document.getElementById('confirmBtn').onclick = function() { registerChoice(idx); };
+      };
+    })(j);
+  }
+}
+
+function registerChoice(idx) {
+  var s = SCENARIOS[currentScenario];
+  var opt = s.options[idx];
+  choices.push({ scenario: currentScenario, title: s.title, choiceIdx: idx, choiceText: opt.text, tag: opt.tag, label: opt.label });
+  if (opt.tag === 'rawls') { rawlsCount++; }
+  else if (opt.tag === 'utilitarian' || opt.tag === 'meritocrat' || opt.tag === 'deterrence' || opt.tag === 'gambler' || opt.tag === 'majoritarian') { otherCounts.utilitarian++; }
+  else if (opt.tag === 'libertarian' || opt.tag === 'market') { otherCounts.libertarian++; }
+  else if (opt.tag === 'compromise' || opt.tag === 'civic' || opt.tag === 'floor') { otherCounts.compromise++; }
+  else { otherCounts.other++; }
+  showFeedback(idx);
+}
+
+function showFeedback(idx) {
+  var s = SCENARIOS[currentScenario];
+  var opt = s.options[idx];
+  var verdictHtml = '';
+  if (opt.tag === 'rawls') {
+    verdictHtml = '<div class="green-box"><div class="big-text" style="color:#15803d;">WITH RAWLS</div><p><strong>' + opt.label + '.</strong> Your choice aligns with what Rawls predicts rational agents would choose behind the veil of ignorance.</p></div>';
+  } else {
+    verdictHtml = '<div class="gold-box"><div class="big-text" style="color:#b45309;">DIFFERENT PATH</div><p><strong>' + opt.label + '.</strong> Your reasoning diverges from Rawls here. That does not mean you are wrong — but the gap is worth examining.</p></div>';
+  }
+  var btnLabel = currentScenario < 7 ? 'Next Scenario' : 'See Your Full Results';
+  app.innerHTML =
+    '<h2>Scenario ' + (currentScenario + 1) + ': ' + s.title + '</h2>' +
+    '<div class="tracker">' +
+      '<div class="tracker-item"><div class="tracker-num t-blue">' + rawlsCount + '</div>With Rawls</div>' +
+      '<div class="tracker-item"><div class="tracker-num t-amber">' + (choices.length - rawlsCount) + '</div>Other paths</div>' +
+    '</div>' +
+    verdictHtml +
+    '<div class="box"><h3>What Rawls Would Choose — and Why</h3><p>' + s.principle + '</p></div>' +
+    '<button class="btn btn-blue" id="nextBtn">' + btnLabel + '</button>';
+  document.getElementById('nextBtn').onclick = function() {
+    currentScenario++;
+    if (currentScenario >= 8) { showResults(); } else { showScenario(); }
+  };
+}
+
+function getProfile() {
+  if (rawlsCount >= 7) return { label: 'The Rawlsian', desc: 'You consistently chose the maximin strategy. You refused to gamble with your life prospects and prioritized securing the best possible worst-case outcome.', color: '#1d4ed8' };
+  else if (rawlsCount >= 5) return { label: 'The Cautious Liberal', desc: 'You mostly followed Rawlsian logic but departed on some issues. You are sympathetic to the difference principle but not fully committed.', color: '#1d4ed8' };
+  else if (rawlsCount >= 3) return { label: 'The Pragmatic Moderate', desc: 'You split between Rawlsian and non-Rawlsian choices. You see the appeal of maximin but are also drawn to other values — merit, efficiency, or personal freedom.', color: '#b45309' };
+  else if (otherCounts.libertarian >= otherCounts.utilitarian) return { label: 'The Libertarian Behind the Veil', desc: 'Even not knowing your position, you prioritized individual freedom and property rights over collective safety nets. Rawls would say you are being irrational. Nozick would say you are being principled.', color: '#b91c1c' };
+  else return { label: 'The Utilitarian Behind the Veil', desc: 'You tended toward maximizing overall welfare rather than protecting the worst off. Rawls would say this fails to respect the separateness of persons.', color: '#b91c1c' };
+}
+
+function showResults() {
+  var profile = getProfile();
+  var choiceLog = '';
+  for (var i = 0; i < choices.length; i++) {
+    var c = choices[i];
+    var icon = c.tag === 'rawls' ? '<span style="color:#15803d;">WITH RAWLS</span>' : '<span style="color:#b45309;">DIFFERENT PATH</span>';
+    choiceLog += '<div class="row"><span style="flex:1;">' + (i + 1) + '. ' + c.title + '</span>' + icon + '</div>';
+  }
+  var pct = Math.round((rawlsCount / 8) * 100);
+  var barColor = pct >= 75 ? '#1d4ed8' : pct >= 50 ? '#b45309' : '#b91c1c';
+  var tags = '';
+  if (rawlsCount >= 7) tags += '<span class="tag tag-blue">Strong Maximin</span>';
+  else if (rawlsCount >= 5) tags += '<span class="tag tag-blue">Moderate Maximin</span>';
+  if (otherCounts.libertarian >= 2) tags += '<span class="tag tag-red">Libertarian Streak</span>';
+  if (otherCounts.utilitarian >= 2) tags += '<span class="tag tag-amber">Utilitarian Streak</span>';
+  if (otherCounts.compromise >= 2) tags += '<span class="tag tag-green">Pragmatist</span>';
+  if (choices[7] && choices[7].tag === 'gambler') tags += '<span class="tag tag-red">Risk Taker</span>';
+  if (choices[7] && choices[7].tag === 'floor') tags += '<span class="tag tag-green">Safety Floor</span>';
+
+  var critHtml = '';
+  if (rawlsCount >= 6) critHtml = '<div class="gold-box"><h3>But Consider the Critics...</h3><p>You agreed with Rawls almost entirely. But would you still choose maximin if you knew you had a 50% chance of being in the top half? Harsanyi argues that rational agents maximize expected utility, not the minimum. Nozick argues that treating talent as a common asset violates self-ownership. Dworkin argues that Rawls cannot distinguish between choices and circumstances. Your Rawlsian instincts survived this simulation — but the real test is whether they survive these objections.</p></div>';
+  else if (rawlsCount <= 3) critHtml = '<div class="blue-box"><h3>What Rawls Would Say to You</h3><p>You rejected maximin on multiple occasions. Rawls would argue that you are being irrational — gambling with your entire life when you do not know the odds. The veil of ignorance is not a casino: the stakes are your fundamental life prospects. When the downside is catastrophic and irreversible, rational agents do not gamble. Are you sure you would take that risk if it were real?</p></div>';
+  else critHtml = '<div class="box"><h3>The Productive Middle</h3><p>You split between Rawls and other approaches. This is where the most interesting philosophical work happens. You felt the pull of maximin but also the pull of other values. The question is: can these values be reconciled with the difference principle, or do they fundamentally conflict?</p></div>';
+
+  app.innerHTML =
+    '<h1>Your Veil of Ignorance Results</h1>' +
+    '<p style="color:#1d4ed8;font-size:13px;">PSIR 308 — Screenshot this for revision or your brief</p>' +
+    '<div class="box" style="margin-top:14px;">' +
+      '<h3>Rawlsian Alignment</h3>' +
+      '<div class="big-text" style="color:' + barColor + ';">' + rawlsCount + ' / 8</div>' +
+      '<div class="bar-bg"><div class="bar-fill" style="width:' + pct + '%;background:' + barColor + ';"></div></div>' +
+      '<p style="text-align:center;color:#666;font-size:14px;margin-top:6px;">You agreed with Rawls on ' + rawlsCount + ' out of 8 scenarios</p>' +
+    '</div>' +
+    '<div class="box"><h3>Your Decision Path</h3>' + choiceLog + '</div>' +
+    '<div class="blue-box"><h3>Your Profile</h3><div class="big-text" style="color:' + profile.color + ';">' + profile.label + '</div><p>' + profile.desc + '</p><div style="margin-top:10px;">' + tags + '</div></div>' +
+    critHtml +
+    '<div class="box"><h3>Study Questions</h3>' +
+      '<p><strong>1.</strong> Where did you diverge from Rawls, and why? What value competed with maximin?</p>' +
+      '<p><strong>2.</strong> Rawls claims maximin is rational behind the veil. Harsanyi claims rational agents maximize average utility instead. Who is right?</p>' +
+      '<p><strong>3.</strong> Dworkin argues Rawls cannot distinguish choices from circumstances. Did any scenario expose that problem?</p>' +
+      '<p><strong>4.</strong> Nozick argues the difference principle treats talents as a common asset, violating self-ownership. Did the Natural Talent scenario make you feel this tension?</p>' +
+    '</div>' +
+    '<button class="btn btn-green" id="copyBtn">Copy Summary to Clipboard</button>' +
+    '<button class="btn btn-gray" id="restartBtn">Try Again Behind the Veil</button>';
+  document.getElementById('copyBtn').onclick = copyResults;
+  document.getElementById('restartBtn').onclick = showIntro;
+}
+
+function copyResults() {
+  var profile = getProfile();
+  var t = '=== PSIR 308 VEIL OF IGNORANCE RESULTS ===\n\n';
+  t += 'RAWLSIAN ALIGNMENT: ' + rawlsCount + '/8\n\n';
+  t += 'DECISION PATH:\n';
+  for (var i = 0; i < choices.length; i++) {
+    var c = choices[i];
+    t += (i + 1) + '. ' + c.title + ': ' + (c.tag === 'rawls' ? 'WITH RAWLS' : 'DIFFERENT PATH') + '\n';
+    t += '   ' + c.label + '\n\n';
+  }
+  t += 'PROFILE: ' + profile.label + '\n' + profile.desc + '\n';
+  try {
+    navigator.clipboard.writeText(t).then(function() { alert('Results copied!'); });
+  } catch(e) {
+    var ta = document.createElement('textarea');
+    ta.value = t; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+    document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); alert('Results copied!');
+  }
+}
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js');
+}
+
+showIntro();
+</script>
+
+</body>
+</html>
