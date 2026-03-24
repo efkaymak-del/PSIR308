@@ -1,0 +1,16 @@
+{
+  "name": "PSIR 308 - Veil of Ignorance",
+  "short_name": "Veil of Ignorance",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#1d4ed8",
+  "description": "Rawls Original Position simulation for PSIR 308",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ]
+}
