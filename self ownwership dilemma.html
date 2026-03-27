@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PSIR 308 - The Self-Ownership Dilemma</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #1a1a2e;
+  color: #eee;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+h1 { color: #f59e0b; font-size: 1.4em; margin-bottom: 10px; }
+h2 { color: #fbbf24; font-size: 1.2em; margin-bottom: 8px; }
+h3 { color: #f59e0b; font-size: 1.05em; margin-bottom: 6px; }
+p { margin-bottom: 12px; }
+
+.box {
+  background: #16213e;
+  border: 1px solid #333;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.gold-box {
+  background: #2a2000;
+  border: 1px solid #b8860b;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.green-box {
+  background: #1b4332;
+  border: 1px solid #2d6a4f;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.red-box {
+  background: #3d1f1f;
+  border: 1px solid #8b3a3a;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+.blue-box {
+  background: #0f3460;
+  border: 1px solid #1a6fc4;
+  border-radius: 10px;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.btn {
+  display: block;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.btn-gold { background: #b8860b; color: white; }
+.btn-gray { background: #333; color: #ccc; border: 1px solid #555; }
+.btn-green { background: #2d6a4f; color: white; }
+
+.choice {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #333;
+  border-radius: 10px;
+  background: #16213e;
+  color: #ccc;
+  font-size: 15px;
+  text-align: left;
+  cursor: pointer;
+  margin-bottom: 10px;
+}
+.choice-selected {
+  border-color: #f59e0b;
+  background: #2a2000;
+  color: #fbbf24;
+}
+
+.tracker {
+  display: flex;
+  justify-content: space-between;
+  margin: 12px 0;
+  padding: 10px;
+  background: #0d1117;
+  border-radius: 8px;
+}
+.tracker-item {
+  text-align: center;
+  font-size: 12px;
+  color: #888;
+}
+.tracker-num {
+  font-size: 1.8em;
+  font-weight: bold;
+}
+.tracker-gold { color: #f59e0b; }
+.tracker-red { color: #f87171; }
+
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #333;
+  font-size: 14px;
+}
+.row:last-child { border: none; }
+
+.big-text {
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin: 12px 0;
+}
+
+.tag {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: bold;
+  margin: 3px;
+}
+.tag-gold { background: #2a2000; color: #f59e0b; }
+.tag-green { background: #1b4332; color: #52b788; }
+.tag-red { background: #3d1f1f; color: #f87171; }
+.tag-blue { background: #0f3460; color: #64b5f6; }
+
+.scenario-num {
+  color: #f59e0b;
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 6px;
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+var app = document.getElementById('app');
+
+var SCENARIOS = [
+  {
+    title: "The Hungry Neighbor",
+    text: "You have cultivated a productive farm through years of hard work on land you legitimately acquired. Your neighbor's crops have failed through no fault of their own. They are starving and ask you to share a portion of your harvest. There is no government, no welfare system — just you and your neighbor.",
+    options: [
+      { text: "Refuse. It is your property. You earned it. Charity is your choice, not an obligation.", tag: "nozick", label: "Self-ownership preserved" },
+      { text: "Share voluntarily. You choose to help, but insist this is generosity, not a duty anyone can enforce.", tag: "soft-nozick", label: "Voluntary transfer" },
+      { text: "Share, and accept that your neighbor has some legitimate claim to your surplus when their survival is at stake.", tag: "depart", label: "Departed from self-ownership" }
+    ],
+    nozick_answer: 0,
+    principle: "For Nozick, your property rights are absolute if you acquired and transferred justly. No one — not even a starving person — has an enforceable claim on what is yours. Redistribution, even for survival, requires your consent."
+  },
+  {
+    title: "The Community Tax",
+    text: "The island community votes to impose a 15% tax on everyone's harvest to fund a shared medical facility. You voted against it. The majority voted for it. The tax collector arrives at your farm.",
+    options: [
+      { text: "Refuse to pay. You did not consent. Taxation without individual consent is forced labor — the community is claiming partial ownership of your body and time.", tag: "nozick", label: "Self-ownership preserved" },
+      { text: "Pay reluctantly. You disagree, but you accept democratic decision-making as legitimate even when it overrides individual preference.", tag: "depart", label: "Departed from self-ownership" },
+      { text: "Pay willingly. Collective health infrastructure benefits everyone, including you. This is not theft — it is the cost of living in a society.", tag: "depart", label: "Departed from self-ownership" }
+    ],
+    nozick_answer: 0,
+    principle: "Nozick famously argues that taxation of earnings is on a par with forced labor. If you own yourself, you own your labor, and therefore you own what your labor produces. Taking it without consent — even by majority vote — violates your self-ownership."
+  },
+  {
+    title: "The Wilt Chamberlain Problem",
+    text: "Everyone on the island starts with an equal share of resources — a perfectly fair distribution. Over the next year, one person, through a combination of exceptional talent and hard work, accumulates significantly more than everyone else. Others voluntarily paid for her services. Now there is significant inequality. Some community members want to redistribute.",
+    options: [
+      { text: "No redistribution. The inequality arose from free, voluntary exchanges starting from a fair baseline. To undo it would violate everyone's free choices.", tag: "nozick", label: "Self-ownership preserved" },
+      { text: "Some redistribution is justified. Talent is morally arbitrary — she did not earn her natural gifts. Rawls would say the difference principle should apply.", tag: "depart", label: "Departed from self-ownership" },
+      { text: "It depends on whether her success created barriers for others. If her accumulation limits others' real freedom, some correction is needed.", tag: "soft-depart", label: "Conditional departure" }
+    ],
+    nozick_answer: 0,
+    principle: "This is Nozick's famous Wilt Chamberlain argument. If a distribution arose from just acquisitions and voluntary transfers, it is just — regardless of the resulting pattern. Any attempt to maintain a pattern (like equality) requires continuous interference with people's free choices."
+  },
+  {
+    title: "The Sick Child",
+    text: "A child on the island has a rare illness. You are the only person who possesses a medicinal herb that can save her. You did not create the herb — it grew naturally on your land. The child's parents have nothing to offer you in exchange. Without the herb, the child will die.",
+    options: [
+      { text: "You are under no obligation to give it. It is on your land, therefore it is yours. You may choose to be generous, but no one can compel you.", tag: "nozick", label: "Self-ownership preserved" },
+      { text: "You give the herb freely. But you insist this changes nothing about property rights in principle — this is compassion, not justice.", tag: "soft-nozick", label: "Voluntary transfer" },
+      { text: "The child has a right to life that overrides your property claim to a herb you did not create. Letting a child die to preserve property rights is monstrous.", tag: "depart", label: "Departed from self-ownership" }
+    ],
+    nozick_answer: 0,
+    principle: "This is the hardest test for libertarianism. Nozick's framework has no mechanism for compulsory transfer even to save a life. Critics argue this reveals that absolute self-ownership leads to morally intolerable conclusions. Defenders argue that conflating compassion with enforceable obligation is the first step toward tyranny."
+  },
+  {
+    title: "The Inherited Advantage",
+    text: "A family on the island has accumulated vast resources over three generations — the best land, the largest stores, the most tools. Their grandchildren were born into this wealth and have never worked. Meanwhile, other families who arrived later have almost nothing and must work for the wealthy family to survive. The wealthy family's original acquisition was legitimate.",
+    options: [
+      { text: "No intervention. The wealth was legitimately acquired and voluntarily transferred across generations. Inheritance is a core property right.", tag: "nozick", label: "Self-ownership preserved" },
+      { text: "Some inheritance tax is justified. The grandchildren did nothing to earn this wealth. Unlimited inheritance creates an aristocracy that undermines equal opportunity.", tag: "depart", label: "Departed from self-ownership" },
+      { text: "The later arrivals are effectively coerced — their 'choice' to work for the wealthy family is not truly voluntary when the alternative is starvation. This is structural domination.", tag: "depart", label: "Departed from self-ownership" }
+    ],
+    nozick_answer: 0,
+    principle: "Nozick's entitlement theory has three pillars: just acquisition, just transfer, and rectification of injustice. If all three are satisfied, the distribution is just — even if it produces a hereditary aristocracy. Critics argue this shows that formal self-ownership can coexist with substantive unfreedom."
+  },
+  {
+    title: "The Corporate Offer",
+    text: "A powerful trading group from another island offers you a deal: work in their mines for 12 hours a day, 6 days a week, in exchange for food and basic shelter. The terms are harsh, but you are free to refuse. However, if you refuse, you have no other source of income and will struggle to survive. No one is physically forcing you.",
+    options: [
+      { text: "This is a legitimate contract. You are free to accept or refuse. No one owes you a better offer. Freedom means freedom from coercion, not freedom from difficult choices.", tag: "nozick", label: "Self-ownership preserved" },
+      { text: "This is technically voluntary but substantively coercive. When the alternative is destitution, 'consent' is meaningless. A just society would ensure no one faces this choice.", tag: "depart", label: "Departed from self-ownership" },
+      { text: "Accept the deal but organize with other workers to collectively bargain for better terms. The market is legitimate, but workers have the right to use their collective power too.", tag: "soft-depart", label: "Conditional departure" }
+    ],
+    nozick_answer: 0,
+    principle: "This scenario exposes the tension between formal and substantive freedom. For Nozick, freedom means the absence of coercion — no one is holding a gun to your head. For critics (especially Marxists), freedom requires real alternatives. If your only 'choice' is between exploitation and starvation, you are not truly free, regardless of what the contract says."
+  }
+];
+
+var currentScenario = 0;
+var choices = [];
+var nozickCount = 0;
+var departCount = 0;
+var firstDeparture = -1;
+
+function showIntro() {
+  app.innerHTML =
+    '<h1>The Self-Ownership Dilemma</h1>' +
+    '<p style="color:#f59e0b;font-size:13px;">PSIR 308 - Week 5 - Libertarianism</p>' +
+
+    '<div class="box" style="margin-top:14px;">' +
+      '<h3>The Scenario</h3>' +
+      '<p>You are living on an island with no government. There is no state, no police, no welfare system. All you have are your own body, your labor, and whatever property you have legitimately acquired.</p>' +
+      '<p>Robert Nozick argues that in this situation, <strong style="color:#f59e0b">you own yourself</strong> — your body, your talents, your labor, and everything that flows from them. No one may take what is yours without your consent, not even for a good cause.</p>' +
+    '</div>' +
+
+    '<div class="gold-box">' +
+      '<h3>Nozick\'s Core Principle</h3>' +
+      '<p><strong style="color:#fbbf24">Self-ownership</strong> means you have absolute rights over your own person and property. A just distribution is whatever results from free, voluntary exchanges — regardless of the outcome. There is no "pattern" of justice that society must maintain.</p>' +
+    '</div>' +
+
+    '<div class="box">' +
+      '<h3>How This Works</h3>' +
+      '<p>You will face <strong>6 dilemmas</strong> that test your commitment to self-ownership. Each one gets harder. After each choice, the simulation tells you whether you stayed with Nozick or departed from his framework — and explains why.</p>' +
+      '<p>At the end, you will see your <strong>consistency score</strong> and the exact moment you broke from libertarianism (if you did).</p>' +
+    '</div>' +
+
+    '<button class="btn btn-gold" id="startBtn">Begin the Dilemmas</button>';
+
+  document.getElementById('startBtn').onclick = function() {
+    currentScenario = 0;
+    choices = [];
+    nozickCount = 0;
+    departCount = 0;
+    firstDeparture = -1;
+    showScenario();
+  };
+}
+
+function showScenario() {
+  var s = SCENARIOS[currentScenario];
+
+  var optionsHtml = '';
+  for (var i = 0; i < s.options.length; i++) {
+    optionsHtml += '<button class="choice" id="opt' + i + '" data-idx="' + i + '">' + s.options[i].text + '</button>';
+  }
+
+  app.innerHTML =
+    '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<h2>Dilemma ' + (currentScenario + 1) + ' of 6</h2>' +
+      '<span style="color:#f59e0b;font-weight:bold;">' + (currentScenario + 1) + '/6</span>' +
+    '</div>' +
+
+    '<div class="tracker">' +
+      '<div class="tracker-item"><div class="tracker-num tracker-gold">' + nozickCount + '</div>With Nozick</div>' +
+      '<div class="tracker-item"><div class="tracker-num tracker-red">' + departCount + '</div>Departures</div>' +
+    '</div>' +
+
+    '<div class="gold-box">' +
+      '<div class="scenario-num">SCENARIO ' + (currentScenario + 1) + '</div>' +
+      '<h3>' + s.title + '</h3>' +
+      '<p>' + s.text + '</p>' +
+    '</div>' +
+
+    optionsHtml +
+
+    '<button class="btn btn-gold" id="confirmBtn" style="display:none;">Confirm Choice</button>';
+
+  for (var j = 0; j < s.options.length; j++) {
+    (function(idx) {
+      document.getElementById('opt' + idx).onclick = function() {
+        for (var k = 0; k < s.options.length; k++) {
+          document.getElementById('opt' + k).className = 'choice';
+        }
+        document.getElementById('opt' + idx).className = 'choice choice-selected';
+        document.getElementById('confirmBtn').style.display = 'block';
+        document.getElementById('confirmBtn').onclick = function() {
+          registerChoice(idx);
+        };
+      };
+    })(j);
+  }
+}
+
+function registerChoice(idx) {
+  var s = SCENARIOS[currentScenario];
+  var opt = s.options[idx];
+
+  choices.push({
+    scenario: currentScenario,
+    title: s.title,
+    choiceIdx: idx,
+    choiceText: opt.text,
+    tag: opt.tag,
+    label: opt.label
+  });
+
+  if (opt.tag === 'nozick') {
+    nozickCount++;
+  } else if (opt.tag === 'soft-nozick') {
+    nozickCount++;
+  } else {
+    departCount++;
+    if (firstDeparture === -1) {
+      firstDeparture = currentScenario;
+    }
+  }
+
+  showFeedback(idx);
+}
+
+function showFeedback(idx) {
+  var s = SCENARIOS[currentScenario];
+  var opt = s.options[idx];
+
+  var verdictHtml = '';
+  if (opt.tag === 'nozick') {
+    verdictHtml = '<div class="green-box"><div class="big-text" style="color:#52b788;">WITH NOZICK</div><p><strong>' + opt.label + '.</strong> Your choice is consistent with Nozick\'s entitlement theory.</p></div>';
+  } else if (opt.tag === 'soft-nozick') {
+    verdictHtml = '<div class="green-box"><div class="big-text" style="color:#52b788;">WITH NOZICK</div><p><strong>' + opt.label + '.</strong> You chose to act generously, but crucially, you maintained that this is voluntary — not an enforceable obligation. Nozick would approve.</p></div>';
+  } else if (opt.tag === 'soft-depart') {
+    verdictHtml = '<div class="red-box"><div class="big-text" style="color:#f87171;">DEPARTURE</div><p><strong>' + opt.label + '.</strong> You introduced conditions under which self-ownership can be overridden. Nozick would say you have opened the door to patterned justice.</p></div>';
+  } else {
+    verdictHtml = '<div class="red-box"><div class="big-text" style="color:#f87171;">DEPARTURE</div><p><strong>' + opt.label + '.</strong> You have prioritized another value — survival, equality, substantive freedom — over absolute property rights.</p></div>';
+  }
+
+  var principleHtml = '<div class="box"><h3>Nozick\'s Position</h3><p>' + s.principle + '</p></div>';
+
+  var btnLabel = currentScenario < 5 ? 'Next Dilemma' : 'See Your Full Results';
+
+  app.innerHTML =
+    '<h2>Dilemma ' + (currentScenario + 1) + ': ' + s.title + '</h2>' +
+
+    '<div class="tracker">' +
+      '<div class="tracker-item"><div class="tracker-num tracker-gold">' + nozickCount + '</div>With Nozick</div>' +
+      '<div class="tracker-item"><div class="tracker-num tracker-red">' + departCount + '</div>Departures</div>' +
+    '</div>' +
+
+    verdictHtml +
+    principleHtml +
+
+    '<button class="btn btn-gold" id="nextBtn">' + btnLabel + '</button>';
+
+  document.getElementById('nextBtn').onclick = function() {
+    currentScenario++;
+    if (currentScenario >= 6) {
+      showResults();
+    } else {
+      showScenario();
+    }
+  };
+}
+
+function getProfile() {
+  if (nozickCount === 6) {
+    return { label: 'The Consistent Libertarian', desc: 'You never departed from Nozick. You maintained absolute self-ownership through every dilemma, including the sick child and the coercive contract. You are either deeply committed to libertarian principles or you were testing your own limits. The question for your brief: at what cost?', color: '#f59e0b' };
+  } else if (nozickCount >= 4) {
+    return { label: 'The Reluctant Libertarian', desc: 'You held the line on most dilemmas but broke under pressure at key moments. You are sympathetic to self-ownership but found that absolute property rights produce conclusions you cannot stomach. The question for your brief: is a libertarianism with exceptions still libertarianism?', color: '#fbbf24' };
+  } else if (nozickCount >= 2) {
+    return { label: 'The Liberal Egalitarian', desc: 'You departed from Nozick more often than you stayed. Your instincts lean toward Rawlsian fairness — you believe that some redistribution is justified when circumstances are unequal. The question for your brief: if you accept redistribution, on what principle do you limit it?', color: '#64b5f6' };
+  } else {
+    return { label: 'The Radical Critic', desc: 'You rejected Nozick almost entirely. You see self-ownership as a mask for structural domination — formal freedom that conceals substantive unfreedom. Your instincts align more with Marx or the critical theorists. The question for your brief: if property rights are not the foundation of justice, what is?', color: '#f87171' };
+  }
+}
+
+function showResults() {
+  var profile = getProfile();
+
+  var choiceLog = '';
+  for (var i = 0; i < choices.length; i++) {
+    var c = choices[i];
+    var icon = (c.tag === 'nozick' || c.tag === 'soft-nozick') ? '<span style="color:#52b788;">WITH NOZICK</span>' : '<span style="color:#f87171;">DEPARTURE</span>';
+    choiceLog += '<div class="row"><span>' + (i + 1) + '. ' + c.title + '</span>' + icon + '</div>';
+  }
+
+  var departureNote = '';
+  if (firstDeparture === -1) {
+    departureNote = '<div class="green-box"><h3>You Never Broke</h3><p>You maintained self-ownership through all six dilemmas. Nozick would be proud — but his critics would ask whether your consistency comes at the price of moral sensitivity.</p></div>';
+  } else {
+    departureNote = '<div class="red-box"><h3>Your Breaking Point</h3><p>You first departed from Nozick at <strong>Dilemma ' + (firstDeparture + 1) + ': ' + SCENARIOS[firstDeparture].title + '</strong>. This is where your commitment to self-ownership met a competing value that you could not override. This is the most important moment in your simulation — your brief should explain why this was the dilemma that broke you.</p></div>';
+  }
+
+  var tags = '';
+  if (nozickCount === 6) tags += '<span class="tag tag-gold">Fully Consistent</span>';
+  else if (firstDeparture >= 3) tags += '<span class="tag tag-gold">Late Departure</span>';
+  else tags += '<span class="tag tag-red">Early Departure</span>';
+
+  if (choices[3] && (choices[3].tag === 'depart')) tags += '<span class="tag tag-red">Sick Child Override</span>';
+  if (choices[1] && (choices[1].tag === 'nozick')) tags += '<span class="tag tag-gold">Anti-Tax</span>';
+  if (choices[5] && (choices[5].tag !== 'nozick')) tags += '<span class="tag tag-blue">Substantive Freedom</span>';
+
+  app.innerHTML =
+    '<h1>Your Self-Ownership Results</h1>' +
+    '<p style="color:#f59e0b;font-size:13px;">PSIR 308 - Screenshot this for your Weekly Brief</p>' +
+
+    '<div class="tracker" style="margin-top:14px;">' +
+      '<div class="tracker-item"><div class="tracker-num tracker-gold">' + nozickCount + '</div>With Nozick</div>' +
+      '<div class="tracker-item"><div class="tracker-num tracker-red">' + departCount + '</div>Departures</div>' +
+      '<div class="tracker-item"><div class="tracker-num" style="color:#eee;">6</div>Total</div>' +
+    '</div>' +
+
+    '<div class="box">' +
+      '<h3>Your Decision Path</h3>' +
+      choiceLog +
+    '</div>' +
+
+    departureNote +
+
+    '<div class="gold-box">' +
+      '<h3>Your Profile</h3>' +
+      '<div class="big-text" style="color:' + profile.color + ';">' + profile.label + '</div>' +
+      '<p>' + profile.desc + '</p>' +
+      '<div style="margin-top:10px;">' + tags + '</div>' +
+    '</div>' +
+
+    '<div class="box">' +
+      '<h3>Weekly Brief Prompt</h3>' +
+      '<p><strong>1.</strong> Map your decision path. Were you consistently libertarian? If not, identify the exact moment you departed from Nozick\'s entitlement theory and explain what value overrode self-ownership.</p>' +
+      '<p><strong>2.</strong> If you never departed, explain how you justified your choices in the Sick Child scenario and the Corporate Offer scenario. What does it cost to maintain absolute self-ownership?</p>' +
+      '<p><strong>3.</strong> Kymlicka argues that libertarianism\'s appeal rests on the intuition of self-ownership but that the theory cannot justify the initial acquisition of external resources. Did any scenario expose this gap for you? Which one and why?</p>' +
+    '</div>' +
+
+    '<button class="btn btn-green" id="copyBtn">Copy Summary to Clipboard</button>' +
+    '<button class="btn btn-gray" id="restartBtn">Run the Dilemmas Again</button>';
+
+  document.getElementById('copyBtn').onclick = copyResults;
+  document.getElementById('restartBtn').onclick = showIntro;
+}
+
+function copyResults() {
+  var profile = getProfile();
+  var t = '=== PSIR 308 SELF-OWNERSHIP DILEMMA RESULTS ===\n\n';
+  t += 'WITH NOZICK: ' + nozickCount + '/6\n';
+  t += 'DEPARTURES: ' + departCount + '/6\n\n';
+  t += 'DECISION PATH:\n';
+  for (var i = 0; i < choices.length; i++) {
+    var c = choices[i];
+    var side = (c.tag === 'nozick' || c.tag === 'soft-nozick') ? 'WITH NOZICK' : 'DEPARTURE';
+    t += (i + 1) + '. ' + c.title + ': ' + side + '\n';
+    t += '   Choice: ' + c.choiceText + '\n\n';
+  }
+  if (firstDeparture >= 0) {
+    t += 'BREAKING POINT: Dilemma ' + (firstDeparture + 1) + ' - ' + SCENARIOS[firstDeparture].title + '\n\n';
+  } else {
+    t += 'BREAKING POINT: None - fully consistent with Nozick\n\n';
+  }
+  t += 'PROFILE: ' + profile.label + '\n';
+  t += profile.desc + '\n';
+
+  try {
+    navigator.clipboard.writeText(t).then(function() {
+      alert('Results copied! Paste into your weekly brief.');
+    });
+  } catch(e) {
+    var ta = document.createElement('textarea');
+    ta.value = t;
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    alert('Results copied! Paste into your weekly brief.');
+  }
+}
+
+showIntro();
+</script>
+
+</body>
+</html>
