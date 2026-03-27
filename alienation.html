@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>PSIR 308 – The Alienation Audit</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Georgia,'Times New Roman',serif;background:#fff;color:#1a1a1a;padding:16px;line-height:1.7;font-size:16px;min-height:100vh;}
+#app{max-width:600px;margin:0 auto;}
+h1{font-size:clamp(24px,5vw,36px);margin-bottom:8px;line-height:1.2;}
+h2{font-size:clamp(20px,4vw,28px);margin-bottom:8px;line-height:1.25;}
+h3{font-size:clamp(17px,3vw,22px);margin-bottom:6px;line-height:1.3;}
+p{margin-bottom:12px;font-size:clamp(15px,2vw,18px);}
+.subtitle{color:#666;font-size:clamp(13px,1.5vw,16px);margin-bottom:16px;}
+.red{color:#b91c1c;font-weight:700;}
+.highlight{background:linear-gradient(transparent 60%,#fde68a 60%);padding:0 3px;font-weight:600;}
+.card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin:16px 0;}
+.card h3{color:#b91c1c;}
+.btn{display:block;width:100%;padding:16px;margin:8px 0;font-family:Georgia,serif;font-size:clamp(15px,2vw,18px);border:2px solid #e5e7eb;border-radius:10px;background:#fff;color:#1a1a1a;cursor:pointer;text-align:left;line-height:1.5;transition:border-color 0.2s,background 0.2s;}
+.btn:hover,.btn:focus{border-color:#b91c1c;background:#fef2f2;}
+.btn:active{background:#fde68a;}
+.btn-primary{background:#b91c1c;color:#fff;border-color:#b91c1c;text-align:center;font-weight:600;font-size:clamp(16px,2.2vw,20px);padding:18px;margin-top:20px;}
+.btn-primary:hover{background:#991b1b;}
+.btn-secondary{background:#fff;color:#b91c1c;border-color:#b91c1c;text-align:center;font-weight:600;margin-top:12px;}
+.btn-secondary:hover{background:#fef2f2;}
+.progress{width:100%;height:6px;background:#e5e7eb;border-radius:3px;margin:16px 0;}
+.progress-fill{height:6px;background:#b91c1c;border-radius:3px;transition:width 0.4s;}
+.scale{display:flex;gap:0;margin:12px 0;}
+.scale-btn{flex:1;padding:14px 0;border:1px solid #e5e7eb;background:#fff;font-family:Georgia,serif;font-size:clamp(14px,1.8vw,18px);font-weight:600;cursor:pointer;transition:all 0.2s;color:#1a1a1a;}
+.scale-btn:first-child{border-radius:10px 0 0 10px;}
+.scale-btn:last-child{border-radius:0 10px 10px 0;}
+.scale-btn:hover{background:#fef2f2;}
+.scale-btn.selected{background:#b91c1c;color:#fff;border-color:#b91c1c;}
+.scale-labels{display:flex;justify-content:space-between;font-size:clamp(11px,1.3vw,14px);color:#888;margin-top:4px;}
+.dim-header{display:flex;align-items:center;gap:10px;margin:24px 0 8px 0;}
+.dim-num{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;background:#b91c1c;color:#fff;border-radius:50%;font-weight:700;font-size:15px;flex-shrink:0;}
+.scenario{background:#fef2f2;border-left:4px solid #b91c1c;padding:16px;margin:12px 0;border-radius:0 8px 8px 0;}
+.scenario p{margin-bottom:6px;font-style:italic;}
+.result-bar-container{margin:10px 0;}
+.result-bar-label{display:flex;justify-content:space-between;font-size:clamp(13px,1.5vw,16px);margin-bottom:4px;}
+.result-bar{width:100%;height:28px;background:#e5e7eb;border-radius:8px;overflow:hidden;}
+.result-bar-fill{height:28px;border-radius:8px;transition:width 0.6s;display:flex;align-items:center;padding-left:10px;font-size:13px;color:#fff;font-weight:600;}
+.profile-box{background:#fef2f2;border:2px solid #b91c1c;border-radius:12px;padding:24px;margin:20px 0;text-align:center;}
+.profile-box h2{color:#b91c1c;margin-bottom:8px;}
+.tag{display:inline-block;background:#fef2f2;color:#b91c1c;border:1px solid #fca5a5;border-radius:6px;padding:4px 12px;font-size:clamp(12px,1.4vw,15px);margin:3px;font-weight:600;}
+.copy-box{background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;padding:16px;margin:16px 0;text-align:center;}
+.copy-box p{color:#166534;font-weight:600;margin-bottom:0;}
+.brief-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin:16px 0;}
+.brief-box h3{margin-bottom:8px;}
+.brief-box p{font-size:clamp(13px,1.5vw,16px);color:#555;}
+.hidden{display:none;}
+input[type="text"]{width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:10px;font-family:Georgia,serif;font-size:clamp(15px,2vw,18px);margin:6px 0;outline:none;transition:border-color 0.2s;}
+input[type="text"]:focus{border-color:#b91c1c;}
+label{font-size:clamp(14px,1.6vw,17px);color:#555;display:block;margin-top:12px;margin-bottom:2px;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var app=document.getElementById('app');
+
+var DIMENSIONS=[
+{id:'product',name:'Alienation from the Product',
+ marx:'The worker produces something but does not own it. The product of your labor belongs to someone else — your creative output confronts you as another person\'s property.',
+ questions:[
+  {text:'Think about the main productive activity in your life right now — your studies, your job, or both. When you finish a piece of work (an essay, a shift, a project), how much does the result feel like yours?',
+   scenario:'You spend three weeks writing a research paper. You submit it. It is graded, filed, and never read again. The knowledge you produced exists only as a number in a grading system.',
+   labels:['Fully mine','Mostly mine','Partly mine','Mostly not','Not at all']},
+  {text:'If someone else took credit for your best recent work, how much would it matter to you — and how surprised would you be?',
+   scenario:'A student discovers that ideas from their assignment appeared in a university publication without attribution. The institution owns all student work produced during enrollment.',
+   labels:['Very upset','Upset','Mixed','Unsurprised','Expected it']},
+  {text:'How often do you produce things you are genuinely proud of in your current work or studies?',
+   scenario:'A factory worker assembles components all day but has never seen the finished product. A student completes assignments without understanding their purpose beyond the grade.',
+   labels:['Always','Often','Sometimes','Rarely','Never']}
+]},
+{id:'process',name:'Alienation from the Process',
+ marx:'The worker does not control how she works. The pace, method, and purpose of labor are dictated by others. Work becomes repetitive, mechanical, and meaningless.',
+ questions:[
+  {text:'How much control do you have over how you do your main daily work — the methods, the pace, the priorities?',
+   scenario:'A delivery driver follows an algorithm-optimized route. They cannot choose the order of deliveries, the speed, or the breaks. The app monitors everything.',
+   labels:['Total control','Mostly me','Shared','Mostly others','No control']},
+  {text:'When you are working or studying, how often do you feel like you are going through the motions rather than genuinely thinking or creating?',
+   scenario:'A student sits in a lecture, copies notes, memorizes for the exam, and forgets everything afterward. The process of learning has been reduced to information transfer and assessment.',
+   labels:['Never','Rarely','Sometimes','Often','Always']},
+  {text:'If you could redesign how your work or studies are organized, how much would you change?',
+   scenario:'A teacher wants to redesign their course around discussion and student projects but is required to follow a standardized syllabus, use prescribed textbooks, and administer uniform exams.',
+   labels:['Nothing','A little','Some things','A lot','Everything']}
+]},
+{id:'others',name:'Alienation from Other Workers',
+ marx:'Instead of cooperating, workers compete with each other for jobs, wages, and security. Capitalism turns potential collaborators into rivals.',
+ questions:[
+  {text:'In your current environment (university, workplace, or both), do you experience other people primarily as collaborators or as competitors?',
+   scenario:'Students in a curved grading system realize that helping a classmate understand the material could lower their own grade. Cooperation becomes irrational.',
+   labels:['Collaborators','Mostly collaborative','Mixed','Mostly competitive','Competitors']},
+  {text:'How much genuine solidarity do you feel with the people who do similar work to you — classmates, colleagues, coworkers?',
+   scenario:'Gig workers for the same platform never meet, cannot organize, and are individually replaceable. They share an employer but have no shared identity or collective power.',
+   labels:['Deep solidarity','Quite a lot','Some','Little','None']},
+  {text:'When someone in your environment succeeds, is your first instinct happiness for them or anxiety about your own position?',
+   scenario:'A colleague receives a promotion. You have been doing the same work for longer. Your first thought is not congratulations but calculation: what does this mean for me?',
+   labels:['Happy for them','Mostly happy','Mixed','Mostly anxious','Anxious for me']}
+]},
+{id:'species',name:'Alienation from Species-Being',
+ marx:'Humans are reduced to treating work as mere survival — a means to eat and pay rent — rather than as the creative, purposeful activity that defines our nature. We become alienated from what makes us human.',
+ questions:[
+  {text:'Does your current main activity (work or studies) feel like an expression of who you are, or something you do to get by?',
+   scenario:'A musician works as a data-entry clerk to pay rent. She is alive from 6pm to midnight. The rest is survival. Marx would say she is human only in her "animal functions" — eating, sleeping — and animal in her "human function" — working.',
+   labels:['Expresses me','Mostly me','Partly','Mostly survival','Pure survival']},
+  {text:'How often do you have time and energy for activities that feel genuinely meaningful — creative, intellectual, social, or spiritual — outside of your obligations?',
+   scenario:'After a full day of classes and a part-time job, a student has two free hours. They spend them scrolling a phone because they are too exhausted for anything else. Their "free time" is recovery time.',
+   labels:['Daily','Most days','Sometimes','Rarely','Never']},
+  {text:'If money were no object and all your needs were met, would you continue doing what you currently do?',
+   scenario:'Marx\'s test: in an unalienated society, you would hunt in the morning, fish in the afternoon, and criticize after dinner — not because you must, but because creative, purposeful activity is what makes life human.',
+   labels:['Absolutely','Mostly yes','Maybe some','Mostly no','Not at all']}
+]}
+];
+
+var studentName='',studentId='',currentDim=0,currentQ=0,answers={};
+DIMENSIONS.forEach(function(d){answers[d.id]=[];});
+
+function showIntro(){
+app.innerHTML='<h1>The Alienation Audit</h1>'+
+'<p class="subtitle">PSIR 308 — Marxism (Kymlicka, Chapter 5)</p>'+
+'<div class="card"><h3>What Is This?</h3>'+
+'<p>Marx argued that capitalism alienates human beings in four ways — from the products of their labor, from the process of working, from other people, and from their own human nature.</p>'+
+'<p>This is not a historical claim about 19th-century factories. Marx believed these forms of alienation are <span class="highlight">structural features of any capitalist society</span> — including yours.</p>'+
+'<p>You will answer 12 questions across the four dimensions, using your own life as raw material. There are no right answers. But there are Marxist interpretations — and the gap between your experience and Marx\'s framework is where the thinking begins.</p></div>'+
+'<label>Full Name</label><input type="text" id="sname" placeholder="Your name">'+
+'<label>Student ID</label><input type="text" id="sid" placeholder="Your student ID">'+
+'<button class="btn-primary" id="startBtn" onclick="startAudit()">Begin the Audit</button>';
+}
+
+function startAudit(){
+var n=document.getElementById('sname').value.trim();
+var s=document.getElementById('sid').value.trim();
+if(!n||!s){alert('Please enter your name and student ID.');return;}
+studentName=n;studentId=s;
+currentDim=0;currentQ=0;
+showQuestion();
+}
+
+function totalAnswered(){
+var t=0;
+DIMENSIONS.forEach(function(d){t+=answers[d.id].length;});
+return t;
+}
+
+function showQuestion(){
+var dim=DIMENSIONS[currentDim];
+var q=dim.questions[currentQ];
+var globalQ=totalAnswered()+1;
+var pct=Math.round((totalAnswered()/12)*100);
+
+var html='<div class="progress"><div class="progress-fill" style="width:'+pct+'%"></div></div>'+
+'<p class="subtitle">Question '+globalQ+' of 12</p>'+
+'<div class="dim-header"><span class="dim-num">'+(currentDim+1)+'</span><h3>'+dim.name+'</h3></div>'+
+'<div class="card"><p style="font-style:italic;color:#b91c1c;margin-bottom:8px;">Marx: "'+dim.marx+'"</p></div>'+
+'<p><strong>'+q.text+'</strong></p>'+
+'<div class="scenario"><p>'+q.scenario+'</p></div>'+
+'<p class="subtitle">Rate your experience:</p>'+
+'<div class="scale">';
+
+for(var i=0;i<5;i++){
+html+='<button class="scale-btn" onclick="selectAnswer('+i+')" id="sb'+i+'">'+(i+1)+'</button>';
+}
+html+='</div><div class="scale-labels"><span>'+q.labels[0]+'</span><span>'+q.labels[4]+'</span></div>'+
+'<button class="btn-primary hidden" id="nextBtn" onclick="nextQuestion()">Next</button>';
+
+app.innerHTML=html;
+}
+
+function selectAnswer(val){
+var dim=DIMENSIONS[currentDim];
+// Remove previous selection if re-clicking
+var btns=document.querySelectorAll('.scale-btn');
+btns.forEach(function(b){b.classList.remove('selected');});
+document.getElementById('sb'+val).classList.add('selected');
+
+// Store answer (1-5 scale, where 5 = most alienated)
+if(answers[dim.id].length>currentQ){
+answers[dim.id][currentQ]=val+1;
+}else{
+answers[dim.id].push(val+1);
+}
+document.getElementById('nextBtn').classList.remove('hidden');
+}
+
+function nextQuestion(){
+currentQ++;
+if(currentQ>=DIMENSIONS[currentDim].questions.length){
+currentDim++;
+currentQ=0;
+if(currentDim>=DIMENSIONS.length){
+showResults();
+return;
+}
+showDimIntro();
+return;
+}
+showQuestion();
+}
+
+function showDimIntro(){
+var dim=DIMENSIONS[currentDim];
+var pct=Math.round((totalAnswered()/12)*100);
+app.innerHTML='<div class="progress"><div class="progress-fill" style="width:'+pct+'%"></div></div>'+
+'<div class="dim-header"><span class="dim-num">'+(currentDim+1)+'</span><h2>'+dim.name+'</h2></div>'+
+'<div class="card"><p style="font-style:italic;">Marx: "'+dim.marx+'"</p></div>'+
+'<p>The next three questions explore this dimension using your own experience.</p>'+
+'<button class="btn-primary" onclick="showQuestion()">Continue</button>';
+}
+
+function dimAvg(id){
+var arr=answers[id];
+if(!arr.length)return 0;
+var sum=0;arr.forEach(function(v){sum+=v;});
+return sum/arr.length;
+}
+
+function getProfile(){
+var product=dimAvg('product');
+var process=dimAvg('process');
+var others=dimAvg('others');
+var species=dimAvg('species');
+var overall=(product+process+others+species)/4;
+
+var profile,desc,tags=[];
+
+if(overall<=1.5){
+profile='The Unalienated';
+desc='Your experience shows remarkably low alienation across all dimensions. Marx would say you are either extraordinarily fortunate, or you have not yet recognized the structural constraints shaping your life. Alternatively, you may have found genuinely meaningful work — which Marx would celebrate as a glimpse of what unalienated life could look like for everyone.';
+tags.push('Low Alienation');
+}else if(overall<=2.5){
+profile='The Partial Insider';
+desc='You experience moderate alienation — enough to sense that something is off, but not enough to feel trapped. Marx would argue this is the most ideologically managed position: you have just enough autonomy to feel free, while the deeper structures remain invisible.';
+tags.push('Moderate Alienation');
+}else if(overall<=3.5){
+profile='The Aware Worker';
+desc='You experience significant alienation across multiple dimensions. You can name what feels wrong — the lack of control, the competition, the gap between your work and your identity. Marx would say your awareness is the first step. The question is whether individual awareness can change structural conditions.';
+tags.push('Significant Alienation');
+}else if(overall<=4.2){
+profile='The Structurally Alienated';
+desc='Your alienation scores are high across the board. Marx would interpret this not as a personal failing but as evidence that the system is working exactly as designed — extracting value from your labor while separating you from the product, the process, other people, and your own human potential.';
+tags.push('High Alienation');
+}else{
+profile='The Fully Alienated';
+desc='You report extreme alienation in nearly every dimension. Marx would say you are experiencing capitalism\'s logic in its purest form. Your labor is entirely instrumental — a means of survival, not an expression of who you are. The tragedy, for Marx, is that this feels normal.';
+tags.push('Extreme Alienation');
+}
+
+// Identify highest dimension
+var dims=[{id:'product',avg:product,name:'from the Product'},{id:'process',avg:process,name:'from the Process'},{id:'others',avg:others,name:'from Other People'},{id:'species',avg:species,name:'from Species-Being'}];
+dims.sort(function(a,b){return b.avg-a.avg;});
+tags.push('Highest: '+dims[0].name);
+if(dims[0].avg-dims[3].avg>1.5)tags.push('Uneven Profile');
+else tags.push('Uniform Profile');
+
+if(species>=4)tags.push('Survival Mode');
+if(others>=4)tags.push('Competitive Environment');
+if(process>=4)tags.push('No Autonomy');
+if(product<=2)tags.push('Ownership of Output');
+
+return {profile:profile,desc:desc,tags:tags,dims:dims,overall:overall,product:product,process:process,others:others,species:species};
+}
+
+function showResults(){
+var r=getProfile();
+var colors=['#22c55e','#84cc16','#eab308','#f97316','#b91c1c'];
+
+function barColor(avg){
+if(avg<=1.5)return colors[0];
+if(avg<=2.5)return colors[1];
+if(avg<=3.5)return colors[2];
+if(avg<=4.2)return colors[3];
+return colors[4];
+}
+
+var html='<div class="progress"><div class="progress-fill" style="width:100%"></div></div>'+
+'<h1>Your Alienation Profile</h1>'+
+'<p class="subtitle">'+studentName+' — '+studentId+'</p>'+
+'<div class="profile-box"><h2>'+r.profile+'</h2><p style="font-size:clamp(18px,3vw,28px);color:#b91c1c;font-weight:700;">Overall: '+r.overall.toFixed(1)+' / 5.0</p></div>'+
+'<p>'+r.desc+'</p>';
+
+// Dimension bars
+var dimLabels={product:'From the Product',process:'From the Process',others:'From Other People',species:'From Species-Being'};
+var dimKeys=['product','process','others','species'];
+
+for(var i=0;i<dimKeys.length;i++){
+var k=dimKeys[i];
+var avg=r[k];
+var pct=Math.round((avg/5)*100);
+var c=barColor(avg);
+html+='<div class="result-bar-container"><div class="result-bar-label"><span>'+dimLabels[k]+'</span><span>'+avg.toFixed(1)+' / 5</span></div>'+
+'<div class="result-bar"><div class="result-bar-fill" style="width:'+pct+'%;background:'+c+';">'+avg.toFixed(1)+'</div></div></div>';
+}
+
+// Tags
+html+='<div style="margin:20px 0;">';
+r.tags.forEach(function(t){html+='<span class="tag">'+t+'</span>';});
+html+='</div>';
+
+// Marx's interpretation
+html+='<div class="card"><h3 class="red">What Would Marx Say?</h3>';
+if(r.dims[0].name==='from the Product'){
+html+='<p>Your highest alienation is from the product of your labor. You create things that do not belong to you and that you may not even value. Marx would say this is the foundational form of alienation — when your creative output is appropriated by others, you lose connection to the world you are making.</p>';
+}else if(r.dims[0].name==='from the Process'){
+html+='<p>Your highest alienation is from the process of working. You lack control over how you spend your productive time. Marx would say you have been reduced to an instrument — your labor is directed by others for purposes that are not your own. The method and pace of your work belong to someone else.</p>';
+}else if(r.dims[0].name==='from Other People'){
+html+='<p>Your highest alienation is from other people. Instead of solidarity and cooperation, you experience competition and isolation. Marx would say capitalism has succeeded in atomizing you — turning potential allies into rivals, making collective action feel impossible or irrational.</p>';
+}else{
+html+='<p>Your highest alienation is from your species-being — your sense of what makes life meaningful. Your daily activity feels disconnected from who you are. Marx would say this is capitalism\'s deepest damage: it reduces human beings to survival machines, stripping away the creative, purposeful, social nature that defines humanity.</p>';
+}
+html+='</div>';
+
+// Kymlicka's counter
+html+='<div class="card"><h3>What Would Kymlicka Say?</h3>'+
+'<p>Kymlicka acknowledges the power of Marx\'s alienation critique but raises questions: Is alienation unique to capitalism, or does it occur in any complex society with a division of labor? Would collective ownership solve it, or would it create new forms of unfreedom — alienation from individual choice? And does Marx\'s vision of unalienated life assume a single conception of human flourishing that may not be shared by everyone?</p></div>';
+
+// Copy and brief
+html+='<button class="btn-primary" onclick="copyResults()">Copy Summary to Clipboard</button>'+
+'<div class="copy-box hidden" id="copyMsg"><p>Copied! Paste into your weekly brief.</p></div>'+
+'<button class="btn-secondary" onclick="location.reload()">Run Again</button>'+
+'<div class="brief-box"><h3>Weekly Brief Prompt</h3>'+
+'<p>1. Report your alienation profile (overall score, highest dimension, profile label). Which dimension surprised you most and why?</p>'+
+'<p>2. Select one scenario from the audit and connect it to Kymlicka\'s presentation of Marx\'s alienation theory. Does the theory illuminate your experience, or does your experience expose a limitation in the theory?</p>'+
+'<p>3. Would a Rawlsian or Dworkinian liberal have a response to your alienation score? What would they propose, and would Marx find it adequate?</p></div>';
+
+app.innerHTML=html;
+}
+
+function copyResults(){
+var r=getProfile();
+var dimLabels={product:'From the Product',process:'From the Process',others:'From Other People',species:'From Species-Being'};
+var txt='PSIR 308 — ALIENATION AUDIT RESULTS\n';
+txt+='Name: '+studentName+'\n';
+txt+='Student ID: '+studentId+'\n';
+txt+='Simulation: Alienation Audit (Marxism)\n';
+txt+='Profile: '+r.profile+'\n';
+txt+='Overall Score: '+r.overall.toFixed(1)+' / 5.0\n\n';
+txt+='DIMENSION SCORES:\n';
+['product','process','others','species'].forEach(function(k){
+txt+=dimLabels[k]+': '+r[k].toFixed(1)+' / 5\n';
+});
+txt+='\nHighest Alienation: '+r.dims[0].name+' ('+r.dims[0].avg.toFixed(1)+')\n';
+txt+='Lowest Alienation: '+r.dims[3].name+' ('+r.dims[3].avg.toFixed(1)+')\n';
+txt+='\nTags: '+r.tags.join(', ')+'\n';
+txt+='\nDETAILED RESPONSES:\n';
+DIMENSIONS.forEach(function(dim){
+txt+='\n'+dim.name+':\n';
+dim.questions.forEach(function(q,i){
+txt+='Q'+(i+1)+': '+q.text+'\n';
+txt+='Answer: '+answers[dim.id][i]+'/5 ('+q.labels[answers[dim.id][i]-1]+')\n';
+});
+});
+
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(txt).then(function(){
+document.getElementById('copyMsg').classList.remove('hidden');
+});
+}else{
+var ta=document.createElement('textarea');
+ta.value=txt;document.body.appendChild(ta);
+ta.select();document.execCommand('copy');
+document.body.removeChild(ta);
+document.getElementById('copyMsg').classList.remove('hidden');
+}
+}
+
+showIntro();
+</script>
+</body>
+</html>
