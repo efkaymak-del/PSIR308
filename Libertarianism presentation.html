@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSIR 308 - Week 5: Libertarianism</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #0d1117;
+  color: #e6edf3;
+  height: 100vh;
+  overflow: hidden;
+}
+.slide {
+  display: none;
+  height: 100vh;
+  padding: 60px 80px;
+  position: relative;
+}
+.slide.active { display: flex; flex-direction: column; justify-content: center; }
+
+.nav {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 40px;
+  background: rgba(13,17,23,0.95);
+  border-top: 1px solid #30363d;
+  z-index: 100;
+}
+.nav-btn {
+  padding: 12px 28px;
+  border: 1px solid #444;
+  border-radius: 8px;
+  background: #161b22;
+  color: #ccc;
+  font-size: 16px;
+  cursor: pointer;
+  font-weight: bold;
+}
+.nav-btn:hover { background: #1f6feb; color: white; border-color: #1f6feb; }
+.nav-count { color: #666; font-size: 14px; }
+
+h1 { font-size: 2.8em; color: #f59e0b; margin-bottom: 20px; line-height: 1.2; }
+h2 { font-size: 2.2em; color: #fbbf24; margin-bottom: 24px; line-height: 1.2; }
+h3 { font-size: 1.6em; color: #f59e0b; margin-bottom: 16px; }
+p { font-size: 1.3em; margin-bottom: 18px; line-height: 1.7; color: #c9d1d9; }
+.subtitle { font-size: 1.4em; color: #8b949e; margin-bottom: 10px; }
+.small { font-size: 1em; color: #8b949e; }
+
+.highlight { color: #f59e0b; font-weight: bold; }
+.highlight-blue { color: #58a6ff; font-weight: bold; }
+.highlight-red { color: #f87171; font-weight: bold; }
+.highlight-green { color: #3fb950; font-weight: bold; }
+
+.card {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.gold-card {
+  background: #1a1800;
+  border: 1px solid #b8860b;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.blue-card {
+  background: #0a1929;
+  border: 1px solid #1f6feb;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.red-card {
+  background: #1a0a0a;
+  border: 1px solid #8b3a3a;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+.green-card {
+  background: #0a1a0a;
+  border: 1px solid #2d6a4f;
+  border-radius: 12px;
+  padding: 28px;
+  margin-bottom: 20px;
+}
+
+.versus {
+  display: flex;
+  gap: 30px;
+  margin: 20px 0;
+}
+.versus-box {
+  flex: 1;
+  border-radius: 12px;
+  padding: 24px;
+}
+.vs-label {
+  font-size: 1.1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.quote {
+  border-left: 4px solid #f59e0b;
+  padding: 16px 24px;
+  margin: 20px 0;
+  background: #161b22;
+  border-radius: 0 8px 8px 0;
+  font-style: italic;
+  font-size: 1.25em;
+  color: #c9d1d9;
+}
+
+.list-item {
+  font-size: 1.2em;
+  margin-bottom: 14px;
+  padding-left: 20px;
+  position: relative;
+  color: #c9d1d9;
+  line-height: 1.6;
+}
+.list-item:before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+}
+
+.big-number {
+  font-size: 3em;
+  font-weight: bold;
+  color: #f59e0b;
+  margin-bottom: 8px;
+}
+
+.step-row {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+}
+.step-box {
+  flex: 1;
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+.step-num {
+  font-size: 2em;
+  font-weight: bold;
+  color: #f59e0b;
+  margin-bottom: 8px;
+}
+.step-title {
+  font-size: 1.1em;
+  font-weight: bold;
+  color: #fbbf24;
+  margin-bottom: 8px;
+}
+.step-desc {
+  font-size: 0.95em;
+  color: #8b949e;
+  line-height: 1.5;
+}
+
+.timeline {
+  position: relative;
+  margin: 20px 0;
+  padding-left: 30px;
+  border-left: 3px solid #f59e0b;
+}
+.timeline-item {
+  margin-bottom: 24px;
+  position: relative;
+}
+.timeline-item:before {
+  content: '';
+  position: absolute;
+  left: -38px;
+  top: 6px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #f59e0b;
+  border: 3px solid #0d1117;
+}
+.timeline-label {
+  font-size: 0.9em;
+  color: #f59e0b;
+  font-weight: bold;
+  margin-bottom: 4px;
+}
+.timeline-text {
+  font-size: 1.1em;
+  color: #c9d1d9;
+  line-height: 1.5;
+}
+
+.center-text { text-align: center; }
+.mt20 { margin-top: 20px; }
+.mb10 { margin-bottom: 10px; }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: TITLE -->
+<div class="slide active" id="s1">
+  <div class="center-text">
+    <p class="subtitle">PSIR 308: Contemporary Political Philosophy</p>
+    <h1>Libertarianism</h1>
+    <p class="subtitle">Week 5 — Kymlicka, Chapter 4</p>
+    <div style="margin-top:40px;">
+      <p class="small">Robert Nozick and the Entitlement Theory of Justice</p>
+      <p class="small">Spring 2026 — Eastern Mediterranean University</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 2: RECAP -->
+<div class="slide" id="s2">
+  <h2>Where We Are So Far</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-label">Week 2 — Utilitarianism</div>
+      <div class="timeline-text">Maximize aggregate welfare. The individual can be sacrificed for the greater good. <span class="highlight-red">Problem:</span> It doesn't respect the separateness of persons.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-label">Weeks 3–4 — Liberal Egalitarianism</div>
+      <div class="timeline-text">Rawls: Protect individuals through the difference principle. Dworkin: Make distributions ambition-sensitive and endowment-insensitive. <span class="highlight-red">Problem:</span> Both require significant state redistribution.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-label">This Week — Libertarianism</div>
+      <div class="timeline-text"><span class="highlight">What if redistribution itself is the injustice?</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 3: THE QUESTION -->
+<div class="slide" id="s3">
+  <div class="center-text">
+    <p class="subtitle" style="font-size:1.2em;">The libertarian asks a deceptively simple question:</p>
+    <h1 style="font-size:3em; margin-top:30px; margin-bottom:30px;">If I own myself, how can you take what is mine?</h1>
+    <p style="font-size:1.3em; color:#8b949e;">This week we explore how far that question can go — and where it breaks down.</p>
+  </div>
+</div>
+
+<!-- SLIDE 4: SELF-OWNERSHIP -->
+<div class="slide" id="s4">
+  <h2>The Foundation: Self-Ownership</h2>
+  <div class="gold-card">
+    <h3>Nozick's Starting Point</h3>
+    <p>Every individual has <span class="highlight">absolute ownership</span> over their own person — their body, their mind, their talents, their labor, and everything that flows from the exercise of those capacities.</p>
+  </div>
+  <p>This sounds obvious. But follow the logic:</p>
+  <div class="list-item">You own your body → therefore you own your labor</div>
+  <div class="list-item">You own your labor → therefore you own what your labor produces</div>
+  <div class="list-item">You own what you produce → therefore no one can take it without your consent</div>
+  <div class="list-item">Not even for a good reason. Not even by majority vote. Not even to help the poor.</div>
+</div>
+
+<!-- SLIDE 5: WHY NOZICK MATTERS -->
+<div class="slide" id="s5">
+  <h2>Why Should We Take This Seriously?</h2>
+  <p>Nozick is not an eccentric. He is responding to a real problem in Rawls:</p>
+  <div class="versus">
+    <div class="versus-box blue-card">
+      <span class="vs-label highlight-blue">Rawls says:</span>
+      <p style="margin:0;">Your natural talents are "morally arbitrary." You don't deserve them. Society can redistribute the benefits they produce.</p>
+    </div>
+    <div class="versus-box gold-card">
+      <span class="vs-label highlight">Nozick responds:</span>
+      <p style="margin:0;">If I don't own my talents, who does? If society owns what my talents produce, then society owns part of me. That is a form of slavery.</p>
+    </div>
+  </div>
+  <p>This is not a minor disagreement. It is a clash between two fundamentally different ideas of what it means to treat people as free and equal.</p>
+</div>
+
+<!-- SLIDE 6: THE ENTITLEMENT THEORY -->
+<div class="slide" id="s6">
+  <h2>The Entitlement Theory of Justice</h2>
+  <p>Nozick argues that justice is about <span class="highlight">process</span>, not <span class="highlight-red">outcomes</span>.</p>
+  <div class="step-row">
+    <div class="step-box">
+      <div class="step-num">1</div>
+      <div class="step-title">Just Acquisition</div>
+      <div class="step-desc">You obtained your property legitimately — you didn't steal it or take it by force.</div>
+    </div>
+    <div class="step-box">
+      <div class="step-num">2</div>
+      <div class="step-title">Just Transfer</div>
+      <div class="step-desc">Anything you received came through voluntary exchange, gift, or inheritance.</div>
+    </div>
+    <div class="step-box">
+      <div class="step-num">3</div>
+      <div class="step-title">Rectification</div>
+      <div class="step-desc">If either principle was violated in the past, the injustice must be corrected.</div>
+    </div>
+  </div>
+  <p style="margin-top:10px;">If all three are satisfied, the distribution is just — <span class="highlight">regardless of how equal or unequal it is.</span></p>
+</div>
+
+<!-- SLIDE 7: PATTERNED VS HISTORICAL -->
+<div class="slide" id="s7">
+  <h2>Patterned vs. Historical Justice</h2>
+  <div class="versus">
+    <div class="versus-box red-card">
+      <span class="vs-label highlight-red">Patterned Theories</span>
+      <p style="margin:0;">Justice requires that the distribution of resources matches a pattern: "to each according to need," "to each equally," "to each according to merit."</p>
+      <p style="margin-top:10px; margin-bottom:0; font-size:0.95em; color:#8b949e;">Utilitarianism, Rawls, and Dworkin are all patterned theories.</p>
+    </div>
+    <div class="versus-box green-card">
+      <span class="vs-label highlight-green">Historical Theories (Nozick)</span>
+      <p style="margin:0;">Justice depends only on how the distribution came about. If the process was just, the outcome is just. There is no pattern to maintain.</p>
+      <p style="margin-top:10px; margin-bottom:0; font-size:0.95em; color:#8b949e;">This is a completely different way of thinking about justice.</p>
+    </div>
+  </div>
+  <p>Why does this distinction matter? Because maintaining a pattern requires <span class="highlight-red">constant intervention</span> in people's free choices.</p>
+</div>
+
+<!-- SLIDE 8: WILT CHAMBERLAIN SETUP -->
+<div class="slide" id="s8">
+  <h2>The Wilt Chamberlain Argument</h2>
+  <p>This is Nozick's most famous thought experiment. It attacks <span class="highlight">every</span> patterned theory of justice simultaneously.</p>
+  <div class="gold-card">
+    <h3>The Setup</h3>
+    <p>Imagine your favourite distribution — call it D1. Everyone has exactly what your preferred theory says they should have. Perfect equality, or Rawlsian fairness, or whatever you like. Everyone is satisfied.</p>
+    <p>Now: Wilt Chamberlain is an extraordinary basketball player. He signs a contract: every person who comes to watch him play puts 25 cents in a special box for him. Over the season, one million people choose to watch. Chamberlain now has $250,000 more than everyone else.</p>
+    <p style="margin-bottom:0;">Call this new distribution D2.</p>
+  </div>
+</div>
+
+<!-- SLIDE 9: WILT CHAMBERLAIN ARGUMENT -->
+<div class="slide" id="s9">
+  <h2>The Wilt Chamberlain Argument (continued)</h2>
+  <div class="gold-card">
+    <h3>Nozick's Question</h3>
+    <p style="font-size:1.4em;">Is D2 unjust?</p>
+  </div>
+  <p>Consider what happened:</p>
+  <div class="list-item">D1 was just — everyone agreed it was fair</div>
+  <div class="list-item">Every transaction from D1 to D2 was <span class="highlight">voluntary</span> — no one was forced to watch basketball</div>
+  <div class="list-item">Every person who paid was willing — they preferred watching Chamberlain to keeping their 25 cents</div>
+  <div class="list-item">Chamberlain didn't steal, cheat, or coerce anyone</div>
+  <p style="margin-top:10px;">If D1 was just, and every step from D1 to D2 was voluntary, <span class="highlight">how can D2 be unjust?</span></p>
+  <p>To call D2 unjust, you would have to say that people are not allowed to spend their own money as they choose. You would need to <span class="highlight-red">continuously interfere</span> with free exchanges to maintain your preferred pattern.</p>
+</div>
+
+<!-- SLIDE 10: POWER OF THE ARGUMENT -->
+<div class="slide" id="s10">
+  <h2>Why This Argument Is Powerful</h2>
+  <p>The Wilt Chamberlain argument does not just attack one theory. It attacks the <span class="highlight">entire logic</span> of patterned justice:</p>
+  <div class="card">
+    <div class="list-item"><span class="highlight-blue">Against egalitarians:</span> Maintaining equality requires forbidding people from making voluntary exchanges that create inequality.</div>
+    <div class="list-item"><span class="highlight-blue">Against Rawls:</span> The difference principle must continuously override free transactions to maintain its pattern.</div>
+    <div class="list-item"><span class="highlight-blue">Against utilitarians:</span> Even maximizing utility requires redistributing from those who have earned more through voluntary exchange.</div>
+  </div>
+  <p>Nozick's point: <span class="highlight">liberty upsets patterns.</span> Any theory that requires a pattern must restrict liberty. You have to choose.</p>
+</div>
+
+<!-- SLIDE 11: TAXATION -->
+<div class="slide" id="s11">
+  <h2>Taxation as Forced Labor</h2>
+  <div class="red-card">
+    <p style="font-size:1.3em;">If you work 8 hours and the state takes 25% of your earnings in tax...</p>
+    <p style="font-size:1.3em;">...Nozick argues this is <span class="highlight-red">morally equivalent</span> to being forced to work 2 hours for the state.</p>
+  </div>
+  <p>The logic is straightforward:</p>
+  <div class="list-item">If you own yourself, you own your labor</div>
+  <div class="list-item">If you own your labor, you own what it produces</div>
+  <div class="list-item">If the state takes part of what your labor produces without your consent, it is claiming ownership of part of your labor</div>
+  <div class="list-item">Claiming ownership of someone's labor without consent is forced labor</div>
+  <p>This applies <span class="highlight-red">even if the tax funds healthcare, education, or poverty relief.</span> The purpose does not change the principle.</p>
+</div>
+
+<!-- SLIDE 12: THE MINIMAL STATE -->
+<div class="slide" id="s12">
+  <h2>The Minimal State</h2>
+  <p>If taxation is forced labor and redistribution violates self-ownership, what role is left for the state?</p>
+  <div class="gold-card">
+    <h3>Nozick's Answer: The "Night-Watchman State"</h3>
+    <p>The state may only:</p>
+    <div class="list-item">Protect individuals from violence and theft</div>
+    <div class="list-item">Enforce contracts</div>
+    <div class="list-item">Defend against external aggression</div>
+    <p style="margin-top:14px; margin-bottom:0;"><span class="highlight">Nothing else.</span> No public education, no welfare, no healthcare, no redistribution of any kind. Any state that does more than this violates individual rights.</p>
+  </div>
+</div>
+
+<!-- SLIDE 13: THE APPEAL -->
+<div class="slide" id="s13">
+  <h2>The Genuine Appeal of Libertarianism</h2>
+  <p>Before we critique Nozick, Kymlicka is honest about why this view attracts people. It speaks to real intuitions:</p>
+  <div class="card">
+    <div class="list-item"><span class="highlight">Individual dignity:</span> You are not a tool for social engineering. Your life and labor belong to you.</div>
+    <div class="list-item"><span class="highlight">Suspicion of power:</span> States that claim the authority to redistribute can also oppress. History is full of examples.</div>
+    <div class="list-item"><span class="highlight">Respect for choice:</span> People should be free to live according to their own values, even if others disapprove.</div>
+    <div class="list-item"><span class="highlight">Earned reward:</span> If you work harder or more creatively than others, you should keep what you earn.</div>
+  </div>
+  <p>These intuitions are not foolish. The question is whether <span class="highlight">self-ownership can bear the weight</span> Nozick places on it.</p>
+</div>
+
+<!-- SLIDE 14: TRANSITION TO CRITIQUE -->
+<div class="slide" id="s14">
+  <div class="center-text">
+    <p class="subtitle" style="font-size:1.2em;">Kymlicka's verdict:</p>
+    <h1 style="font-size:2.5em; margin-top:30px; margin-bottom:30px;">The intuition of self-ownership is powerful.<br>The theory built on it is fatally flawed.</h1>
+    <p style="font-size:1.3em; color:#8b949e;">Let's see why.</p>
+  </div>
+</div>
+
+<!-- SLIDE 15: CRITIQUE 1 — INITIAL ACQUISITION -->
+<div class="slide" id="s15">
+  <h2>Critique 1: The Initial Acquisition Problem</h2>
+  <p>Self-ownership tells us what happens <span class="highlight">after</span> you own something. But <span class="highlight-red">how did anyone come to own external resources in the first place?</span></p>
+  <div class="card">
+    <h3>Nozick borrows from John Locke:</h3>
+    <p>You acquire unowned property by "mixing your labor" with it. You farm unowned land, so the land becomes yours.</p>
+  </div>
+  <div class="red-card">
+    <h3>Kymlicka's response:</h3>
+    <p>Why does mixing your labor with something make it yours? If I pour my can of tomato juice into the ocean, do I own the ocean — or have I just lost my tomato juice?</p>
+    <p style="margin-bottom:0;">More fundamentally: once all land and resources are owned, <span class="highlight-red">those who arrive later have nothing.</span> They must work for the owners on the owners' terms. Self-ownership without access to resources is an empty freedom.</p>
+  </div>
+</div>
+
+<!-- SLIDE 16: CRITIQUE 1 CONTINUED -->
+<div class="slide" id="s16">
+  <h2>The Acquisition Problem Gets Worse</h2>
+  <p>Think about what this means in practice:</p>
+  <div class="gold-card">
+    <p>Generation 1 acquires all the land legitimately.</p>
+    <p>Generation 2 inherits it — a legitimate transfer.</p>
+    <p>Generation 3 inherits it again.</p>
+    <p>Generation 4 arrives with nothing. They "own themselves" but have no resources. Their only option is to sell their labor to the property-owning families.</p>
+    <p style="margin-bottom:0;">By Nozick's own three principles, <span class="highlight">this is perfectly just.</span> Every acquisition was legitimate. Every transfer was voluntary.</p>
+  </div>
+  <p>But it has produced a <span class="highlight-red">hereditary aristocracy</span> — exactly the kind of entrenched inequality that self-ownership was supposed to prevent.</p>
+  <p>Kymlicka: Self-ownership without a theory of fair resource distribution is <span class="highlight-red">incomplete at best, dangerous at worst.</span></p>
+</div>
+
+<!-- SLIDE 17: CRITIQUE 2 — FORMAL VS SUBSTANTIVE FREEDOM -->
+<div class="slide" id="s17">
+  <h2>Critique 2: Formal vs. Substantive Freedom</h2>
+  <div class="versus">
+    <div class="versus-box gold-card">
+      <span class="vs-label highlight">Libertarian Freedom</span>
+      <p style="margin:0;">Freedom = absence of coercion. No one is physically forcing you. You are free to accept or reject any offer.</p>
+    </div>
+    <div class="versus-box blue-card">
+      <span class="vs-label highlight-blue">The Critic's Freedom</span>
+      <p style="margin:0;">Freedom = having real alternatives. If your only choices are exploitation or starvation, your "consent" is meaningless.</p>
+    </div>
+  </div>
+  <p>Consider this scenario: A worker "freely" accepts 12-hour days in dangerous conditions for minimal pay. No one holds a gun to her head. But the alternative is homelessness and hunger.</p>
+  <p>Is she free?</p>
+  <p>Nozick says <span class="highlight">yes</span> — no one coerced her. Critics say <span class="highlight-red">no</span> — a choice between exploitation and destitution is not a meaningful choice.</p>
+</div>
+
+<!-- SLIDE 18: CRITIQUE 2 CONTINUED -->
+<div class="slide" id="s18">
+  <h2>The Freedom Paradox</h2>
+  <div class="red-card">
+    <h3>Kymlicka's key point:</h3>
+    <p>Libertarianism begins with a commitment to individual freedom. But when followed to its logical conclusion, it can produce a world where most people have <span class="highlight-red">less real freedom</span> than they would under a redistributive state.</p>
+    <p style="margin-bottom:0;">The worker who owns herself but owns nothing else is "free" in Nozick's sense — but less free in every meaningful sense than a worker in a welfare state who has healthcare, education, and a safety net.</p>
+  </div>
+  <p>This is the paradox: <span class="highlight">a theory that starts with freedom can end with unfreedom.</span></p>
+</div>
+
+<!-- SLIDE 19: CRITIQUE 3 — MORALLY INTOLERABLE CONCLUSIONS -->
+<div class="slide" id="s19">
+  <h2>Critique 3: Where Does Self-Ownership Lead?</h2>
+  <p>If we take self-ownership as absolute and follow it rigorously:</p>
+  <div class="card">
+    <div class="list-item">A starving person has <span class="highlight-red">no enforceable claim</span> on your surplus food</div>
+    <div class="list-item">A sick child has <span class="highlight-red">no right</span> to medicine you happen to own</div>
+    <div class="list-item">A community <span class="highlight-red">cannot tax</span> its members even for basic collective goods — roads, sanitation, defense</div>
+    <div class="list-item">Inherited wealth creating a <span class="highlight-red">permanent aristocracy</span> is just, as long as original acquisition was legitimate</div>
+    <div class="list-item">Workers "voluntarily" accepting exploitative conditions are <span class="highlight-red">not owed protection</span></div>
+  </div>
+  <p>Kymlicka asks: if a theory of justice leads to conclusions that almost everyone finds <span class="highlight-red">morally intolerable</span>, is the problem with our intuitions — or with the theory?</p>
+</div>
+
+<!-- SLIDE 20: LEFT LIBERTARIANISM -->
+<div class="slide" id="s20">
+  <h2>An Internal Challenge: Left-Libertarianism</h2>
+  <p>Not all libertarians agree with Nozick. There is a significant internal debate:</p>
+  <div class="versus">
+    <div class="versus-box gold-card">
+      <span class="vs-label highlight">Right-Libertarianism (Nozick)</span>
+      <p style="margin:0;">Self-ownership extends to external property. What you acquire legitimately is yours absolutely. The state cannot redistribute.</p>
+    </div>
+    <div class="versus-box green-card">
+      <span class="vs-label highlight-green">Left-Libertarianism</span>
+      <p style="margin:0;">Self-ownership is valid — you own your body and labor. But natural resources (land, water, minerals) belong to everyone collectively. You cannot privately appropriate what no one created.</p>
+    </div>
+  </div>
+  <p>Left-libertarians accept self-ownership but <span class="highlight-green">reject Nozick's theory of acquisition.</span> This shows that even within the libertarian tradition, the initial acquisition problem is unresolved.</p>
+</div>
+
+<!-- SLIDE 21: CONNECTING BACK TO RAWLS AND DWORKIN -->
+<div class="slide" id="s21">
+  <h2>Connecting Back: Nozick, Rawls, and Dworkin</h2>
+  <p>These three thinkers form a triangle of disagreement about the same core issue:</p>
+  <div class="card">
+    <h3>What is the relationship between freedom, equality, and property?</h3>
+  </div>
+  <div class="step-row">
+    <div class="step-box" style="border-color:#58a6ff;">
+      <div class="step-title" style="color:#58a6ff;">Rawls</div>
+      <div class="step-desc">Your talents are morally arbitrary. Justice requires redistribution so that inequalities benefit the worst off.</div>
+    </div>
+    <div class="step-box" style="border-color:#58a6ff;">
+      <div class="step-title" style="color:#58a6ff;">Dworkin</div>
+      <div class="step-desc">Distinguish choices from circumstances. Compensate for brute luck but respect ambition. The auction and insurance scheme operationalize this.</div>
+    </div>
+    <div class="step-box" style="border-color:#f59e0b;">
+      <div class="step-title" style="color:#f59e0b;">Nozick</div>
+      <div class="step-desc">You own yourself absolutely. Redistribution violates your rights. Only voluntary transfer is legitimate.</div>
+    </div>
+  </div>
+  <p>All three claim to take <span class="highlight">individual equality</span> seriously. They disagree fundamentally on what that requires.</p>
+</div>
+
+<!-- SLIDE 22: REAL WORLD -->
+<div class="slide" id="s22">
+  <h2>Libertarianism in the Real World</h2>
+  <p>These are not just abstract debates. Libertarian arguments appear everywhere in contemporary politics:</p>
+  <div class="card">
+    <div class="list-item"><span class="highlight">Tax policy:</span> "It's my money — the government takes it." This is Nozick's taxation-as-forced-labor argument in everyday language.</div>
+    <div class="list-item"><span class="highlight">Healthcare:</span> "Why should I pay for someone else's treatment?" Self-ownership applied to collective provision.</div>
+    <div class="list-item"><span class="highlight">Property rights:</span> Debates about land expropriation, eminent domain, and inheritance tax all invoke entitlement theory.</div>
+    <div class="list-item"><span class="highlight">Labor regulation:</span> "If someone accepts the job voluntarily, the state shouldn't interfere." Formal freedom vs. substantive freedom.</div>
+    <div class="list-item"><span class="highlight">Here in Northern Cyprus:</span> Questions about property, restitution, and who has legitimate claims to land and resources directly echo Nozick's three principles — especially rectification.</div>
+  </div>
+</div>
+
+<!-- SLIDE 23: THE DEEP QUESTION -->
+<div class="slide" id="s23">
+  <div class="center-text">
+    <h2>The Deep Question Kymlicka Leaves Us With</h2>
+    <div class="gold-card" style="margin-top:30px; text-align:left;">
+      <p style="font-size:1.3em;">Self-ownership is intuitively powerful. Most of us feel that our bodies and our labor belong to us.</p>
+      <p style="font-size:1.3em;">But Nozick's theory shows that if we take this intuition as <span class="highlight">absolute</span>, it leads to conclusions most of us cannot accept.</p>
+      <p style="font-size:1.3em; margin-bottom:0;">So the question is: <span class="highlight">Is self-ownership a foundational principle of justice — or just one important value that must be balanced against others?</span></p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 24: BEFORE THE SIMULATION -->
+<div class="slide" id="s24">
+  <h2>Two Ways to Respond to Nozick</h2>
+  <p>As you think about this, notice that there are two very different ways to challenge libertarianism:</p>
+  <div class="versus">
+    <div class="versus-box blue-card">
+      <span class="vs-label highlight-blue">The Liberal Response (Rawls, Dworkin)</span>
+      <p style="margin:0;">Self-ownership is important but not absolute. We can justify some redistribution because natural talents are morally arbitrary, and brute luck should be compensated. We stay within the liberal framework but limit property rights.</p>
+    </div>
+    <div class="versus-box red-card">
+      <span class="vs-label highlight-red">The Radical Response (coming in later weeks)</span>
+      <p style="margin:0;">The entire framework — self-ownership, property, contract — is built on a history of dispossession, colonization, and gendered exclusion. You cannot fix it from within. The question is not "how much redistribution?" but "whose labor built this system and who was excluded from owning anything in the first place?"</p>
+    </div>
+  </div>
+  <p>We will return to the radical critique in Weeks 10–12. For now, hold it in mind as you test your own intuitions.</p>
+</div>
+
+<!-- SLIDE 25: THE PROVOCATION -->
+<div class="slide" id="s25">
+  <h2>A Provocation Before We Continue</h2>
+  <div class="red-card">
+    <p style="font-size:1.3em;">Consider this: you are a student at a university. Your education is partly funded by state subsidies, scholarships, and collective resources. The knowledge you are acquiring was produced by centuries of publicly funded research, teaching, and institutional infrastructure.</p>
+    <p style="font-size:1.3em;">When you graduate and earn a salary, how much of that earning is truly "yours" in Nozick's sense? How much depends on a vast web of collective investment that you did not create and did not pay for?</p>
+    <p style="font-size:1.3em; margin-bottom:0;"><span class="highlight">Can you be a consistent libertarian about your own life?</span></p>
+  </div>
+</div>
+
+<!-- SLIDE 26: SIMULATION INTRO -->
+<div class="slide" id="s26">
+  <h2>Now: Test Your Intuitions</h2>
+  <p>You have heard the theory. You have heard the critiques. Now let's see where <span class="highlight">you</span> actually stand.</p>
+  <div class="gold-card">
+    <h3>The Self-Ownership Dilemma</h3>
+    <p>You are about to face six escalating moral dilemmas. Each one tests whether you can maintain Nozick's self-ownership principle when the consequences get uncomfortable.</p>
+    <p>The dilemmas get progressively harder. Most people break at some point. The question is: <span class="highlight">where do you break, and why?</span></p>
+  </div>
+  <div class="card">
+    <h3>Instructions</h3>
+    <p>Open the simulation file in Teams. Tap it, tap Open in Browser. Complete all six dilemmas. Screenshot your results.</p>
+    <p style="margin-bottom:0;">Your results will be used in the workshop that follows. <span class="highlight">Bring your screenshot.</span></p>
+  </div>
+</div>
+
+<!-- SLIDE 27: LOOKING AHEAD -->
+<div class="slide" id="s27">
+  <h2>Looking Ahead</h2>
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-label">Next Week — Marxism (Kymlicka, Chapter 5)</div>
+      <div class="timeline-text">If libertarianism says the free market is just, Marxism says the free market is exploitation. We move from Nozick's celebration of voluntary exchange to Marx's argument that wage-labor is inherently alienating.</div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-label">The Bigger Arc</div>
+      <div class="timeline-text">Notice the pattern: each theory we study emerges as a response to the failures of the previous one. Libertarianism responds to the over-reach of redistributive liberalism. Marxism will respond to what libertarianism ignores — the structural conditions that make "voluntary" exchange a fiction for most people.</div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px;">
+    <p style="margin-bottom:0; text-align:center; font-size:1.2em;">Now open the simulation on your phones.</p>
+  </div>
+</div>
+
+<!-- NAVIGATION -->
+<div class="nav">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+  <span class="nav-count" id="navCount">1 / 27</span>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+</div>
+
+<script>
+var current = 1;
+var total = 27;
+
+function showSlide(n) {
+  for (var i = 1; i <= total; i++) {
+    document.getElementById('s' + i).className = 'slide';
+  }
+  document.getElementById('s' + n).className = 'slide active';
+  document.getElementById('navCount').textContent = n + ' / ' + total;
+  document.getElementById('prevBtn').style.visibility = n === 1 ? 'hidden' : 'visible';
+  document.getElementById('nextBtn').textContent = n === total ? 'End' : 'Next →';
+}
+
+function nextSlide() {
+  if (current < total) {
+    current++;
+    showSlide(current);
+  }
+}
+
+function prevSlide() {
+  if (current > 1) {
+    current--;
+    showSlide(current);
+  }
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+showSlide(1);
+</script>
+
+</body>
+</html>
