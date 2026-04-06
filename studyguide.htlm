@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>PSIR 308 – Mid-Term Study Guide</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Georgia,'Times New Roman',serif;background:#fff;color:#1a1a1a;padding:16px;line-height:1.7;font-size:16px;min-height:100vh;}
+#app{max-width:650px;margin:0 auto;}
+h1{font-size:clamp(24px,5vw,36px);margin-bottom:8px;line-height:1.2;}
+h2{font-size:clamp(20px,4vw,28px);margin-bottom:8px;line-height:1.25;}
+h3{font-size:clamp(17px,3vw,22px);margin-bottom:6px;line-height:1.3;}
+p{margin-bottom:12px;font-size:clamp(15px,2vw,18px);}
+.sub{color:#666;font-size:clamp(13px,1.5vw,16px);margin-bottom:16px;}
+.red{color:#b91c1c;font-weight:700;}
+.green{color:#166534;font-weight:700;}
+.hl{background:linear-gradient(transparent 60%,#fde68a 60%);padding:0 3px;font-weight:600;}
+.card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin:16px 0;}
+.card h3{color:#b91c1c;margin-bottom:8px;}
+.btn{display:block;width:100%;padding:16px;margin:8px 0;font-family:Georgia,serif;font-size:clamp(15px,2vw,18px);border:2px solid #e5e7eb;border-radius:10px;background:#fff;color:#1a1a1a;cursor:pointer;text-align:left;line-height:1.5;transition:border-color 0.2s,background 0.2s;}
+.btn:hover,.btn:focus{border-color:#b91c1c;background:#fef2f2;}
+.btn:active{background:#fde68a;}
+.btn-p{background:#b91c1c;color:#fff;border-color:#b91c1c;text-align:center;font-weight:600;font-size:clamp(16px,2.2vw,20px);padding:18px;margin-top:20px;}
+.btn-p:hover{background:#991b1b;}
+.btn-s{background:#fff;color:#b91c1c;border-color:#b91c1c;text-align:center;font-weight:600;margin-top:12px;}
+.btn-s:hover{background:#fef2f2;}
+.btn-sm{display:inline-block;width:auto;padding:10px 20px;font-size:clamp(14px,1.6vw,16px);margin:4px;}
+.progress{width:100%;height:6px;background:#e5e7eb;border-radius:3px;margin:16px 0;}
+.progress-fill{height:6px;background:#b91c1c;border-radius:3px;transition:width 0.4s;}
+.opt{display:block;width:100%;padding:14px 16px;margin:6px 0;font-family:Georgia,serif;font-size:clamp(14px,1.8vw,17px);border:2px solid #e5e7eb;border-radius:10px;background:#fff;color:#1a1a1a;cursor:pointer;text-align:left;line-height:1.5;transition:all 0.2s;}
+.opt:hover{border-color:#b91c1c;background:#fef2f2;}
+.opt.sel{border-color:#b91c1c;background:#fef2f2;font-weight:600;}
+.opt.correct{border-color:#22c55e;background:#f0fdf4;}
+.opt.wrong{border-color:#ef4444;background:#fef2f2;}
+.feedback{border-radius:10px;padding:16px;margin:12px 0;}
+.fb-correct{background:#f0fdf4;border:2px solid #22c55e;}
+.fb-wrong{background:#fef2f2;border:2px solid #ef4444;}
+.model{background:#eff6ff;border:2px solid #3b82f6;border-radius:10px;padding:16px;margin:12px 0;}
+.model h3{color:#1d4ed8;margin-bottom:8px;}
+.timer{position:fixed;top:0;left:0;right:0;background:#b91c1c;color:#fff;text-align:center;padding:8px;font-weight:700;font-size:18px;z-index:999;font-family:sans-serif;}
+.score-bar{width:100%;height:24px;background:#e5e7eb;border-radius:8px;overflow:hidden;margin:8px 0;}
+.score-fill{height:24px;border-radius:8px;display:flex;align-items:center;padding-left:10px;font-size:13px;color:#fff;font-weight:600;transition:width 0.6s;}
+.tag{display:inline-block;background:#fef2f2;color:#b91c1c;border:1px solid #fca5a5;border-radius:6px;padding:4px 12px;font-size:clamp(12px,1.4vw,15px);margin:3px;font-weight:600;}
+.ref-section{border-left:4px solid #b91c1c;padding:12px 16px;margin:12px 0;background:#fef2f2;border-radius:0 8px 8px 0;cursor:pointer;}
+.ref-section h3{margin-bottom:0;}
+.ref-body{display:none;margin-top:10px;}
+.ref-section.open .ref-body{display:block;}
+textarea{width:100%;min-height:120px;padding:14px;border:2px solid #e5e7eb;border-radius:10px;font-family:Georgia,serif;font-size:clamp(14px,1.6vw,17px);line-height:1.6;resize:vertical;outline:none;}
+textarea:focus{border-color:#b91c1c;}
+.hidden{display:none;}
+.nav{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var app=document.getElementById('app');
+
+// ============ QUESTION BANKS ============
+
+var MC_BANK=[
+// Set 1
+{q:"A policy analyst argues: 'We should build the new highway because the economic benefits to commuters outweigh the losses to the twelve families whose homes will be demolished.' Which concept best captures the theoretical weakness of this reasoning?",
+opts:["The separateness of persons — individuals cannot be sacrificed for aggregate gains","The difference principle — the policy fails to benefit the worst off","Self-ownership — the families' property rights are violated","Alienation — the families are separated from their homes"],
+ans:0,
+explain:"This is the core utilitarian problem Kymlicka identifies: utilitarianism fails to respect the separateness of persons. It treats the losses of twelve families as simply outweighed by aggregate commuter gains, as though welfare can be traded across individuals like a single account."},
+
+{q:"A student argues: 'I worked harder than everyone else, so I deserve a higher grade regardless of anyone else's situation.' Which theorist would most directly challenge the premise of this claim?",
+opts:["Nozick, because the student is claiming a patterned distribution","Bentham, because individual effort does not maximize utility","Rawls, because natural talents and the capacity for effort are morally arbitrary","Marx, because the grading system constitutes exploitation"],
+ans:2,
+explain:"Rawls argues that even the capacity for hard work is shaped by factors beyond one's control — upbringing, temperament, social environment. The claim 'I deserve more because I worked harder' assumes effort is entirely a matter of choice, which Rawls denies."},
+
+{q:"A libertarian argues that minimum wage laws are unjust because they prevent workers from freely accepting lower wages. Which counter-argument is most specifically Marxist?",
+opts:["Minimum wage laws are justified if they benefit the least advantaged","The freedom to accept lower wages is illusory when workers have no alternative but to sell their labor to survive","Minimum wage laws maximize aggregate welfare by increasing consumer spending","Workers have a natural right to a living wage"],
+ans:1,
+explain:"Marx's critique of 'voluntary' exchange turns on structural coercion: when one class owns the means of production and the other owns nothing, the 'choice' to accept low wages is not genuine freedom but the only option available within a system designed to benefit owners."},
+
+{q:"Dworkin distinguishes between 'brute luck' and 'option luck.' A person born with a genetic disability experiences:",
+opts:["Option luck, because they could have purchased insurance","Brute luck, because the disability was not the result of a deliberate gamble","Neither — Dworkin's framework only applies to economic distributions","A violation of self-ownership under Nozick's framework"],
+ans:1,
+explain:"Brute luck is a risk that was not deliberately undertaken. A genetic disability is the paradigm case — no one chose to be born with it. Dworkin argues that a just society compensates for brute luck while holding people responsible for option luck."},
+
+{q:"Which of the following scenarios would Nozick consider a just distribution?",
+opts:["A society where the richest 1% own 90% of wealth, provided all transfers were voluntary and all original acquisitions were legitimate","A society where everyone has equal resources after a Dworkinian auction","A society where inequalities benefit the least advantaged members","A society where aggregate happiness is maximized"],
+ans:0,
+explain:"For Nozick, justice is entirely historical and procedural. If the process was just — legitimate acquisition and voluntary transfer — the outcome is just, regardless of how unequal it appears. No pattern of distribution is required."},
+
+{q:"A government decides to redistribute inherited wealth through a 90% estate tax. Which theorist provides the strongest justification for this policy?",
+opts:["Nozick, because inheritance violates the Lockean proviso","Rawls, because inherited wealth is morally arbitrary and concentrates unearned advantage","Bentham, because estate taxes maximize aggregate utility","Marx, because inheritance is a form of alienation"],
+ans:1,
+explain:"Rawls treats inherited wealth as morally arbitrary — no one earns their parents' wealth. The difference principle would permit inheritance only insofar as the resulting inequalities benefit the worst off. A 90% estate tax could be justified if it funds institutions that improve the position of the least advantaged."},
+
+{q:"Marx argues that even well-paid workers in comfortable conditions are alienated. This is because alienation, for Marx, is fundamentally about:",
+opts:["Low wages and material deprivation","The separation of workers from control over their labor, its products, their colleagues, and their human potential","The failure of the state to redistribute wealth","The absence of democratic participation in government"],
+ans:1,
+explain:"Alienation is not about poverty. It is a structural condition in which workers are separated from the product, the process, other workers, and their species-being. A well-paid software engineer who has no control over what she builds, how she builds it, or why — and who competes with rather than cooperates with colleagues — is alienated in Marx's sense."},
+
+{q:"A hospital has one available organ. Patient A is a 30-year-old parent of three. Patient B is a 70-year-old retiree. A utilitarian would allocate the organ to Patient A because:",
+opts:["Patient A has a right to life that supersedes Patient B's","Patient A's survival produces more aggregate welfare over a longer remaining lifespan, benefiting more dependents","Patient A's situation represents brute luck that deserves compensation","Patient A's self-ownership includes a claim on available medical resources"],
+ans:1,
+explain:"Utilitarianism allocates resources to maximize aggregate welfare. Patient A's longer expected lifespan and dependent children mean more total well-being is produced. This is precisely the reasoning that critics say ignores the separateness of persons — Patient B's life is treated as worth less."},
+
+{q:"Kymlicka argues that libertarianism's weakest point is:",
+opts:["Its rejection of democracy","Its theory of initial acquisition — it cannot explain how unowned resources legitimately become private property","Its reliance on the labour theory of value","Its failure to account for aggregate welfare"],
+ans:1,
+explain:"Kymlicka's central critique of Nozick is the acquisition problem: self-ownership tells you what to do with property you already own, but cannot justify how anyone came to own external resources in the first place. The Lockean proviso is too weak to constrain acquisition meaningfully."},
+
+{q:"Behind Rawls's veil of ignorance, you do not know your talents, class, gender, or conception of the good life. The purpose of this ignorance is to ensure that:",
+opts:["Everyone chooses utilitarian principles","No one can design principles that favour their own particular position","Everyone prioritises self-ownership","The resulting society has no inequality"],
+ans:1,
+explain:"The veil of ignorance is a device for ensuring impartiality. If you do not know who you will be, you cannot rig the principles in your favour. Rawls argues this leads rational agents to protect the worst-off position — because they might occupy it."},
+
+// Set 2
+{q:"A tech company offers 'flexible' contracts with no guaranteed hours. Workers can technically refuse any shift. A Marxist would argue this arrangement is exploitative because:",
+opts:["The workers are not paid the market rate","The company extracts surplus value from labour performed while bearing none of the worker's survival risk","The arrangement violates the Lockean proviso","The workers' preferences are illegitimate"],
+ans:1,
+explain:"The zero-hours contract is a contemporary form of what Marx describes: the worker 'freely' accepts terms dictated by structural necessity. The company captures surplus value while externalizing all risk onto the worker, who must accept whatever is offered because the alternative is no income at all."},
+
+{q:"Rawls's difference principle permits economic inequality only when:",
+opts:["The majority of citizens vote in favour of it","It results from voluntary exchange between consenting parties","It benefits the least advantaged members of society","It maximizes aggregate utility across the population"],
+ans:2,
+explain:"The difference principle is Rawls's second principle of justice: social and economic inequalities are permitted only if they are to the greatest benefit of the least advantaged. This is what distinguishes Rawls from both utilitarians (who maximize the average) and libertarians (who permit any outcome of just process)."},
+
+{q:"Dworkin's insurance market thought experiment is designed to solve a problem that Rawls's difference principle cannot. That problem is:",
+opts:["How to prevent the state from becoming tyrannical","How to distinguish between inequalities arising from choices people make and inequalities arising from circumstances they did not choose","How to justify initial acquisition of property","How to calculate aggregate utility without illegitimate preferences"],
+ans:1,
+explain:"Rawls's difference principle does not distinguish between people who are worst off due to bad luck and those who are worst off due to their own choices. Dworkin's insurance market addresses this: rational agents would insure against brute luck (disabilities, unearned disadvantages) but not against the consequences of their own calculated gambles."},
+
+{q:"A country allows private companies to own all water sources. Citizens must purchase water at market rates. Several families cannot afford clean water. A libertarian would say:",
+opts:["The state should redistribute water to ensure equal access","The arrangement is just if the water sources were legitimately acquired and all purchases are voluntary","The arrangement maximizes aggregate welfare and is therefore justified","The families' alienation from a basic resource violates their species-being"],
+ans:1,
+explain:"For Nozick, if the property was legitimately acquired and no one was coerced, the distribution is just — even if some cannot afford a basic necessity. This is one of the 'morally intolerable conclusions' Kymlicka argues libertarianism produces."},
+
+{q:"Marx's concept of 'species-being' refers to:",
+opts:["The biological classification of humans as a species","The human capacity for creative, purposeful, cooperative labor as the defining feature of human nature","The tendency of capitalism to treat workers like animals","The Darwinian struggle for survival within capitalist markets"],
+ans:1,
+explain:"Species-being (Gattungswesen) is Marx's term for what makes humans distinctively human: the capacity to transform the world through conscious, creative, cooperative activity. Alienation from species-being means capitalism reduces this capacity to mere survival — working only to eat and pay rent."},
+
+{q:"Kymlicka presents the 'egalitarian plateau' as:",
+opts:["A specific policy proposal for wealth redistribution","The shared assumption across modern political theories that citizens deserve equal concern and respect","Marx's term for the communist ideal of a classless society","Nozick's argument that formal equality under law is sufficient for justice"],
+ans:1,
+explain:"The egalitarian plateau is Kymlicka's organizing concept: every theory he examines — utilitarian, liberal egalitarian, libertarian, Marxist — claims to treat people as equals. They disagree on what equal treatment requires, but they share the foundational commitment. This is what makes their disagreements so deep."},
+
+{q:"A student receives a scholarship because her parents are wealthy alumni donors. Under Rawls's framework, this is problematic because:",
+opts:["It violates the student's self-ownership","It does not maximize aggregate utility","Family wealth is morally arbitrary and the scholarship was not awarded under conditions of fair equality of opportunity","It constitutes exploitation of other applicants' surplus labour"],
+ans:2,
+explain:"Rawls's principle of fair equality of opportunity requires that positions be open to all under conditions where social background does not determine access. A legacy scholarship violates this because it rewards morally arbitrary family connections rather than talent or effort."},
+
+{q:"Nozick's 'Wilt Chamberlain' example begins by assuming any distribution the reader considers just. The purpose of this starting point is to show that:",
+opts:["Chamberlain deserves his earnings because he is talented","Even a perfectly just starting distribution will be disrupted by free exchanges, proving that maintaining any pattern requires coercion","Market outcomes are always more efficient than planned distributions","The difference principle inevitably collapses into utilitarianism"],
+ans:1,
+explain:"The genius of the argument is its generality: whatever pattern of distribution you prefer — egalitarian, Rawlsian, utilitarian — voluntary exchanges will disrupt it. To restore the pattern, you must continuously interfere with people's free choices. Liberty upsets patterns."},
+
+{q:"A utilitarian policy analyst proposes allocating healthcare funding based on Quality-Adjusted Life Years (QALYs) — giving priority to treatments that produce the most healthy years per dollar spent. The strongest Rawlsian objection to this approach would be:",
+opts:["It violates self-ownership by telling people which treatments they can receive","It treats the severely ill and disabled as worth less investment because their QALY gains are smaller, thereby failing to prioritize the worst off","It ignores the Lockean proviso on resource acquisition","It creates alienation among healthcare workers"],
+ans:1,
+explain:"QALY-based allocation systematically disadvantages those with severe conditions or disabilities because their potential QALY gains are smaller. Rawls would object that this fails the difference principle: rather than prioritizing the position of the worst off, it directs resources toward those who are already healthier and can show bigger statistical gains."},
+
+{q:"Marx distinguishes his critique from a moral complaint about unfair wages. For Marx, exploitation is:",
+opts:["A moral judgement about greed","A structural feature of capitalism in which surplus value is extracted from workers even when wages are fair by market standards","A temporary condition that can be resolved by raising the minimum wage","A psychological experience of feeling undervalued at work"],
+ans:1,
+explain:"This is the key to understanding Marx's radicalism: exploitation is not about bad employers or low wages. It is a structural description of how capitalism works. Even at 'fair' wages, the worker produces more value than she receives. The surplus flows to the owner. This is not a bug — it is the system's operating logic."},
+
+// Set 3
+{q:"A city government uses an algorithm to determine which neighborhoods receive public investment, optimizing for maximum economic return. A utilitarian would support this if:",
+opts:["The algorithm respects each neighborhood's self-ownership of its resources","The algorithm's allocations produce the greatest aggregate welfare across the city","The algorithm ensures the worst-off neighborhoods receive the most investment","The algorithm eliminates alienation among urban workers"],
+ans:1,
+explain:"Utilitarianism directs resources where they produce the most aggregate benefit. An algorithm optimizing for economic return is essentially a utility calculator. The utilitarian objection would arise only if the algorithm failed to count all affected preferences equally — for instance, by ignoring non-economic welfare."},
+
+{q:"Dworkin argues that a just society would allow people to purchase insurance against being born with disabilities. This thought experiment establishes that:",
+opts:["Disability is always a matter of option luck","The market is the best mechanism for distributing healthcare","Society owes compensation for brute-luck disadvantages, at a level rational agents would have insured against","Self-ownership includes the right to refuse insurance"],
+ans:2,
+explain:"The insurance market is Dworkin's device for determining how much compensation brute-luck disadvantages deserve. Since no one would choose to be uninsured against severe disability, rational agents behind something like a veil would purchase coverage. The premium they would pay establishes the appropriate level of social compensation."},
+
+{q:"A country requires all citizens to perform two years of national service. Nozick would object to this policy primarily because:",
+opts:["It does not maximize aggregate welfare","It violates self-ownership by compelling individuals to labour for the state without consent","It fails the envy test","It creates alienation from the process of production"],
+ans:1,
+explain:"Compulsory national service is forced labour in Nozick's framework. If you own yourself, you own your labour. Compelling someone to work — even for the community's benefit — is a violation of self-ownership equivalent to partial slavery. This applies even if the service is 'for the common good.'"},
+
+{q:"A feminist critic argues that Rawls's veil of ignorance fails because it assumes the family is a just institution. This criticism suggests that:",
+opts:["Rawls's theory is secretly utilitarian","The original position should also question whether the gendered division of domestic labor is just, rather than treating the family as outside the scope of justice","Rawls's theory is identical to Nozick's","The veil of ignorance makes people too risk-averse"],
+ans:1,
+explain:"This anticipates the feminist critique we will study later: Rawls brackets the family as a 'basic institution' but does not subject it to the same principles of justice he applies to economic and political institutions. If the family distributes burdens unequally by gender, Rawls's framework cannot see it."},
+
+{q:"Marx would argue that Rawls's difference principle, even if perfectly implemented, would still be inadequate because:",
+opts:["It does not maximize aggregate utility","It still operates within a capitalist framework where one class owns the means of production and another must sell its labor","It violates self-ownership","It ignores the Lockean proviso"],
+ans:1,
+explain:"For Marx, redistribution within capitalism is rearranging deck chairs. The difference principle might improve the material condition of the worst off, but it leaves the fundamental structure intact: private ownership of the means of production, wage labor, and the extraction of surplus value. The problem is the system, not the distribution."},
+
+{q:"Kymlicka identifies the 'separateness of persons' as the fundamental objection to utilitarianism. This objection means:",
+opts:["People are physically separate and cannot share experiences","Utilitarianism treats society as a single entity whose aggregate welfare can be maximized, ignoring that gains to some do not compensate losses to others","People have separate property rights that cannot be violated","Different persons hold separate and incompatible moral theories"],
+ans:1,
+explain:"The separateness of persons means that welfare cannot be traded across individuals as though society were one big account. If you take from one person and give to another, the gainer's happiness does not cancel the loser's suffering. They are separate beings with separate lives. Utilitarianism's aggregation obscures this."},
+
+{q:"A worker in a cooperative owns an equal share of the business, participates in decisions about production, and keeps a proportional share of the profits. Marx would say this worker experiences:",
+opts:["Full exploitation because she still operates within a market economy","Significantly reduced alienation because she controls the product, the process, and her relationship with co-workers","The same alienation as any other worker because alienation is a psychological state","A violation of self-ownership because collective ownership restricts individual freedom"],
+ans:1,
+explain:"A worker-owned cooperative addresses three of Marx's four dimensions of alienation directly: the worker owns the product, controls the process, and cooperates with rather than competes against fellow workers. Whether it fully resolves alienation from species-being depends on whether the work itself is creative and fulfilling."},
+
+{q:"Nozick argues that Robert Nozick argues that the minimal state — limited to protection against force, theft, and fraud — is the only justified form of government. Any state that does more than this is unjust because:",
+opts:["Larger states cannot maximize aggregate welfare efficiently","Any function beyond protection requires taxation, which violates self-ownership by compelling citizens to labour for purposes they did not consent to","The difference principle only applies within minimal states","Alienation increases as government grows"],
+ans:1,
+explain:"The night-watchman state follows directly from self-ownership. If you own yourself and your labour, no one — including the state — can take what you produce without consent. Taxation for public education, healthcare, or welfare compels you to work for others' benefit, which Nozick equates with forced labour."},
+
+{q:"Rawls argues that the veil of ignorance would lead rational agents to reject utilitarianism because:",
+opts:["Utilitarianism requires too much information to calculate","Behind the veil, you might end up as the person whose rights are sacrificed for the greater good, making the utilitarian gamble irrational","Utilitarianism violates self-ownership","Utilitarianism is incompatible with the labour theory of value"],
+ans:1,
+explain:"Behind the veil, you do not know whether you will be a beneficiary or a victim of utilitarian calculations. Since you could be the one sacrificed for aggregate gains, the rational strategy is to reject utilitarianism in favor of principles that protect the worst-off position — which is Rawls's maximin argument."},
+
+{q:"Dworkin's auction begins with equal resources (clamshells) for all participants. The philosophical purpose of starting with equality is to ensure that:",
+opts:["Everyone ends up with identical bundles of goods","Any resulting inequality reflects differences in people's choices and ambitions rather than differences in their starting positions","The state maintains a permanent pattern of equal distribution","No one can acquire private property"],
+ans:1,
+explain:"Equal starting resources ensure that the auction's outcome is ambition-sensitive and endowment-insensitive. If you end up with a different bundle than someone else, it is because you valued different things — not because you started with more. This is Dworkin's solution to the problem of distinguishing choice from circumstance."}
+];
+
+var RECOG_BANK=[
+{passage:"The fundamental question of political morality is not 'what do people deserve?' but 'what arrangements produce the most satisfaction?' If we must choose between a policy that makes ten thousand people slightly happier and one that makes one hundred people significantly happier, the answer is straightforward: count the total. Every person's pleasure counts equally, and the right action is whichever one produces the greatest sum.",
+theory:"Utilitarianism",
+concept:"Maximizing aggregate welfare with equal counting of preferences",
+explain:"The passage focuses on total satisfaction, counting every person's pleasure equally, and choosing based on the greatest aggregate sum. The phrase 'every person's pleasure counts equally' signals utilitarian equal consideration, while the willingness to sacrifice the intensity of some for the breadth of others reflects the aggregation logic that Kymlicka identifies as utilitarianism's core commitment."},
+
+{passage:"No one chose to be born into poverty. No one earned their genetic advantages. The circumstances of your birth — your family's wealth, your natural health, your cognitive abilities — are the result of a lottery you never entered. Justice demands that we design institutions as if we did not know which ticket we held.",
+theory:"Liberal Egalitarianism (Rawls)",
+concept:"Moral arbitrariness of natural and social endowments; the veil of ignorance",
+explain:"The emphasis on the unchosen nature of birth circumstances and the metaphor of a lottery directly invoke Rawls's argument that natural talents and social position are morally arbitrary. The concluding line — 'as if we did not know which ticket we held' — is a restatement of the veil of ignorance thought experiment."},
+
+{passage:"When they tell you that you are free to leave your job, ask yourself: free to go where? Every workplace is owned by someone else. Every alternative requires you to sell your time, your energy, your creativity to another owner. The 'freedom' to choose your employer is the freedom to choose which master profits from your existence.",
+theory:"Marxism",
+concept:"Structural coercion within voluntary exchange; critique of formal freedom",
+explain:"The passage exposes the Marxist distinction between formal and substantive freedom. The worker is legally free but structurally coerced — all means of production are privately owned, so 'choice' means only selecting among employers, not whether to sell one's labor at all. The word 'master' signals Marx's equation of wage labor with a modern form of servitude."},
+
+{passage:"If you build a house with your own hands on land that no one has claimed, the house is yours. If you trade it for a boat someone else built, the boat is yours. At no point in this chain did anyone take from anyone else without consent. The resulting distribution — however unequal — is as just as the process that produced it.",
+theory:"Libertarianism (Nozick)",
+concept:"Entitlement theory — just acquisition and just transfer",
+explain:"The passage traces Nozick's three-principle framework: just acquisition (building on unclaimed land), just transfer (voluntary exchange), and the conclusion that procedural justice determines distributive justice. The explicit statement that inequality is irrelevant if the process was fair is the hallmark of Nozick's historical theory."},
+
+{passage:"We measure progress by growth — more goods, more output, more consumption. But what about the person who made those goods? She arrives at the factory before dawn. She performs the same motion ten thousand times. She never sees the finished product. She does not choose the pace or the method. At the end of the day, she is not more human for her labour. She is less.",
+theory:"Marxism",
+concept:"Alienation from the product and the process of production",
+explain:"The passage describes two of Marx's four alienation dimensions: separation from the product ('never sees the finished product') and separation from the process ('does not choose the pace or the method'). The final line — 'not more human but less' — invokes alienation from species-being, the idea that capitalism degrades rather than develops human potential."},
+
+{passage:"Imagine you could design a society from scratch, knowing nothing about who you would be within it. Would you gamble on a system that might make you fabulously wealthy — but might also leave you destitute with no safety net? Or would you insist on a floor below which no one can fall, even if it means capping the ceiling?",
+theory:"Liberal Egalitarianism (Rawls)",
+concept:"The original position and maximin strategy",
+explain:"The passage directly describes the veil of ignorance scenario and the choice between gambling (which might favor utilitarianism or libertarianism) and securing a minimum floor (Rawls's maximin). The language of 'floor' and 'ceiling' maps onto the difference principle — tolerating inequality only when it raises the floor."},
+
+{passage:"Every semester, students compete for grades on a curve. Helping a classmate understand the material could lower your own mark. The system has made cooperation irrational and competition compulsory. You did not choose this arrangement. But it shapes every interaction you have.",
+theory:"Marxism",
+concept:"Alienation from other workers — competition replacing solidarity",
+explain:"The passage describes Marx's third dimension of alienation: structural competition replacing natural cooperation. The students, like workers, are placed in a system that makes mutual aid irrational. The key Marxist insight is in the final line: the arrangement was not chosen but shapes all relationships — it is structural, not personal."},
+
+{passage:"The question is not whether some people end up with more than others. The question is whether the route from A to B involved force or fraud. If every step was consensual — every trade willing, every gift freely given, every inheritance accepted — then the destination is legitimate, full stop.",
+theory:"Libertarianism (Nozick)",
+concept:"Historical justice — process determines legitimacy regardless of outcome",
+explain:"The emphasis on process over outcome, the enumeration of legitimate means (trade, gift, inheritance), and the dismissal of distributional patterns ('full stop') mark this as Nozick's entitlement theory. The passage explicitly rejects the relevance of inequality if procedural justice was maintained."},
+
+{passage:"The greatest happiness of the greatest number — this is the foundation of morals and legislation. Each person counts for one, and no person counts for more than one. The pain of a king weighs no heavier than the pain of a peasant. We simply add up the total and choose the path that yields the most.",
+theory:"Utilitarianism",
+concept:"The principle of utility with equal weighting of individual welfare",
+explain:"The opening phrase echoes Bentham's foundational statement. The equal weighting ('each counts for one') is the utilitarian commitment to impartial aggregation. The final instruction to 'add up the total' confirms the aggregative logic that distinguishes utilitarianism from theories that protect individuals regardless of the sum."},
+
+{passage:"She did not choose to be born in a country with no university system. He did not choose to inherit a fortune that pays for tutors, travel, and connections. When they compete for the same job, the competition is formally equal — same application, same interview. But the race was decided before the starting gun fired.",
+theory:"Liberal Egalitarianism (Dworkin)",
+concept:"Brute luck and endowment-sensitivity — circumstances versus choices",
+explain:"The passage distinguishes between what was chosen and what was not — the core of Dworkin's framework. Country of birth and inherited wealth are brute luck (circumstances), not option luck (choices). The 'formally equal' competition that is substantively rigged invokes Dworkin's critique of endowment-sensitive distributions."},
+
+{passage:"The union organizer was fired. Not for incompetence — her performance reviews were excellent. She was fired because she tried to transform competitors into collaborators. The system requires atomized workers who negotiate individually. Collective power threatens the extraction of surplus.",
+theory:"Marxism",
+concept:"Alienation from other workers and the structural suppression of solidarity",
+explain:"The passage describes both alienation from others (the system 'requires atomized workers') and the structural logic of surplus extraction. The firing of the organizer illustrates how capitalism actively prevents the solidarity that would challenge its operating logic — this is not a failure of the system but its self-preservation."},
+
+{passage:"Your body is yours. Your mind is yours. The product of your effort, applied through your freely chosen labour, is yours. No collective, no majority, no parliament can claim a portion of what you have made without reducing you — to that precise extent — to a resource for others' purposes.",
+theory:"Libertarianism (Nozick)",
+concept:"Self-ownership and the equation of taxation with forced labour",
+explain:"The progression from body to mind to product traces Nozick's self-ownership chain. The final clause — being reduced to 'a resource for others' purposes' — echoes Nozick's argument that taxation treats people as means rather than ends, functionally equivalent to forced labour."}
+];
+
+var SCENARIO_BANK=[
+{theory:"Utilitarianism",
+scenario:"A pharmaceutical company develops a life-saving drug at enormous cost. It prices the drug at a level that only wealthy patients can afford, arguing that high prices fund future research that will eventually benefit millions. Approximately 5,000 patients per year die because they cannot access the drug. The company's research pipeline includes three promising treatments projected to save 50,000 lives annually within a decade.",
+model:"A utilitarian analysis must weigh the aggregate welfare: 5,000 deaths per year now against 50,000 lives saved per year in the future. The strict utilitarian calculation favors the current pricing model if the projected future benefits are reliable — the aggregate welfare gain over time outweighs the current losses. The utilitarian would count each preference equally and sum across all affected persons, concluding that the policy producing the greatest total welfare is justified. However, the strongest objection is the separateness of persons: the 5,000 dying patients are real individuals being sacrificed for statistical future beneficiaries. Their suffering is not 'compensated' by others' survival. Additionally, the utilitarian must consider whether the company's projections are reliable, whether illegitimate preferences (profit maximization disguised as research motivation) are inflating the calculation, and whether alternative arrangements (government funding, compulsory licensing) might produce even greater aggregate welfare."},
+
+{theory:"Utilitarianism",
+scenario:"A government considers legalizing the sale of human kidneys. Economists project this would eliminate the organ transplant waiting list within five years, saving approximately 10,000 lives annually. Critics warn that only the poorest citizens would sell their organs, effectively creating a market in which poverty compels people to dismantle their bodies for the benefit of wealthier patients.",
+model:"The utilitarian must aggregate all affected preferences: the thousands saved from death, the sellers who receive payment they urgently need, and the broader social welfare. On a strict calculation, the policy likely maximizes aggregate welfare — lives saved plus economic benefit to sellers. The utilitarian would argue that each person's welfare counts equally and the sum favors legalization. The strongest objection comes from within utilitarianism itself: the problem of illegitimate preferences. If demand for organs depends on a system that produces poverty severe enough to make people sell body parts, the preferences driving the market may be built on structural inequality. Additionally, the separateness of persons problem recurs: the aggregate welfare gain to recipients does not compensate the bodily integrity lost by sellers. A sophisticated utilitarian might also consider long-term welfare effects — does normalizing organ sales corrode social trust in ways that reduce aggregate welfare over time?"},
+
+{theory:"Liberal Egalitarianism",
+scenario:"A government introduces a universal basic income (UBI) funded by a wealth tax. Every citizen receives a monthly payment sufficient to cover basic needs. Critics from the right argue this rewards idleness. Critics from the left argue the amount is too low to enable genuine freedom. Some citizens use their UBI to pursue art, education, or community work. Others use it to reduce their working hours. A small minority use it on gambling and substance use.",
+model:"Rawls's difference principle asks whether UBI improves the position of the least advantaged. If the payment lifts the worst-off above their current position, Rawls would support it — even if some use it 'unwisely.' The veil of ignorance: rational agents who might end up worst-off would choose institutions with a guaranteed floor. Dworkin complicates this: UBI does not distinguish between brute luck and option luck. Someone disabled from birth (brute luck) and someone who gambles away their income (option luck) receive the same payment. Dworkin would want an insurance-market mechanism that compensates brute luck more generously while holding people responsible for option luck. The convergence: both Rawls and Dworkin support some form of guaranteed minimum. The divergence: Dworkin demands sensitivity to choice that Rawls's difference principle does not provide. The strongest objection each faces: for Rawls, the 'idleness' critique — does the difference principle require working?; for Dworkin, the practical difficulty of distinguishing brute from option luck in real cases."},
+
+{theory:"Liberal Egalitarianism",
+scenario:"Two islands share a sea border. Island A has a robust public education system funded by high taxes. Island B has no public education — all schooling is private and expensive. A child born on Island A receives a free education through university. A child born on Island B receives no education unless her family can pay. Both children later compete for the same international scholarship.",
+model:"Under Rawls, the educational inequality is unjust because it violates fair equality of opportunity: positions should be open to all regardless of social background. The child from Island B is disadvantaged not by her choices but by morally arbitrary circumstances — where she was born. The difference principle would require that institutional arrangements benefit the least advantaged, which means Island B's system fails. Under Dworkin, being born on Island B is brute luck — no one chose their birthplace. The resulting educational deficit is endowment-sensitive (determined by circumstances, not ambition). A just arrangement would compensate for this through the hypothetical insurance market: rational agents behind something like a veil would purchase insurance against being born without access to education. The convergence: both reject the scholarship competition as genuinely equal. The divergence: Rawls focuses on institutional design (both islands should have fair institutions), while Dworkin focuses on the distinction between what the child chose and what happened to her, potentially allowing more nuanced compensation."},
+
+{theory:"Libertarianism",
+scenario:"A tech billionaire buys all available farmland surrounding a small town, then charges residents access fees to reach their own homes via the only road, which crosses his property. All purchases were legal and voluntary. No fraud or force was involved. Residents who cannot afford the fees must relocate, abandoning homes they have occupied for generations.",
+model:"Under Nozick's entitlement theory, the billionaire's acquisitions are just if they satisfy all three principles: just acquisition (legal purchase), just transfer (voluntary sale), and no fraud. The access fees are legitimate — he is exercising rights over his own property. Residents are not coerced; they can relocate. The strongest objection comes from within Nozick's own framework: the Lockean proviso. Did the acquisition leave 'enough and as good' for others? Kymlicka's critique is that Nozick's weakened proviso — comparing residents' situation to a hypothetical state of nature — is too weak. Residents are worse off than before the purchase, but arguably better off than in a pre-property state of nature, so the proviso is technically satisfied. This is precisely the scenario Kymlicka argues produces morally intolerable conclusions: the theory's internal logic leads to outcomes almost everyone would reject, suggesting the theory is flawed rather than our intuitions."},
+
+{theory:"Libertarianism",
+scenario:"A developing country abolishes all labor regulations — no minimum wage, no maximum working hours, no safety standards. Foreign companies immediately invest, creating thousands of jobs. Workers accept 14-hour shifts in hazardous conditions for low pay because the alternative is subsistence farming with no cash income. GDP triples within a decade. Worker injury and death rates also increase substantially.",
+model:"Nozick's framework analyzes each transaction individually: workers voluntarily accepted employment; no one was forced. Self-ownership means each worker has the right to sell her labour on whatever terms she finds acceptable. The state has no authority to intervene because doing so would override individuals' choices about their own bodies and labour — equivalent to telling them they are not competent to decide for themselves. The strongest objection is the formal-versus-substantive freedom critique that Kymlicka identifies as libertarianism's central weakness. The workers are formally free but substantively coerced: when the alternative is destitution, 'consent' is emptied of meaning. Kymlicka argues that a theory beginning with freedom can end with unfreedom — workers who 'own themselves' but have no real alternatives are less free in practice than workers with regulated protections. Additionally, the acquisition problem applies: how did the foreign companies come to own the factories and equipment? If the initial distribution of capital was itself unjust, the entire chain of 'voluntary' transactions is tainted."}
+];
+
+var CONFRONT_BANK=[
+{title:"UTILITARIANISM vs. LIBERAL EGALITARIANISM on healthcare rationing",
+prompt:"A government must allocate a limited healthcare budget. The utilitarian approach directs funding toward treatments that produce the most aggregate health benefit — measured in total Quality-Adjusted Life Years across the population. The Rawlsian approach directs funding toward the sickest and most disadvantaged patients first, even if treating them produces fewer aggregate health gains. Both claim to treat people as equals. Stage this confrontation.",
+model:"The shared commitment: both theories sit on the egalitarian plateau. Utilitarianism counts every person's welfare equally in the aggregate. Rawls treats every person as deserving equal concern through institutions designed to protect the worst off. Both reject the idea that some people matter more than others. The divergence: utilitarianism aggregates across persons — your suffering can be outweighed by others' gains. Rawls refuses this move: the separateness of persons means we cannot trade one person's health for another's. The specific concepts in conflict: utilitarian maximization of aggregate QALYs versus Rawls's difference principle (prioritize the worst off). What each sees that the other cannot: utilitarianism sees the total picture — it can identify the allocation that produces the most health overall. But it cannot see the individual patient who is denied treatment because her condition is too expensive relative to the gain. Rawls sees that patient — the worst-off individual whose claim is strongest precisely because her situation is most dire. But Rawls may not see the fifteen patients who could have been saved with the same resources. The deeper disagreement: whether justice is about maximizing the total good or protecting those most vulnerable to being sacrificed for it."},
+
+{title:"LIBERAL EGALITARIANISM vs. LIBERTARIANISM on inheritance taxation",
+prompt:"Rawls and Dworkin argue that inherited wealth is morally arbitrary — no one earns their parents' fortune — and that justice requires limiting how much advantage can be transmitted across generations. Nozick argues that if wealth was legitimately acquired and voluntarily transferred, inheritance is a just exercise of property rights — and taxing it is forced redistribution. Both claim to respect individual equality. Stage this confrontation.",
+model:"The shared commitment: both traditions take individual equality seriously. Liberals argue equality requires compensating for unearned advantages. Libertarians argue equality means respecting each person's sovereignty over their own property. The divergence point: what counts as 'yours.' For Rawls, inherited wealth is not earned by the recipient — it is morally arbitrary, like natural talent. The difference principle would permit inheritance only if the resulting inequality benefits the worst off. For Nozick, inheritance is a voluntary transfer of legitimately held property — taxing it violates the giver's self-ownership and the recipient's right to receive a gift. Concepts in conflict: Rawls's moral arbitrariness versus Nozick's just transfer; the difference principle versus entitlement theory. What each sees: Rawls sees that inherited wealth creates a hereditary aristocracy incompatible with fair equality of opportunity. Nozick sees that taxing inheritance requires the state to override a dead person's explicit wishes and seize property from a grieving family. The deeper disagreement: whether justice governs outcomes (Rawls) or processes (Nozick). Rawls asks 'is this distribution fair?' Nozick asks 'was this distribution produced fairly?' They are answering different questions, which is why they cannot resolve the dispute."},
+
+{title:"UTILITARIANISM vs. MARXISM on sweatshop labor",
+prompt:"A multinational corporation employs thousands of workers in a developing country at wages far below those in wealthy nations but above local subsistence levels. The utilitarian argues the arrangement increases aggregate welfare: workers earn more than the alternative, consumers get cheaper goods, and the company generates profits that fund further investment. The Marxist argues the arrangement is exploitative regardless of the welfare gains: surplus value is extracted from workers who have no real alternative. Both claim to care about human well-being. Stage this confrontation.",
+model:"The shared commitment: both theories are concerned with human welfare. Utilitarianism explicitly maximizes it. Marx's critique of alienation is ultimately about human flourishing — capitalism is wrong because it prevents people from living fully human lives. The divergence: utilitarianism measures welfare in terms of preference satisfaction and aggregates across persons. Marx measures it in terms of structural relations — who controls production, who captures surplus value, who is alienated from their labor. Concepts in conflict: aggregate welfare maximization versus surplus value extraction; preference satisfaction versus alienation. What each sees: the utilitarian sees measurable improvement — workers are better off than before, consumers benefit, GDP rises. The Marxist sees the invisible: the surplus value extracted, the alienation experienced, the structural coercion that makes 'voluntary' acceptance meaningless. The utilitarian cannot see exploitation because exploitation, for Marx, occurs even when welfare improves. The Marxist cannot see why aggregate improvement matters if the structural relationship remains exploitative. The deeper disagreement: whether justice is about outcomes (how much welfare) or structures (who controls production). The utilitarian asks 'are people better off?' The Marxist asks 'who benefits from their labor, and under what conditions?'"}
+];
+
+var SYNTHESIS_BANK=[
+{prompt:"Kymlicka presents each theory as a response to the failures of the previous one: liberal egalitarianism responds to utilitarianism's disregard for individuals; libertarianism responds to liberal egalitarianism's interference with liberty; Marxism responds to libertarianism's blindness to structural coercion. Does this dialectical progression lead somewhere — toward a more complete theory of justice — or does it simply circle, with each theory exposing problems it cannot itself solve? Argue for progression or circularity, using at least three traditions.",
+model:"A strong answer traces the arc: utilitarianism fails on the separateness of persons → Rawls protects individuals but requires redistribution that overrides choice → Nozick defends choice but permits morally intolerable inequality → Marx exposes structural coercion but offers no workable alternative. For progression: each theory genuinely corrects its predecessor's blind spot, and we accumulate insights even if no single theory is complete. The egalitarian plateau holds because each theory refines our understanding of what equal treatment requires. For circularity: Marx's critique of formal freedom undermines Nozick, but Marx's communist alternative reintroduces the problems Rawls identified (coercion, lack of pluralism), which brings us back to liberalism. The plateau fractures because the theories are not building on each other but talking past each other — they disagree about what the question is, not just what the answer is. Key evidence: Kymlicka's own structure implicitly favors liberal egalitarianism as the most resilient position, but a strong answer can challenge this."},
+
+{prompt:"Consider the following claim: 'The egalitarian plateau is a liberal invention that disguises liberal hegemony as shared ground.' A Marxist might argue that claiming all theories share a commitment to equality obscures the fact that liberal theories define equality in ways that preserve capitalism. A libertarian might argue that the plateau forces their theory into a framework it rejects — Nozick is not fundamentally about equality but about liberty. Evaluate this critique. Is the egalitarian plateau a genuine shared foundation or an analytical framework that privileges one tradition?",
+model:"A strong answer engages with the meta-level question: is Kymlicka's organizing concept neutral or biased? For the plateau as genuine: all four theories do claim to treat people as equals — utilitarians count each equally, Rawls designs institutions for all, Nozick respects each person's sovereignty, Marx demands substantive equality. The disagreement is about interpretation, not the commitment itself. For the plateau as liberal construction: Kymlicka is a liberal, and his framing evaluates every theory by how well it handles equality — a liberal standard. Libertarianism is arguably about liberty first, with equality as a byproduct. Marxism is arguably about structural transformation, not equality within existing institutions. By forcing every theory onto the equality axis, Kymlicka may be measuring each by liberal criteria and unsurprisingly finding liberalism most adequate. A strong answer will note that Kymlicka himself acknowledges this tension but argue whether his acknowledgment is sufficient."},
+
+{prompt:"Each theory we have studied proposes a different relationship between individual freedom and collective justice. Utilitarianism subordinates individual freedom to aggregate welfare. Rawlsian liberalism limits freedom through institutional constraints designed to benefit the worst off. Libertarianism elevates freedom above all other values. Marxism argues that genuine freedom is impossible without collective ownership. Is there a coherent position that reconciles individual freedom with collective justice, or are they permanently in tension? Draw on at least three traditions to defend your answer.",
+model:"A strong answer does not simply list each theory's view of freedom but stages the confrontation. The utilitarian trades individual freedom for aggregate welfare — the organ-harvesting problem. Rawls constrains freedom through the difference principle — you cannot keep all your earnings if the worst off need them. Nozick defends freedom absolutely — but Kymlicka shows this produces a world where most people have less real freedom. Marx promises genuine freedom through collective ownership — but historical attempts produced authoritarian states. For reconciliation: argue that Rawls comes closest, constraining freedom only to the extent that it benefits everyone including the worst off. For permanent tension: argue that freedom and justice pull in genuinely different directions, and any theory that claims to resolve the tension is concealing a trade-off. Strong answers will connect to the egalitarian plateau: if all theories share a commitment to treating people as equals, the freedom-justice tension is internal to equality itself — equal treatment sometimes requires limiting freedom (Rawls) and sometimes requires protecting it absolutely (Nozick)."}
+];
+
+// ============ THEORY REFERENCE ============
+var THEORIES=[
+{name:"Utilitarianism (Kymlicka Ch. 2)",
+concepts:"Maximize aggregate welfare. Equal counting of preferences. The utility calculus. Illegitimate preferences. The separateness of persons objection. Special relationships problem.",
+key:"Core claim: the right action or policy is whichever one produces the greatest total welfare. Each person's preferences count equally, and we sum across all individuals. Kymlicka's central critique: utilitarianism fails to respect the separateness of persons — it treats society as a single account where gains to some compensate losses to others. Additional problems: illegitimate preferences (preferences dependent on others' subordination get counted), and the inability to account for special relationships (parents must treat their own children's welfare as no more important than any stranger's)."},
+{name:"Liberal Egalitarianism (Kymlicka Ch. 3)",
+concepts:"Rawls: veil of ignorance, original position, maximin, difference principle, fair equality of opportunity, moral arbitrariness. Dworkin: ambition-sensitive/endowment-insensitive, brute luck/option luck, hypothetical auction, envy test, insurance market.",
+key:"Rawls: design institutions as if you didn't know your position. Natural talents and social circumstances are morally arbitrary. The difference principle: inequalities are permitted only if they benefit the worst off. Dworkin refines Rawls by distinguishing choices from circumstances. The auction produces an envy-free distribution. The insurance market determines compensation for brute luck. Key divergence: Rawls focuses on institutional design; Dworkin focuses on the choice/circumstance boundary. Kymlicka's assessment: the most resilient tradition on the egalitarian plateau, but vulnerable to the critique that it still operates within capitalism and cannot see pre-political structures of subordination."},
+{name:"Libertarianism (Kymlicka Ch. 4)",
+concepts:"Self-ownership. Entitlement theory: just acquisition, just transfer, rectification. Patterned vs. historical justice. Wilt Chamberlain argument. Taxation as forced labor. Minimal state. Lockean proviso.",
+key:"Nozick: you own yourself, your labor, and everything that flows from them. Justice is about process, not outcomes. The Wilt Chamberlain argument: liberty upsets patterns — any patterned distribution requires continuous coercion to maintain. Kymlicka's three critiques: (1) the acquisition problem — self-ownership cannot justify initial ownership of external resources; (2) formal vs. substantive freedom — when one class owns everything, 'voluntary' exchange is coerced; (3) morally intolerable conclusions — absolute self-ownership permits starvation, hereditary aristocracy, and denial of basic needs."},
+{name:"Marxism (Kymlicka Ch. 5)",
+concepts:"Labour theory of value. Surplus value. Exploitation as structural, not moral. Four dimensions of alienation: from product, process, others, species-being. Formal vs. substantive freedom. Collective ownership. Critique of liberal justice as operating within capitalism.",
+key:"Marx: capitalism is exploitative even when it follows its own rules. Workers produce more value than they are paid; the surplus goes to owners. This is structural, not a matter of individual greed. Alienation is deeper than exploitation: capitalism separates humans from their creative potential. Kymlicka's assessment: the diagnosis is powerful but the cure is flawed. Problems with communism: the knowledge problem, the motivation problem, the freedom problem, the pluralism problem. Marx's lasting contribution is revealing what liberal theories cannot see: structural conditions that make 'voluntary' exchange a fiction."}
+];
+
+// ============ APP STATE ============
+var mode='',section='',qIndex=0,score=0,totalQ=0,answers=[];
+var mockSection=0,mockQ=0,mockAnswers={s1:[],s2:[],s3:[],s4:[],s5:[]};
+var timerInterval=null,timeLeft=7200;
+var usedMC=[],usedRecog=[],usedScen=[],usedConf=[],usedSynth=[];
+
+function shuffle(arr){var a=arr.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t;}return a;}
+
+function pick(bank,used,n){
+var available=[];
+for(var i=0;i<bank.length;i++){if(used.indexOf(i)===-1)available.push(i);}
+if(available.length<n){used.length=0;available=[];for(var i=0;i<bank.length;i++)available.push(i);}
+var picked=shuffle(available).slice(0,n);
+for(var i=0;i<picked.length;i++)used.push(picked[i]);
+return picked;
+}
+
+// ============ HOME SCREEN ============
+function showHome(){
+clearTimer();
+app.innerHTML='<h1>PSIR 308 Mid-Term Study Guide</h1>'+
+'<p class="sub">Contemporary Political Philosophy — Spring 2026</p>'+
+'<p>This tool helps you prepare for the mid-term examination covering Kymlicka Chapters 2–5: Utilitarianism, Liberal Egalitarianism, Libertarianism, and Marxism.</p>'+
+'<h2>Practice by Section</h2>'+
+'<button class="btn" onclick="startPractice(\'mc\')"><strong>Section 1:</strong> Conceptual Distinctions — 10 multiple-choice questions with feedback</button>'+
+'<button class="btn" onclick="startPractice(\'recog\')"><strong>Section 2:</strong> Theoretical Recognition — identify theories from unseen passages</button>'+
+'<button class="btn" onclick="startPractice(\'scenario\')"><strong>Section 3:</strong> Applied Analysis — apply a theory to an unseen scenario</button>'+
+'<button class="btn" onclick="startPractice(\'confront\')"><strong>Section 4:</strong> Theoretical Confrontation — stage a disagreement between two traditions</button>'+
+'<button class="btn" onclick="startPractice(\'synth\')"><strong>Section 5:</strong> Synthesis and the Egalitarian Plateau — trace the arc across three or more traditions</button>'+
+'<h2>Full Mock Exam</h2>'+
+'<button class="btn-p" onclick="startMock()">Start Timed Mock Exam (2 hours)</button>'+
+'<h2>Theory Quick Reference</h2>';
+for(var i=0;i<THEORIES.length;i++){
+app.innerHTML+='<div class="ref-section" onclick="toggleRef(this)"><h3>'+THEORIES[i].name+'</h3><div class="ref-body"><p><strong>Key concepts:</strong> '+THEORIES[i].concepts+'</p><p>'+THEORIES[i].key+'</p></div></div>';
+}
+}
+
+function toggleRef(el){el.classList.toggle('open');}
+
+// ============ MC PRACTICE ============
+function startPractice(s){
+mode='practice';section=s;qIndex=0;score=0;answers=[];
+if(s==='mc'){var indices=pick(MC_BANK,usedMC,10);answers=indices;totalQ=10;showMCQuestion();}
+else if(s==='recog'){var indices=pick(RECOG_BANK,usedRecog,4);answers=indices;totalQ=4;showRecogQuestion();}
+else if(s==='scenario'){var indices=pick(SCENARIO_BANK,usedScen,2);answers=indices;totalQ=2;showScenarioQuestion();}
+else if(s==='confront'){var indices=pick(CONFRONT_BANK,usedConf,1);answers=indices;totalQ=1;showConfrontQuestion();}
+else if(s==='synth'){var indices=pick(SYNTHESIS_BANK,usedSynth,1);answers=indices;totalQ=1;showSynthQuestion();}
+}
+
+function showMCQuestion(){
+var idx=answers[qIndex];
+var q=MC_BANK[idx];
+var pct=Math.round((qIndex/totalQ)*100);
+var html='<div class="progress"><div class="progress-fill" style="width:'+pct+'%"></div></div>'+
+'<p class="sub">Question '+(qIndex+1)+' of '+totalQ+'</p>'+
+'<p><strong>'+q.q+'</strong></p>';
+for(var i=0;i<q.opts.length;i++){
+html+='<button class="opt" id="opt'+i+'" onclick="checkMC('+i+','+idx+')">('+String.fromCharCode(97+i)+') '+q.opts[i]+'</button>';
+}
+html+='<div id="mcfb"></div>'+
+'<button class="btn-p hidden" id="mcnext" onclick="nextMC()">Next Question</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+app.innerHTML=html;
+}
+
+function checkMC(chosen,idx){
+var q=MC_BANK[idx];
+var btns=document.querySelectorAll('.opt');
+for(var i=0;i<btns.length;i++){
+btns[i].onclick=null;
+if(i===q.ans)btns[i].classList.add('correct');
+if(i===chosen&&chosen!==q.ans)btns[i].classList.add('wrong');
+}
+var fb=document.getElementById('mcfb');
+if(chosen===q.ans){
+score++;
+fb.innerHTML='<div class="feedback fb-correct"><p class="green">Correct.</p><p>'+q.explain+'</p></div>';
+}else{
+fb.innerHTML='<div class="feedback fb-wrong"><p class="red">Incorrect. The correct answer is ('+String.fromCharCode(97+q.ans)+').</p><p>'+q.explain+'</p></div>';
+}
+document.getElementById('mcnext').classList.remove('hidden');
+}
+
+function nextMC(){
+qIndex++;
+if(qIndex>=totalQ){showMCResults();return;}
+showMCQuestion();
+}
+
+function showMCResults(){
+var pct=Math.round((score/totalQ)*100);
+var col=pct>=70?'#22c55e':pct>=50?'#eab308':'#b91c1c';
+app.innerHTML='<h2>Section 1 Results</h2>'+
+'<div class="card"><h3>Score: '+score+' / '+totalQ+' ('+pct+'%)</h3>'+
+'<div class="score-bar"><div class="score-fill" style="width:'+pct+'%;background:'+col+'">'+pct+'%</div></div></div>'+
+'<p>'+(pct>=80?'Strong performance. You can identify theoretical concepts under pressure.':pct>=60?'Solid foundation but some gaps. Review the explanations for questions you missed.':'Significant gaps in conceptual recognition. Review the Theory Quick Reference and re-read the relevant Kymlicka chapters before trying again.')+'</p>'+
+'<button class="btn-p" onclick="startPractice(\'mc\')">Try Again (New Questions)</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+// ============ RECOGNITION PRACTICE ============
+function showRecogQuestion(){
+var idx=answers[qIndex];
+var r=RECOG_BANK[idx];
+var pct=Math.round((qIndex/totalQ)*100);
+app.innerHTML='<div class="progress"><div class="progress-fill" style="width:'+pct+'%"></div></div>'+
+'<p class="sub">Passage '+(qIndex+1)+' of '+totalQ+'</p>'+
+'<p><strong>Read the following passage and identify the theoretical tradition and the specific concept at work:</strong></p>'+
+'<div class="card"><p style="font-style:italic;">'+r.passage+'</p></div>'+
+'<p><strong>Your answer:</strong></p>'+
+'<textarea id="recogAns" placeholder="Identify the theory, name the specific concept, and explain in 2-3 sentences why this passage belongs to that tradition..."></textarea>'+
+'<button class="btn-p" onclick="showRecogModel('+idx+')">Show Model Answer</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+function showRecogModel(idx){
+var r=RECOG_BANK[idx];
+var studentAns=document.getElementById('recogAns').value;
+var html='<h3>Your Answer:</h3><div class="card"><p>'+(studentAns||'(No answer written)')+'</p></div>'+
+'<div class="model"><h3>Model Answer</h3>'+
+'<p><strong>Theory:</strong> '+r.theory+'</p>'+
+'<p><strong>Concept:</strong> '+r.concept+'</p>'+
+'<p><strong>Explanation:</strong> '+r.explain+'</p></div>'+
+'<p><strong>Self-assessment:</strong> Did your answer correctly identify the theory? Did you name the specific concept? Did your explanation distinguish this tradition from others?</p>'+
+'<button class="btn-p" onclick="nextRecog()">Next Passage</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+app.innerHTML=html;
+}
+
+function nextRecog(){
+qIndex++;
+if(qIndex>=totalQ){
+app.innerHTML='<h2>Section 2 Complete</h2><p>You have practiced identifying '+totalQ+' passages. Review any model answers you found surprising, then try again with new passages.</p>'+
+'<button class="btn-p" onclick="startPractice(\'recog\')">Try Again (New Passages)</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+return;
+}
+showRecogQuestion();
+}
+
+// ============ SCENARIO PRACTICE ============
+function showScenarioQuestion(){
+var idx=answers[qIndex];
+var s=SCENARIO_BANK[idx];
+var pct=Math.round((qIndex/totalQ)*100);
+app.innerHTML='<div class="progress"><div class="progress-fill" style="width:'+pct+'%"></div></div>'+
+'<p class="sub">Scenario '+(qIndex+1)+' of '+totalQ+'</p>'+
+'<p><strong>Apply '+s.theory+' to the following scenario:</strong></p>'+
+'<div class="card"><p>'+s.scenario+'</p></div>'+
+'<p>Work from inside the theory\'s logic: what does it see, what principle does it apply, what verdict does it reach, and what is the strongest objection?</p>'+
+'<textarea id="scenAns" placeholder="Write your analysis here..." style="min-height:200px;"></textarea>'+
+'<button class="btn-p" onclick="showScenarioModel('+idx+')">Show Model Answer</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+function showScenarioModel(idx){
+var s=SCENARIO_BANK[idx];
+var studentAns=document.getElementById('scenAns').value;
+app.innerHTML='<h3>Your Answer:</h3><div class="card"><p>'+(studentAns||'(No answer written)')+'</p></div>'+
+'<div class="model"><h3>Model Answer Outline ('+s.theory+')</h3><p>'+s.model+'</p></div>'+
+'<p><strong>Self-assessment:</strong> Did you work from inside the theory? Did you identify the specific concepts? Did you reach a verdict? Did you identify the strongest objection?</p>'+
+'<button class="btn-p" onclick="nextScenario()">Next Scenario</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+function nextScenario(){
+qIndex++;
+if(qIndex>=totalQ){
+app.innerHTML='<h2>Section 3 Complete</h2><p>Review the model answers. The key skill is working from inside a theory\'s logic — not describing it from outside, but applying its principles as tools.</p>'+
+'<button class="btn-p" onclick="startPractice(\'scenario\')">Try Again (New Scenarios)</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+return;
+}
+showScenarioQuestion();
+}
+
+// ============ CONFRONTATION PRACTICE ============
+function showConfrontQuestion(){
+var idx=answers[0];
+var c=CONFRONT_BANK[idx];
+app.innerHTML='<h2>Theoretical Confrontation</h2>'+
+'<p class="sub">'+c.title+'</p>'+
+'<div class="card"><p>'+c.prompt+'</p></div>'+
+'<p>Your answer must identify: the shared commitment to equality, the precise divergence point, the specific concepts in conflict, and what each tradition sees that the other cannot.</p>'+
+'<textarea id="confAns" placeholder="Write your confrontation here..." style="min-height:250px;"></textarea>'+
+'<button class="btn-p" onclick="showConfrontModel('+idx+')">Show Model Answer</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+function showConfrontModel(idx){
+var c=CONFRONT_BANK[idx];
+var studentAns=document.getElementById('confAns').value;
+app.innerHTML='<h3>Your Answer:</h3><div class="card"><p>'+(studentAns||'(No answer written)')+'</p></div>'+
+'<div class="model"><h3>Model Answer Outline</h3><p>'+c.model+'</p></div>'+
+'<p><strong>Self-assessment checklist:</strong></p>'+
+'<p>Did you identify the shared egalitarian commitment? Did you locate the precise point of divergence? Did you name specific concepts from each theory? Did you explain what each sees that the other misses? Did you address the deeper disagreement about what equality or justice means?</p>'+
+'<button class="btn-p" onclick="startPractice(\'confront\')">Try Another Confrontation</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+// ============ SYNTHESIS PRACTICE ============
+function showSynthQuestion(){
+var idx=answers[0];
+var s=SYNTHESIS_BANK[idx];
+app.innerHTML='<h2>Synthesis and the Egalitarian Plateau</h2>'+
+'<div class="card"><p>'+s.prompt+'</p></div>'+
+'<p>Write a sustained essay. Trace the arc across at least three traditions. Defend a position.</p>'+
+'<textarea id="synthAns" placeholder="Write your synthesis essay here..." style="min-height:300px;"></textarea>'+
+'<button class="btn-p" onclick="showSynthModel('+idx+')">Show Model Answer</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+function showSynthModel(idx){
+var s=SYNTHESIS_BANK[idx];
+var studentAns=document.getElementById('synthAns').value;
+app.innerHTML='<h3>Your Answer:</h3><div class="card"><p>'+(studentAns||'(No answer written)')+'</p></div>'+
+'<div class="model"><h3>Model Answer Outline</h3><p>'+s.model+'</p></div>'+
+'<p><strong>Self-assessment checklist:</strong></p>'+
+'<p>Did you trace the arc across at least three theories? Did you engage with Kymlicka\'s method — the egalitarian plateau? Did you take and defend a position (plateau holds or fractures)? Did you use specific concepts from Kymlicka rather than generalities? Could your argument be made without having read the book, or does it demonstrate genuine textual fluency?</p>'+
+'<button class="btn-p" onclick="startPractice(\'synth\')">Try Another Synthesis Prompt</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+}
+
+// ============ MOCK EXAM ============
+function startMock(){
+mode='mock';mockSection=0;mockQ=0;timeLeft=7200;
+mockAnswers={s1:pick(MC_BANK,usedMC,10),s2:pick(RECOG_BANK,usedRecog,4),s3:pick(SCENARIO_BANK,usedScen,2),s4:pick(CONFRONT_BANK,usedConf,1),s5:pick(SYNTHESIS_BANK,usedSynth,1)};
+mockAnswers.s1score=0;
+mockAnswers.s1responses=[];
+mockAnswers.s2responses=[];
+mockAnswers.s3responses=[];
+mockAnswers.s4response='';
+mockAnswers.s5response='';
+startTimer();
+showMockSection();
+}
+
+function startTimer(){
+clearTimer();
+timerInterval=setInterval(function(){
+timeLeft--;
+if(timeLeft<=0){clearTimer();showMockResults();}
+var m=Math.floor(timeLeft/60);
+var s=timeLeft%60;
+var el=document.getElementById('timer');
+if(el)el.textContent='Time Remaining: '+m+':'+(s<10?'0':'')+s;
+},1000);
+}
+
+function clearTimer(){if(timerInterval){clearInterval(timerInterval);timerInterval=null;}}
+
+function showMockSection(){
+var m=Math.floor(timeLeft/60);
+var s=timeLeft%60;
+var timerHtml='<div class="timer" id="timer">Time Remaining: '+m+':'+(s<10?'0':'')+s+'</div>';
+
+if(mockSection===0){showMockMC(timerHtml);}
+else if(mockSection===1){showMockRecog(timerHtml);}
+else if(mockSection===2){showMockScenario(timerHtml);}
+else if(mockSection===3){showMockConfront(timerHtml);}
+else if(mockSection===4){showMockSynth(timerHtml);}
+else{clearTimer();showMockResults();}
+}
+
+function showMockMC(timerHtml){
+var idx=mockAnswers.s1[mockQ];
+var q=MC_BANK[idx];
+app.innerHTML=timerHtml+'<div style="margin-top:50px;">'+
+'<p class="sub">SECTION 1 — Conceptual Distinctions — Question '+(mockQ+1)+' of 10</p>'+
+'<p><strong>'+q.q+'</strong></p>';
+for(var i=0;i<q.opts.length;i++){
+app.innerHTML+='<button class="opt" id="mopt'+i+'" onclick="mockMCAnswer('+i+','+idx+')">('+String.fromCharCode(97+i)+') '+q.opts[i]+'</button>';
+}
+app.innerHTML+='</div>';
+}
+
+function mockMCAnswer(chosen,idx){
+var q=MC_BANK[idx];
+if(chosen===q.ans)mockAnswers.s1score++;
+mockAnswers.s1responses.push({idx:idx,chosen:chosen,correct:q.ans});
+mockQ++;
+if(mockQ>=10){mockSection=1;mockQ=0;showMockSection();}
+else{showMockMC('<div class="timer" id="timer">'+document.getElementById('timer').textContent+'</div>');}
+}
+
+function showMockRecog(timerHtml){
+var idx=mockAnswers.s2[mockQ];
+var r=RECOG_BANK[idx];
+app.innerHTML=timerHtml+'<div style="margin-top:50px;">'+
+'<p class="sub">SECTION 2 — Theoretical Recognition — Passage '+(mockQ+1)+' of 4</p>'+
+'<div class="card"><p style="font-style:italic;">'+r.passage+'</p></div>'+
+'<textarea id="mockRecog" placeholder="Identify the theory, concept, and explain..."></textarea>'+
+'<button class="btn-p" onclick="saveMockRecog()">Next</button></div>';
+}
+
+function saveMockRecog(){
+mockAnswers.s2responses.push({idx:mockAnswers.s2[mockQ],answer:document.getElementById('mockRecog').value});
+mockQ++;
+if(mockQ>=4){mockSection=2;mockQ=0;showMockSection();}
+else{showMockRecog('<div class="timer" id="timer">'+document.getElementById('timer').textContent+'</div>');}
+}
+
+function showMockScenario(timerHtml){
+var idx=mockAnswers.s3[mockQ];
+var s=SCENARIO_BANK[idx];
+app.innerHTML=timerHtml+'<div style="margin-top:50px;">'+
+'<p class="sub">SECTION 3 — Applied Analysis — Scenario '+(mockQ+1)+' of 2</p>'+
+'<p><strong>Apply '+s.theory+':</strong></p>'+
+'<div class="card"><p>'+s.scenario+'</p></div>'+
+'<textarea id="mockScen" placeholder="Write your analysis..." style="min-height:200px;"></textarea>'+
+'<button class="btn-p" onclick="saveMockScenario()">Next</button></div>';
+}
+
+function saveMockScenario(){
+mockAnswers.s3responses.push({idx:mockAnswers.s3[mockQ],answer:document.getElementById('mockScen').value});
+mockQ++;
+if(mockQ>=2){mockSection=3;mockQ=0;showMockSection();}
+else{showMockScenario('<div class="timer" id="timer">'+document.getElementById('timer').textContent+'</div>');}
+}
+
+function showMockConfront(timerHtml){
+var idx=mockAnswers.s4[0];
+var c=CONFRONT_BANK[idx];
+app.innerHTML=timerHtml+'<div style="margin-top:50px;">'+
+'<p class="sub">SECTION 4 — Theoretical Confrontation</p>'+
+'<p class="sub">'+c.title+'</p>'+
+'<div class="card"><p>'+c.prompt+'</p></div>'+
+'<textarea id="mockConf" placeholder="Write your confrontation..." style="min-height:250px;"></textarea>'+
+'<button class="btn-p" onclick="saveMockConfront()">Next</button></div>';
+}
+
+function saveMockConfront(){
+mockAnswers.s4response=document.getElementById('mockConf').value;
+mockSection=4;showMockSection();
+}
+
+function showMockSynth(timerHtml){
+var idx=mockAnswers.s5[0];
+var s=SYNTHESIS_BANK[idx];
+app.innerHTML=timerHtml+'<div style="margin-top:50px;">'+
+'<p class="sub">SECTION 5 — Synthesis and the Egalitarian Plateau</p>'+
+'<div class="card"><p>'+s.prompt+'</p></div>'+
+'<textarea id="mockSynth" placeholder="Write your synthesis essay..." style="min-height:300px;"></textarea>'+
+'<button class="btn-p" onclick="saveMockSynth()">Submit Exam</button></div>';
+}
+
+function saveMockSynth(){
+mockAnswers.s5response=document.getElementById('mockSynth').value;
+mockSection=5;clearTimer();showMockResults();
+}
+
+function showMockResults(){
+var elapsed=7200-timeLeft;
+var em=Math.floor(elapsed/60);
+var es=elapsed%60;
+
+var html='<h1>Mock Exam Complete</h1>'+
+'<p class="sub">Time used: '+em+' minutes '+es+' seconds</p>';
+
+// Section 1 results
+var s1pct=Math.round((mockAnswers.s1score/10)*100);
+var s1col=s1pct>=70?'#22c55e':s1pct>=50?'#eab308':'#b91c1c';
+html+='<h2>Section 1: Conceptual Distinctions</h2>'+
+'<div class="card"><p><strong>Score: '+mockAnswers.s1score+'/10 ('+s1pct+'%)</strong></p>'+
+'<div class="score-bar"><div class="score-fill" style="width:'+s1pct+'%;background:'+s1col+'">'+s1pct+'%</div></div></div>';
+
+for(var i=0;i<mockAnswers.s1responses.length;i++){
+var r=mockAnswers.s1responses[i];
+var q=MC_BANK[r.idx];
+var icon=r.chosen===r.correct?'<span class="green">✓</span>':'<span class="red">✗</span>';
+html+='<p>'+icon+' Q'+(i+1)+': You chose ('+String.fromCharCode(97+r.chosen)+'), correct was ('+String.fromCharCode(97+r.correct)+')</p>';
+if(r.chosen!==r.correct)html+='<p class="sub" style="margin-left:20px;">'+q.explain+'</p>';
+}
+
+// Sections 2-5 with model answers
+html+='<h2>Section 2: Theoretical Recognition</h2>';
+for(var i=0;i<mockAnswers.s2responses.length;i++){
+var r=mockAnswers.s2responses[i];
+var rec=RECOG_BANK[r.idx];
+html+='<div class="card"><p><strong>Passage '+(i+1)+':</strong> <em>"'+rec.passage.substring(0,80)+'..."</em></p>'+
+'<p><strong>Your answer:</strong> '+(r.answer||'(blank)')+'</p></div>'+
+'<div class="model"><p><strong>Theory:</strong> '+rec.theory+' | <strong>Concept:</strong> '+rec.concept+'</p><p>'+rec.explain+'</p></div>';
+}
+
+html+='<h2>Section 3: Applied Analysis</h2>';
+for(var i=0;i<mockAnswers.s3responses.length;i++){
+var r=mockAnswers.s3responses[i];
+var sc=SCENARIO_BANK[r.idx];
+html+='<div class="card"><p><strong>'+sc.theory+'</strong></p><p><strong>Your answer:</strong> '+(r.answer||'(blank)')+'</p></div>'+
+'<div class="model"><h3>Model Answer</h3><p>'+sc.model+'</p></div>';
+}
+
+html+='<h2>Section 4: Theoretical Confrontation</h2>';
+var c=CONFRONT_BANK[mockAnswers.s4[0]];
+html+='<div class="card"><p><strong>'+c.title+'</strong></p><p><strong>Your answer:</strong> '+(mockAnswers.s4response||'(blank)')+'</p></div>'+
+'<div class="model"><h3>Model Answer</h3><p>'+c.model+'</p></div>';
+
+html+='<h2>Section 5: Synthesis</h2>';
+var sy=SYNTHESIS_BANK[mockAnswers.s5[0]];
+html+='<div class="card"><p><strong>Your answer:</strong> '+(mockAnswers.s5response||'(blank)')+'</p></div>'+
+'<div class="model"><h3>Model Answer</h3><p>'+sy.model+'</p></div>';
+
+html+='<button class="btn-p" onclick="startMock()">Take Another Mock Exam</button>'+
+'<button class="btn-s" onclick="showHome()">Back to Menu</button>';
+
+app.innerHTML=html;
+}
+
+showHome();
+</script>
+</body>
+</html>
