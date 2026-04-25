@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>PSIR 308 – The Invisible Labour Tracker</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Georgia,'Times New Roman',serif;background:#fff;color:#1a1a1a;padding:16px;line-height:1.7;font-size:16px;min-height:100vh;}
+#app{max-width:600px;margin:0 auto;}
+h1{font-size:clamp(24px,5vw,36px);margin-bottom:8px;line-height:1.2;}
+h2{font-size:clamp(20px,4vw,28px);margin-bottom:8px;line-height:1.25;}
+h3{font-size:clamp(17px,3vw,22px);margin-bottom:6px;line-height:1.3;}
+p{margin-bottom:12px;font-size:clamp(15px,2vw,18px);}
+.sub{color:#666;font-size:clamp(13px,1.5vw,16px);margin-bottom:16px;}
+.purple{color:#a21caf;font-weight:700;}
+.green{color:#166534;font-weight:700;}
+.hl{background:linear-gradient(transparent 60%,#f0abfc 60%);padding:0 3px;font-weight:600;}
+.card{background:#f9fafb;border:1px solid #e5e7eb;border-radius:12px;padding:20px;margin:16px 0;}
+.card h3{color:#a21caf;margin-bottom:8px;}
+.btn-p{display:block;width:100%;padding:16px;margin:8px 0;font-family:Georgia,serif;font-size:clamp(16px,2.2vw,20px);border:2px solid #a21caf;border-radius:10px;background:#a21caf;color:#fff;cursor:pointer;text-align:center;font-weight:600;line-height:1.5;transition:background 0.2s;}
+.btn-p:hover{background:#86198f;}
+.btn-s{display:block;width:100%;padding:14px;margin:8px 0;font-family:Georgia,serif;font-size:clamp(15px,2vw,18px);border:2px solid #a21caf;border-radius:10px;background:#fff;color:#a21caf;cursor:pointer;text-align:center;font-weight:600;line-height:1.5;}
+.btn-s:hover{background:#fdf4ff;}
+.progress{width:100%;height:6px;background:#e5e7eb;border-radius:3px;margin:16px 0;}
+.progress-fill{height:6px;background:#a21caf;border-radius:3px;transition:width 0.4s;}
+.slider-group{margin:20px 0;}
+.slider-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.slider-label span{font-size:clamp(14px,1.6vw,17px);}
+.slider-label .hours{font-weight:700;color:#a21caf;font-size:clamp(16px,2vw,20px);}
+.slider-desc{font-size:clamp(12px,1.3vw,14px);color:#888;margin-bottom:8px;}
+input[type="range"]{-webkit-appearance:none;width:100%;height:8px;background:#e5e7eb;border-radius:4px;outline:none;margin:8px 0;}
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:28px;height:28px;background:#a21caf;border-radius:50%;cursor:pointer;}
+input[type="range"]::-moz-range-thumb{width:28px;height:28px;background:#a21caf;border-radius:50%;cursor:pointer;border:none;}
+.budget-bar{width:100%;height:32px;background:#e5e7eb;border-radius:10px;overflow:hidden;margin:8px 0;position:relative;}
+.budget-fill{height:32px;border-radius:10px;transition:width 0.3s;display:flex;align-items:center;padding-left:10px;font-size:14px;color:#fff;font-weight:600;}
+.budget-text{font-size:clamp(14px,1.6vw,17px);font-weight:600;margin:4px 0;}
+.over{color:#ef4444;font-weight:700;}
+.result-bar-container{margin:10px 0;}
+.result-bar-label{display:flex;justify-content:space-between;font-size:clamp(13px,1.5vw,16px);margin-bottom:4px;}
+.result-bar{width:100%;height:24px;background:#e5e7eb;border-radius:8px;overflow:hidden;}
+.result-bar-fill{height:24px;border-radius:8px;transition:width 0.6s;display:flex;align-items:center;padding-left:8px;font-size:12px;color:#fff;font-weight:600;}
+.compare-row{display:flex;gap:8px;margin:6px 0;align-items:center;}
+.compare-label{width:80px;font-size:clamp(12px,1.3vw,14px);text-align:right;flex-shrink:0;}
+.compare-bar{flex:1;height:20px;background:#e5e7eb;border-radius:6px;overflow:hidden;}
+.compare-fill{height:20px;border-radius:6px;display:flex;align-items:center;padding-left:6px;font-size:11px;color:#fff;font-weight:600;}
+.profile-box{background:#fdf4ff;border:2px solid #a21caf;border-radius:12px;padding:24px;margin:20px 0;text-align:center;}
+.profile-box h2{color:#a21caf;margin-bottom:8px;}
+.tag{display:inline-block;background:#fdf4ff;color:#a21caf;border:1px solid #e879f9;border-radius:6px;padding:4px 12px;font-size:clamp(12px,1.4vw,15px);margin:3px;font-weight:600;}
+.copy-box{background:#f0fdf4;border:2px solid #22c55e;border-radius:10px;padding:16px;margin:16px 0;text-align:center;}
+.copy-box p{color:#166534;font-weight:600;margin-bottom:0;}
+.brief-box{background:#f9fafb;border:1px solid #e5e7eb;border-radius:10px;padding:20px;margin:16px 0;}
+.brief-box h3{margin-bottom:8px;}
+.brief-box p{font-size:clamp(13px,1.5vw,16px);color:#555;}
+.hidden{display:none;}
+.reveal-box{background:#fdf4ff;border:2px solid #a21caf;border-radius:12px;padding:20px;margin:16px 0;}
+.reveal-box h3{color:#a21caf;margin-bottom:8px;}
+input[type="text"]{width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:10px;font-family:Georgia,serif;font-size:clamp(15px,2vw,18px);margin:6px 0;outline:none;transition:border-color 0.2s;}
+input[type="text"]:focus{border-color:#a21caf;}
+label{font-size:clamp(14px,1.6vw,17px);color:#555;display:block;margin-top:12px;margin-bottom:2px;}
+select{width:100%;padding:14px;border:2px solid #e5e7eb;border-radius:10px;font-family:Georgia,serif;font-size:clamp(15px,2vw,18px);margin:6px 0;outline:none;background:#fff;color:#1a1a1a;}
+select:focus{border-color:#a21caf;}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+var app=document.getElementById('app');
+
+var CATEGORIES=[
+{id:'paid',name:'Paid Work / Employment',desc:'Hours spent in formal employment, part-time jobs, freelance work, or paid internships.',color:'#6366f1',icon:'💼'},
+{id:'study',name:'Study / Academic Work',desc:'Attending class, reading, writing assignments, exam preparation, group projects.',color:'#0891b2',icon:'📚'},
+{id:'domestic',name:'Domestic Labour',desc:'Cooking, cleaning, laundry, shopping for groceries, tidying, organizing the living space, fixing things.',color:'#a21caf',icon:'🏠'},
+{id:'care',name:'Care Work',desc:'Looking after children, elderly parents, sick family members, or dependents. Driving others to appointments. Supervising.',color:'#e11d48',icon:'❤️'},
+{id:'emotional',name:'Emotional Labour',desc:'Managing others\' feelings, mediating conflicts, checking in on friends or family, remembering birthdays, maintaining relationships, comforting others.',color:'#f59e0b',icon:'🤝'},
+{id:'admin',name:'Household Administration',desc:'Paying bills, scheduling appointments, dealing with bureaucracy, organizing family logistics, planning meals, managing budgets.',color:'#84cc16',icon:'📋'},
+{id:'leisure',name:'Leisure / Personal Time',desc:'Socializing, hobbies, exercise, entertainment, scrolling your phone, doing nothing — time that is genuinely yours.',color:'#22c55e',icon:'🎯'},
+{id:'sleep',name:'Sleep / Rest',desc:'Hours of actual sleep and rest.',color:'#64748b',icon:'😴'}
+];
+
+// Empirical averages (approximate global data, hours per day)
+var GENDER_DATA={
+women:{paid:3.5,study:0,domestic:4.5,care:1.5,emotional:1.5,admin:1.0,leisure:3.0,sleep:7.5},
+men:{paid:5.5,study:0,domestic:1.5,care:0.5,emotional:0.5,admin:0.5,leisure:5.5,sleep:7.5}
+};
+
+var studentName='',studentId='',studentGender='',userHours={},phase=1;
+
+function showIntro(){
+app.innerHTML='<h1>The Invisible Labour Tracker</h1>'+
+'<p class="sub">PSIR 308 — Feminism (Kymlicka, Chapter 9)</p>'+
+'<div class="card"><h3>What Is This?</h3>'+
+'<p>Feminists argue that the most important labour in any society is invisible — unpaid domestic work, care work, emotional labour, and household administration. Liberal theories of justice ignore it because it falls in the "private" sphere.</p>'+
+'<p>This simulation asks you to <span class="hl">account for every hour of your day</span>. You will allocate 24 hours across eight categories of labour. Then the simulation reveals what a feminist analysis sees in your allocation — and what liberal theory misses.</p>'+
+'<p>There are no right answers. But there are hidden patterns — and the gap between what you see and what the data reveals is where the feminist critique begins.</p></div>'+
+'<label>Full Name</label><input type="text" id="sname" placeholder="Your name">'+
+'<label>Student ID</label><input type="text" id="sid" placeholder="Your student ID">'+
+'<label>Gender (for comparison data only — this does not affect your results)</label>'+
+'<select id="sgender"><option value="">Select...</option><option value="woman">Woman</option><option value="man">Man</option><option value="nonbinary">Non-binary / Prefer not to say</option></select>'+
+'<button class="btn-p" onclick="startTracker()">Begin the Tracker</button>';
+}
+
+function startTracker(){
+var n=document.getElementById('sname').value.trim();
+var s=document.getElementById('sid').value.trim();
+var g=document.getElementById('sgender').value;
+if(!n||!s){alert('Please enter your name and student ID.');return;}
+studentName=n;studentId=s;studentGender=g;
+userHours={};
+CATEGORIES.forEach(function(c){userHours[c.id]=0;});
+userHours.sleep=7;
+phase=1;
+showAllocation();
+}
+
+function getTotal(){
+var t=0;
+CATEGORIES.forEach(function(c){t+=userHours[c.id];});
+return t;
+}
+
+function showAllocation(){
+var total=getTotal();
+var remaining=24-total;
+var overBudget=remaining<0;
+var pctUsed=Math.min(Math.round((total/24)*100),100);
+var barColor=overBudget?'#ef4444':'#a21caf';
+
+var html='<div class="progress"><div class="progress-fill" style="width:'+pctUsed+'%"></div></div>'+
+'<h2>Phase 1: Your Day</h2>'+
+'<p>Allocate your typical 24 hours across these categories. Use the sliders to adjust. Your total must equal exactly 24.</p>'+
+'<div class="budget-bar"><div class="budget-fill" style="width:'+pctUsed+'%;background:'+barColor+'">'+total.toFixed(1)+' / 24 hrs</div></div>'+
+'<p class="budget-text '+(overBudget?'over':'')+'">Remaining: '+(overBudget?'<span class="over">'+remaining.toFixed(1)+' (over budget!)</span>':remaining.toFixed(1)+' hours')+'</p>';
+
+CATEGORIES.forEach(function(c){
+html+='<div class="slider-group">'+
+'<div class="slider-label"><span>'+c.icon+' '+c.name+'</span><span class="hours" id="val_'+c.id+'">'+userHours[c.id].toFixed(1)+'h</span></div>'+
+'<div class="slider-desc">'+c.desc+'</div>'+
+'<input type="range" min="0" max="16" step="0.5" value="'+userHours[c.id]+'" id="sl_'+c.id+'" oninput="updateSlider(\''+c.id+'\',this.value)">'+
+'</div>';
+});
+
+html+='<button class="btn-p" id="submitBtn" onclick="submitAllocation()">Submit My Day</button>'+
+'<p class="sub" id="submitMsg"></p>';
+
+app.innerHTML=html;
+}
+
+function updateSlider(id,val){
+userHours[id]=parseFloat(val);
+document.getElementById('val_'+id).textContent=parseFloat(val).toFixed(1)+'h';
+var total=getTotal();
+var remaining=24-total;
+var overBudget=remaining<0;
+var pctUsed=Math.min(Math.round((total/24)*100),100);
+var barColor=overBudget?'#ef4444':'#a21caf';
+var bar=document.querySelector('.budget-fill');
+if(bar){bar.style.width=pctUsed+'%';bar.style.background=barColor;bar.textContent=total.toFixed(1)+' / 24 hrs';}
+var bt=document.querySelector('.budget-text');
+if(bt){bt.innerHTML='Remaining: '+(overBudget?'<span class="over">'+remaining.toFixed(1)+' (over budget!)</span>':remaining.toFixed(1)+' hours');bt.className='budget-text'+(overBudget?' over':'');}
+}
+
+function submitAllocation(){
+var total=getTotal();
+if(total<23.5||total>24.5){
+document.getElementById('submitMsg').innerHTML='<span class="over">Your total is '+total.toFixed(1)+' hours. Please adjust to equal 24.</span>';
+return;
+}
+showReveal();
+}
+
+function showReveal(){
+var visibleHours=userHours.paid+userHours.study;
+var invisibleHours=userHours.domestic+userHours.care+userHours.emotional+userHours.admin;
+var personalHours=userHours.leisure+userHours.sleep;
+var invisiblePct=Math.round((invisibleHours/24)*100);
+var visiblePct=Math.round((visibleHours/24)*100);
+
+var html='<h2>Phase 2: The Feminist Lens</h2>'+
+'<p>Here is your day as you reported it. Now let\'s see what a feminist analysis reveals.</p>';
+
+// User's allocation bars
+html+='<div class="card"><h3>Your 24 Hours</h3>';
+CATEGORIES.forEach(function(c){
+var pct=Math.round((userHours[c.id]/24)*100);
+html+='<div class="result-bar-container"><div class="result-bar-label"><span>'+c.icon+' '+c.name+'</span><span>'+userHours[c.id].toFixed(1)+'h</span></div>'+
+'<div class="result-bar"><div class="result-bar-fill" style="width:'+pct+'%;background:'+c.color+'">'+userHours[c.id].toFixed(1)+'</div></div></div>';
+});
+html+='</div>';
+
+// The reveal
+html+='<div class="reveal-box"><h3>What Liberal Theory Sees</h3>'+
+'<p>Liberal theories of justice — Rawls, Dworkin, Nozick — focus on the <strong>public</strong> sphere: paid work, market exchange, institutional rights. In your day, this amounts to <strong>'+visibleHours.toFixed(1)+' hours ('+visiblePct+'%)</strong>.</p>'+
+'<p>This is the part of your life that gets counted in GDP, protected by labour law, addressed by theories of distributive justice, and recognized as "real work."</p></div>';
+
+html+='<div class="reveal-box"><h3>What Liberal Theory Cannot See</h3>'+
+'<p>Domestic labour, care work, emotional labour, and household administration — the work feminists argue is <strong>invisible</strong> — accounts for <strong>'+invisibleHours.toFixed(1)+' hours ('+invisiblePct+'%)</strong> of your day.</p>'+
+'<p>This work is unpaid, unmeasured, unprotected by labour law, and absent from every theory of justice we studied before this week. Yet without it, the "public" economy would collapse overnight.</p></div>';
+
+// Gender comparison
+if(studentGender==='woman'||studentGender==='man'){
+var compKey=studentGender==='woman'?'women':'men';
+var otherKey=studentGender==='woman'?'men':'women';
+var compLabel=studentGender==='woman'?'Women (global avg)':'Men (global avg)';
+var otherLabel=studentGender==='woman'?'Men (global avg)':'Women (global avg)';
+
+html+='<div class="reveal-box"><h3>The Gendered Picture</h3>'+
+'<p>Here is how your allocation compares to global averages for women and men (source: UN Women, ILO, OECD time-use data):</p>';
+
+var compareCategories=['domestic','care','emotional','admin'];
+var compareNames={'domestic':'Domestic','care':'Care','emotional':'Emotional','admin':'Admin'};
+
+compareCategories.forEach(function(cat){
+var userVal=userHours[cat];
+var compVal=GENDER_DATA[compKey][cat];
+var otherVal=GENDER_DATA[otherKey][cat];
+var maxVal=Math.max(userVal,compVal,otherVal,6);
+
+html+='<p style="margin-bottom:2px;font-size:14px;font-weight:600;">'+compareNames[cat]+' Labour</p>'+
+'<div class="compare-row"><div class="compare-label">You</div><div class="compare-bar"><div class="compare-fill" style="width:'+Math.round((userVal/maxVal)*100)+'%;background:#a21caf;">'+userVal.toFixed(1)+'h</div></div></div>'+
+'<div class="compare-row"><div class="compare-label">'+compLabel.split(' ')[0]+'</div><div class="compare-bar"><div class="compare-fill" style="width:'+Math.round((compVal/maxVal)*100)+'%;background:#e879f9;">'+compVal.toFixed(1)+'h</div></div></div>'+
+'<div class="compare-row"><div class="compare-label">'+otherLabel.split(' ')[0]+'</div><div class="compare-bar"><div class="compare-fill" style="width:'+Math.round((otherVal/maxVal)*100)+'%;background:#94a3b8;">'+otherVal.toFixed(1)+'h</div></div></div>';
+});
+
+var womenInvisible=GENDER_DATA.women.domestic+GENDER_DATA.women.care+GENDER_DATA.women.emotional+GENDER_DATA.women.admin;
+var menInvisible=GENDER_DATA.men.domestic+GENDER_DATA.men.care+GENDER_DATA.men.emotional+GENDER_DATA.men.admin;
+
+html+='<p style="margin-top:16px;">Global average <strong>invisible labour</strong>: Women perform <strong>'+womenInvisible.toFixed(1)+' hours/day</strong>. Men perform <strong>'+menInvisible.toFixed(1)+' hours/day</strong>. The gap is <strong>'+(womenInvisible-menInvisible).toFixed(1)+' hours every single day</strong> — over a lifetime, this amounts to years of uncompensated work.</p></div>';
+}else{
+var womenInvisible=GENDER_DATA.women.domestic+GENDER_DATA.women.care+GENDER_DATA.women.emotional+GENDER_DATA.women.admin;
+var menInvisible=GENDER_DATA.men.domestic+GENDER_DATA.men.care+GENDER_DATA.men.emotional+GENDER_DATA.men.admin;
+html+='<div class="reveal-box"><h3>The Gendered Picture</h3>'+
+'<p>Global averages for invisible labour (domestic + care + emotional + admin): Women perform <strong>'+womenInvisible.toFixed(1)+' hours/day</strong>. Men perform <strong>'+menInvisible.toFixed(1)+' hours/day</strong>. The gap is <strong>'+(womenInvisible-menInvisible).toFixed(1)+' hours every day</strong>.</p></div>';
+}
+
+html+='<button class="btn-p" onclick="showResults()">See My Full Profile</button>';
+app.innerHTML=html;
+}
+
+function getProfile(){
+var invisibleHours=userHours.domestic+userHours.care+userHours.emotional+userHours.admin;
+var visibleHours=userHours.paid+userHours.study;
+var ratio=visibleHours>0?(invisibleHours/visibleHours):invisibleHours;
+var tags=[];
+var profile,desc;
+
+if(invisibleHours<=1){
+profile='The Unburdened';
+desc='You report almost no invisible labour. A feminist analysis would ask: who is doing this work for you? Someone is cooking, cleaning, managing, and caring — if not you, then someone else, and likely a woman. Your freedom from domestic burden is not natural. It is produced by someone else\'s labour.';
+tags.push('Low Invisible Labour');
+tags.push('Who Does It For You?');
+}else if(invisibleHours<=3){
+profile='The Partially Visible';
+desc='You do some invisible labour but significantly less than the global average for women. If you are a man, this is typical. If you are a woman, you may be in an unusually egalitarian arrangement — or you may be underestimating the emotional and administrative work you do because it has been normalized as "not real work."';
+tags.push('Below Average Invisible Labour');
+}else if(invisibleHours<=5.5){
+profile='The Double Shift';
+desc='You carry a substantial invisible labour load alongside your paid work or studies. Feminist sociologist Arlie Hochschild called this "the second shift" — after the formal workday ends, another unpaid workday begins at home. Your time allocation reveals the structural reality that liberal theory ignores.';
+tags.push('Double Shift');
+tags.push('Structural Burden');
+}else if(invisibleHours<=8){
+profile='The Primary Carer';
+desc='Invisible labour dominates your day. You are performing the work that sustains households, relationships, and communities — work that is essential but uncompensated and unrecognized. Marx would call this exploitation. Feminists would call it the foundation of patriarchal capitalism.';
+tags.push('High Invisible Labour');
+tags.push('Essential and Unrecognized');
+}else{
+profile='The Invisible Worker';
+desc='Your day is overwhelmingly consumed by labour that liberal theory cannot see. You are doing the work that makes everyone else\'s freedom possible — their ability to go to work, study, participate in public life depends on someone doing what you do. The feminist critique was written about your situation.';
+tags.push('Extreme Invisible Labour');
+tags.push('The Foundation');
+}
+
+// Additional tags
+if(userHours.emotional>=2)tags.push('High Emotional Labour');
+if(userHours.care>=2)tags.push('Significant Care Burden');
+if(userHours.leisure<=2)tags.push('No Time for Yourself');
+if(userHours.domestic>=3&&userHours.paid>=4)tags.push('Classic Double Shift');
+if(invisibleHours<=1&&userHours.paid>=6)tags.push('Market-Dependent Freedom');
+
+var highest={name:'',val:0};
+var invisCats=[{id:'domestic',name:'Domestic Labour'},{id:'care',name:'Care Work'},{id:'emotional',name:'Emotional Labour'},{id:'admin',name:'Household Administration'}];
+invisCats.forEach(function(c){if(userHours[c.id]>highest.val){highest.val=userHours[c.id];highest.name=c.name;}});
+
+return {profile:profile,desc:desc,tags:tags,invisibleHours:invisibleHours,visibleHours:visibleHours,highest:highest};
+}
+
+function showResults(){
+var r=getProfile();
+var invisPct=Math.round((r.invisibleHours/24)*100);
+var visPct=Math.round((r.visibleHours/24)*100);
+
+var html='<h1>Your Invisible Labour Profile</h1>'+
+'<p class="sub">'+studentName+' — '+studentId+'</p>'+
+'<div class="profile-box"><h2>'+r.profile+'</h2>'+
+'<p style="font-size:clamp(18px,3vw,28px);color:#a21caf;font-weight:700;">Invisible Labour: '+r.invisibleHours.toFixed(1)+' hours/day ('+invisPct+'%)</p></div>'+
+'<p>'+r.desc+'</p>';
+
+// Summary bars
+html+='<div class="card"><h3>Your Day in Three Categories</h3>'+
+'<div class="result-bar-container"><div class="result-bar-label"><span>Visible (Paid + Study)</span><span>'+r.visibleHours.toFixed(1)+'h</span></div>'+
+'<div class="result-bar"><div class="result-bar-fill" style="width:'+visPct+'%;background:#6366f1;">'+r.visibleHours.toFixed(1)+'</div></div></div>'+
+'<div class="result-bar-container"><div class="result-bar-label"><span>Invisible (Domestic + Care + Emotional + Admin)</span><span>'+r.invisibleHours.toFixed(1)+'h</span></div>'+
+'<div class="result-bar"><div class="result-bar-fill" style="width:'+invisPct+'%;background:#a21caf;">'+r.invisibleHours.toFixed(1)+'</div></div></div>'+
+'<div class="result-bar-container"><div class="result-bar-label"><span>Personal (Leisure + Sleep)</span><span>'+(userHours.leisure+userHours.sleep).toFixed(1)+'h</span></div>'+
+'<div class="result-bar"><div class="result-bar-fill" style="width:'+Math.round(((userHours.leisure+userHours.sleep)/24)*100)+'%;background:#22c55e;">'+(userHours.leisure+userHours.sleep).toFixed(1)+'</div></div></div></div>';
+
+if(r.highest.val>0){
+html+='<p>Your highest invisible labour category: <span class="purple">'+r.highest.name+' ('+r.highest.val.toFixed(1)+' hours)</span></p>';
+}
+
+// Tags
+html+='<div style="margin:16px 0;">';
+r.tags.forEach(function(t){html+='<span class="tag">'+t+'</span>';});
+html+='</div>';
+
+// Feminist analysis
+html+='<div class="card"><h3 class="purple">What Would a Feminist Say?</h3>';
+if(r.invisibleHours<=1){
+html+='<p>Your near-absence of invisible labour does not mean the work is not being done. It means someone else is doing it — a parent, a partner, a domestic worker, a roommate. Feminists argue that your freedom to focus on paid work, study, and leisure is <strong>subsidized by someone else\'s unpaid labour</strong>. The question is not "why don\'t I do housework?" but "who does it, and why is their work invisible?"</p>';
+}else if(r.invisibleHours<=3){
+html+='<p>You perform some invisible labour but below the structural average. A feminist analysis would examine whether this reflects genuine equality in your household or whether forms of invisible work — especially emotional labour and administration — are going unrecognized even by you. Many people undercount emotional labour because it does not look like "work."</p>';
+}else{
+html+='<p>Your invisible labour load is substantial. A feminist would point out that this work has no market value, no pension contribution, no sick leave, and no recognition in any theory of justice we have studied. If you stopped doing it, everyone around you would immediately feel the effects. Yet it does not count as "productive" in any economic measure. This is the structural invisibility that Kymlicka\'s chapter asks you to see.</p>';
+}
+html+='</div>';
+
+// Kymlicka's framework
+html+='<div class="card"><h3>What Would Kymlicka Say?</h3>'+
+'<p>Kymlicka acknowledges that the feminist critique exposes a genuine blind spot in liberal theory. The public/private divide — which every liberal theory assumes — systematically excludes domestic and care labour from the scope of justice. Rawls\'s veil of ignorance does not ask who does the cooking. Dworkin\'s auction does not price emotional labour. Nozick\'s self-ownership cannot account for the value created by twenty years of unpaid childcare.</p>'+
+'<p>The question Kymlicka leaves open: can liberal theory be <strong>extended</strong> to include the private sphere, or does the feminist critique require a fundamentally different framework — one built on interdependence rather than autonomy?</p></div>';
+
+// Theoretical connections
+html+='<div class="card"><h3>Theoretical Connections</h3>'+
+'<p><strong>Marx:</strong> If surplus value is extracted from factory workers, what about the unpaid domestic labour that reproduces the workforce every day? The woman who feeds, clothes, and emotionally sustains the worker is producing value that capitalism captures but never compensates.</p>'+
+'<p><strong>Citizenship:</strong> If active citizenship requires time and energy, and invisible labour consumes both, then the gendered division of domestic work is a direct barrier to women\'s political participation.</p>'+
+'<p><strong>The Egalitarian Plateau:</strong> Every theory claims to treat people as equals. But if half the population\'s labour is invisible, the "equality" these theories promise is built on a foundation of unrecognized inequality.</p></div>';
+
+// Copy and brief
+html+='<button class="btn-p" onclick="copyResults()">Copy Summary to Clipboard</button>'+
+'<div class="copy-box hidden" id="copyMsg"><p>Copied! Paste into your weekly brief.</p></div>'+
+'<button class="btn-s" onclick="location.reload()">Run Again</button>'+
+'<div class="brief-box"><h3>Workshop Preparation</h3>'+
+'<p>Bring your results to Wednesday\'s workshop. Ilayda, Constance, and Isra will use the class\'s profiles to discuss:</p>'+
+'<p>1. Who in this class carries the most invisible labour? Is the distribution gendered?</p>'+
+'<p>2. Can Rawls\'s difference principle be extended to the household — and should it be?</p>'+
+'<p>3. Is the public/private divide a neutral boundary or a political weapon?</p></div>';
+
+app.innerHTML=html;
+}
+
+function copyResults(){
+var r=getProfile();
+var txt='PSIR 308 — INVISIBLE LABOUR TRACKER RESULTS\n';
+txt+='Name: '+studentName+'\n';
+txt+='Student ID: '+studentId+'\n';
+txt+='Gender: '+(studentGender||'Not specified')+'\n';
+txt+='Simulation: Invisible Labour Tracker (Feminism)\n';
+txt+='Profile: '+r.profile+'\n';
+txt+='Invisible Labour: '+r.invisibleHours.toFixed(1)+' hours/day ('+Math.round((r.invisibleHours/24)*100)+'%)\n';
+txt+='Visible Labour: '+r.visibleHours.toFixed(1)+' hours/day\n\n';
+txt+='HOUR ALLOCATION:\n';
+CATEGORIES.forEach(function(c){
+txt+=c.name+': '+userHours[c.id].toFixed(1)+' hours\n';
+});
+txt+='\nHighest Invisible Category: '+r.highest.name+' ('+r.highest.val.toFixed(1)+' hours)\n';
+txt+='Tags: '+r.tags.join(', ')+'\n';
+
+if(navigator.clipboard&&navigator.clipboard.writeText){
+navigator.clipboard.writeText(txt).then(function(){
+document.getElementById('copyMsg').classList.remove('hidden');
+});
+}else{
+var ta=document.createElement('textarea');
+ta.value=txt;document.body.appendChild(ta);
+ta.select();document.execCommand('copy');
+document.body.removeChild(ta);
+document.getElementById('copyMsg').classList.remove('hidden');
+}
+}
+
+showIntro();
+</script>
+</body>
+</html>
