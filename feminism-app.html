@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>PSIR 308 – The Gender Lens Analyzer</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Georgia,'Times New Roman',serif;background:#faf5ff;color:#1a1a1a;min-height:100vh;}
+.container{max-width:52rem;margin:0 auto;padding:1.5rem 1.2rem 3rem;}
+h1{font-size:clamp(1.5rem,3.5vw,2.2rem);text-align:center;color:#6b21a8;margin-bottom:0.3rem;}
+h2{font-size:clamp(1.15rem,2.5vw,1.6rem);color:#6b21a8;margin-bottom:0.8rem;}
+h3{font-size:clamp(1rem,2vw,1.3rem);color:#1a1a1a;margin-bottom:0.5rem;}
+.subtitle{text-align:center;color:#555;font-size:clamp(0.85rem,1.5vw,1.05rem);margin-bottom:1.8rem;}
+p,.desc{font-size:clamp(0.95rem,1.8vw,1.15rem);line-height:1.7;margin-bottom:0.8rem;}
+.screen{display:none;}
+.screen.active{display:block;}
+label{display:block;font-size:clamp(0.95rem,1.6vw,1.1rem);margin-bottom:0.3rem;font-weight:600;}
+input[type="text"]{width:100%;padding:0.7rem;font-size:1rem;border:2px solid #d8b4fe;border-radius:8px;font-family:inherit;margin-bottom:1rem;background:#fff;}
+input[type="text"]:focus{outline:none;border-color:#6b21a8;}
+button{background:#6b21a8;color:#fff;border:none;padding:0.75rem 1.8rem;font-size:clamp(0.95rem,1.6vw,1.1rem);border-radius:8px;cursor:pointer;font-family:inherit;margin:0.3rem 0.3rem 0.3rem 0;transition:background 0.2s;}
+button:hover{background:#581c87;}
+button.secondary{background:#a855f7;}
+button.secondary:hover{background:#9333ea;}
+button.outline{background:transparent;color:#6b21a8;border:2px solid #6b21a8;}
+button.outline:hover{background:#f3e8ff;}
+.scenario-card{background:#fff;border:2px solid #e9d5ff;border-radius:12px;padding:1.3rem 1.5rem;margin-bottom:1rem;cursor:pointer;transition:border-color 0.2s,box-shadow 0.2s;}
+.scenario-card:hover{border-color:#a855f7;box-shadow:0 2px 12px rgba(107,33,168,0.1);}
+.scenario-card.selected{border-color:#6b21a8;box-shadow:0 2px 16px rgba(107,33,168,0.18);}
+.scenario-card h3{margin-bottom:0.3rem;color:#6b21a8;}
+.scenario-card p{margin-bottom:0;font-size:clamp(0.88rem,1.5vw,1.05rem);color:#444;}
+.lens-panel{background:#fff;border-left:4px solid #d8b4fe;border-radius:0 10px 10px 0;padding:1.2rem 1.4rem;margin-bottom:1rem;}
+.lens-panel h3{color:#6b21a8;margin-bottom:0.4rem;}
+.lens-panel .diagnosis{font-style:italic;color:#555;margin-bottom:0.5rem;}
+.lens-panel .prescription{margin-bottom:0;}
+.choice-row{display:flex;flex-wrap:wrap;gap:0.5rem;margin:1.2rem 0;}
+.choice-btn{background:#f3e8ff;color:#6b21a8;border:2px solid #d8b4fe;padding:0.6rem 1.2rem;border-radius:8px;cursor:pointer;font-family:inherit;font-size:clamp(0.85rem,1.4vw,1rem);transition:all 0.2s;flex:1;min-width:120px;text-align:center;}
+.choice-btn:hover{background:#e9d5ff;border-color:#a855f7;}
+.choice-btn.picked{background:#6b21a8;color:#fff;border-color:#6b21a8;}
+.progress{width:100%;height:6px;background:#e9d5ff;border-radius:3px;margin:1rem 0;}
+.progress-fill{height:100%;background:#6b21a8;border-radius:3px;transition:width 0.4s;}
+.result-bar-wrap{margin-bottom:1rem;}
+.result-bar-label{display:flex;justify-content:space-between;font-size:clamp(0.88rem,1.4vw,1.05rem);margin-bottom:0.25rem;}
+.result-bar{width:100%;height:22px;background:#f3e8ff;border-radius:6px;overflow:hidden;}
+.result-bar-inner{height:100%;border-radius:6px;transition:width 0.6s;}
+.profile-box{background:#fff;border:2px solid #6b21a8;border-radius:12px;padding:1.5rem;margin:1.5rem 0;text-align:center;}
+.profile-box h2{margin-bottom:0.5rem;}
+.profile-box .profile-label{font-size:clamp(1.3rem,2.5vw,1.8rem);color:#6b21a8;font-weight:700;margin-bottom:0.8rem;}
+.profile-box p{text-align:left;}
+.tag{display:inline-block;background:#f3e8ff;color:#6b21a8;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.85rem;margin:0.2rem;}
+.copy-box{background:#f9fafb;border:1px solid #d8b4fe;border-radius:8px;padding:1rem;margin:1rem 0;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;}
+.counter-text{text-align:center;color:#888;font-size:0.9rem;margin-bottom:0.5rem;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- INTRO SCREEN -->
+<div class="screen active" id="intro">
+<h1>The Gender Lens Analyzer</h1>
+<p class="subtitle">PSIR 308 · Feminism · Kymlicka Chapter 9</p>
+<p>Every policy and social arrangement looks different depending on which feminist theory you use to examine it.</p>
+<p><strong>Liberal feminism</strong> asks whether rights and opportunities are extended equally. <strong>Radical feminism</strong> (MacKinnon) asks whether the arrangement is built on a structure of male dominance. <strong>Socialist feminism</strong> asks whether unpaid gendered labour subsidizes the system. <strong>Justice-in-the-family</strong> (Okin) asks whether Rawls's own principles are applied consistently to the household.</p>
+<p>In this simulation, you will examine ten social arrangements. For each one, you will read what all four feminist lenses see — and then choose which lens you find <strong>most revealing</strong> for that case.</p>
+<p>There are no right answers. But your pattern of choices will reveal which feminist theoretical intuitions you gravitate toward — and what that says about how you understand gender, power, and justice.</p>
+<label for="fname">Full Name</label>
+<input type="text" id="fname" placeholder="Enter your name">
+<label for="sid">Student ID</label>
+<input type="text" id="sid" placeholder="Enter your student ID">
+<button onclick="startApp()">Begin</button>
+</div>
+
+<!-- SCENARIO SCREEN -->
+<div class="screen" id="scenarioScreen">
+<div class="counter-text" id="scenarioCounter"></div>
+<div class="progress"><div class="progress-fill" id="progFill"></div></div>
+<h2 id="scenTitle"></h2>
+<p id="scenDesc"></p>
+<div id="lensesWrap"></div>
+<p style="margin-top:1rem;font-weight:600;">Which lens is most revealing for this case?</p>
+<div class="choice-row" id="choiceRow"></div>
+<button id="nextBtn" style="display:none;" onclick="nextScenario()">Next Scenario →</button>
+</div>
+
+<!-- RESULTS SCREEN -->
+<div class="screen" id="results">
+<h2 style="text-align:center;">Your Feminist Theory Profile</h2>
+<div id="barsWrap"></div>
+<div class="profile-box" id="profileBox"></div>
+<div id="patternAnalysis"></div>
+<div class="copy-box" id="copyBox"></div>
+<button onclick="copyResults()">Copy Results to Clipboard</button>
+<button class="secondary" onclick="location.reload()">Start Over</button>
+</div>
+
+</div>
+
+<script>
+var scenarios = [
+{
+title:"1. No Parental Leave Policy",
+desc:"A private university offers no paid parental leave to any employee. The policy is gender-neutral: it applies equally to men and women. Faculty who take unpaid time off after having a child fall behind in publications and are less likely to receive tenure.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"The policy is formally equal but substantively discriminatory. Because women bear the physical burden of pregnancy and are statistically more likely to be primary caregivers, a gender-neutral policy produces gendered outcomes. Women are penalized for biological and social realities that men do not face.",prescription:"Introduce paid parental leave with provisions that encourage both parents to take it. Remove the career penalty for caregiving. Equality requires accommodation, not identical treatment."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"The 'neutrality' of this policy is itself an expression of male dominance. The workplace is designed around a worker who has no caregiving responsibilities — which means a worker whose domestic labour is performed by someone else, typically a woman. The standard is male; women are measured against it and found lacking.",prescription:"Restructuring leave policy is insufficient. The entire workplace model — its rhythms, its metrics of success, its assumption that the ideal worker is unencumbered — must be recognized as a gendered power structure, not a neutral baseline."},
+{name:"Socialist Feminism",diagnosis:"The university profits from the unpaid reproductive and care labour of its employees' partners. A faculty member who returns to work while their spouse handles childcare, cooking, and emotional support is subsidized by invisible labour that the university neither pays for nor acknowledges.",prescription:"The economic value of care labour must be recognized. This is not just a workplace policy issue — it is a structural feature of capitalism that extracts value from unpaid gendered labour to reduce institutional costs."},
+{name:"Okin (Justice in the Family)",diagnosis:"Rawls's difference principle requires that inequalities in the basic structure of society benefit the least advantaged. If the university is part of that basic structure, then a policy that systematically disadvantages caregivers (disproportionately women) fails the test of justice — by Rawls's own standards.",prescription:"Apply the difference principle consistently. Ask: would this policy be chosen behind the veil of ignorance by someone who did not know whether they would be the primary caregiver? If not, it is unjust."}
+]
+},
+{
+title:"2. Merit-Based University Admissions",
+desc:"A competitive university admits students solely on the basis of standardized test scores and high school grades. No demographic information is considered. The administration describes the system as fair because it treats all applicants identically.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"Formal equality of process does not guarantee equality of opportunity. If girls receive less encouragement in STEM subjects, attend under-resourced schools, or carry domestic responsibilities that limit study time, identical standards produce unequal outcomes. The pipeline is gendered before applicants ever sit the exam.",prescription:"Supplement merit criteria with contextual admissions that account for structural disadvantage. Invest in pre-university programmes that address the gendered gaps in preparation."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"'Merit' itself is a concept constructed within a system of male dominance. What counts as merit — which subjects are prestigious, which skills are tested, which forms of intelligence are valued — reflects the priorities and self-image of those who designed the system. Women are not failing to meet the standard; the standard was built without them.",prescription:"Interrogate the construction of merit. Ask who defined excellence and whose experiences are invisible in the metrics. Reform is not enough if the criteria themselves encode domination."},
+{name:"Socialist Feminism",diagnosis:"The ability to 'merit' admission depends on material conditions — tutoring, free time, freedom from domestic labour, parental investment. These conditions are distributed along class and gender lines. A working-class girl who cooks for her family every evening competes against a boy whose mother handles the household. The test measures privilege as much as ability.",prescription:"Recognize that educational merit is produced by economic and gendered labour. Redistribute the conditions that make merit possible, not just the rewards that follow from it."},
+{name:"Okin (Justice in the Family)",diagnosis:"If a girl's lower test score results from an unequal division of labour within her family — more household chores, less study time, lower parental expectations — then the admissions system is rewarding an injustice that originates in the family. Rawls would need to address the family as a site of justice before merit-based admissions can be considered fair.",prescription:"Justice in admissions requires justice in the households that produce applicants. The family cannot be treated as a private sphere beyond the reach of fairness principles."}
+]
+},
+{
+title:"3. Equal Pay Legislation",
+desc:"A country passes a law requiring equal pay for equal work. Employers must pay men and women the same salary for the same job title and responsibilities. The gender wage gap narrows for identical positions but persists overall because women are concentrated in lower-paid occupations and work fewer paid hours.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"Equal pay for equal work is a necessary first step but does not address occupational segregation or the motherhood penalty. Women's concentration in caregiving, teaching, and service professions reflects both socialization and structural barriers. The law treats a symptom without addressing the cause.",prescription:"Extend the principle: equal pay for work of equal value (comparable worth). Remove barriers to entry in male-dominated fields. Address the career interruptions caused by caregiving through policy support."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"The wage gap is not an accident or a market failure. It is a direct expression of male dominance: work associated with women is devalued precisely because women do it. When men enter a previously female profession, wages rise; when women enter a male profession, wages fall. The hierarchy is gendered, not economic.",prescription:"Stop treating the wage gap as a technical problem to be solved by better legislation. Recognize it as a structural feature of a system in which women's labour — paid and unpaid — is systematically worth less because the system is organized around male power."},
+{name:"Socialist Feminism",diagnosis:"The overall wage gap persists because the economy depends on a gendered division between paid and unpaid labour. Women work fewer paid hours because they work more unpaid hours. The 'choice' to work part-time or in flexible, lower-paid jobs is a structural necessity imposed by the failure to socialize care work.",prescription:"The wage gap cannot be closed without addressing the care economy. Socialize childcare, eldercare, and domestic labour. The market and the household are a single economic system, and wages in one depend on unpaid labour in the other."},
+{name:"Okin (Justice in the Family)",diagnosis:"The persistent gap reflects injustice within the family. Women earn less over a lifetime because the division of domestic labour channels them into lower-paid, interrupted career paths. A just family — one that divides domestic labour equitably — would produce equitable career outcomes. The workplace gap begins at home.",prescription:"Apply the difference principle to the family. If the current division of household labour systematically disadvantages women in the labour market, it is unjust by Rawls's own criteria, regardless of whether both partners 'consented' to the arrangement."}
+]
+},
+{
+title:"4. Military Conscription for Men Only",
+desc:"A country maintains compulsory military service for men aged 18–20. Women are exempt. Supporters argue this reflects biological differences in physical capacity and protects women from combat. Critics call it sex discrimination against men.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"This is sex discrimination — against men in terms of the burden of service, and against women in terms of the assumption that they are unfit for military duty. Both sides of the policy rest on gender stereotypes. Equality requires either universal conscription or universal exemption.",prescription:"Abolish sex-based exemptions. If military service is a civic duty, it belongs to all citizens equally. If it is an unjust burden, abolish it for everyone."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"The exemption is not a privilege for women — it is a mechanism of male dominance. It constructs masculinity as aggressive, protective, and authoritative while constructing femininity as passive, vulnerable, and dependent. The military itself is a site where male dominance is produced and legitimized. Women's 'protection' from it reinforces their subordination.",prescription:"The question is not whether women should be conscripted but what the military as an institution does to the structure of gender. Inclusion without transformation simply adds women to a system of domination."},
+{name:"Socialist Feminism",diagnosis:"Male conscription subsidizes the state by extracting unpaid labour from young men — but it simultaneously extracts unpaid labour from women who maintain households, care for families, and perform the reproductive labour that produces the soldiers. Women's exemption from conscription is paired with their conscription into domestic service.",prescription:"Analyze the full economy of military labour: who fights, who feeds, who cares for the wounded and the children left behind. Both forms of labour are coerced; both are gendered; neither is adequately compensated."},
+{name:"Okin (Justice in the Family)",diagnosis:"Behind the veil of ignorance, not knowing your sex, would you choose a system that conscripts one sex and exempts the other? Probably not — you would prefer a system that distributes both the burdens and the benefits of citizenship without regard to gender. The exemption fails the Rawlsian test.",prescription:"Gender-based conscription violates the requirement that the basic structure treat all members as free and equal. Apply the veil consistently."}
+]
+},
+{
+title:"5. Unpaid Internships in Politics",
+desc:"A political party offers prestigious but unpaid six-month internships at its headquarters. The positions are highly competitive and often lead to paid political careers. The majority of interns come from affluent families who can afford to support them. Women are underrepresented, particularly women from working-class backgrounds.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"Unpaid internships create a financial barrier that disproportionately excludes women, especially those without family wealth. Since women are more likely to carry personal debt, support dependants, or lack a financial safety net, the formally open opportunity is substantively closed to many of them.",prescription:"Pay all interns. Provide stipends, housing support, and childcare. Remove the financial barrier so that the opportunity is genuinely equal."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"The structure of political advancement — who gets access, who is mentored, who is taken seriously — is built on networks of male power. Even if women enter as interns, they enter a space where authority, credibility, and advancement are coded masculine. The internship is a gateway into a system of domination, not just a career opportunity.",prescription:"Paying interns addresses class but not gender. The culture of political institutions must be examined: who speaks, who is heard, whose ambition is rewarded and whose is punished."},
+{name:"Socialist Feminism",diagnosis:"Unpaid internships are a form of labour extraction. The party benefits from six months of full-time work without compensation. The ability to accept this arrangement depends on class position, which is itself gendered: women are less likely to have accumulated savings, more likely to have care responsibilities, and more likely to need immediate income.",prescription:"The intersection of class and gender makes this a feminist issue, not just an economic one. Unpaid labour — whether in the household or in a political office — disproportionately falls on women and subsidizes institutions that do not acknowledge the cost."},
+{name:"Okin (Justice in the Family)",diagnosis:"A young woman's inability to take an unpaid internship may originate in her family: she supports a parent, cares for siblings, or was not given the same financial backing as a brother. The injustice in the political system traces back to injustice in the family's distribution of resources and expectations.",prescription:"You cannot fix political representation without fixing the household. If families invest unequally in sons and daughters, no amount of formal opportunity in the political sphere will produce equal outcomes."}
+]
+},
+{
+title:"6. Pornography and Free Speech",
+desc:"A government considers legislation that would allow individuals to bring civil suits against producers of pornographic material on the grounds that it constitutes sex discrimination — not obscenity, but a practice that subordinates women. Free-speech advocates oppose the measure. Women's groups are divided.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"This is a genuine conflict between two liberal values: equality and free expression. Some liberal feminists support the legislation because subordination is a harm that the state should address. Others oppose it because censorship has historically been used against women, sexual minorities, and feminist speech itself. The liberal framework can argue both sides.",prescription:"Protect speech but invest in counter-speech: feminist media, education, media literacy. If pornography is harmful, the remedy is more expression, not less — including the amplification of women's voices and perspectives."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"Pornography is not speech. It is a practice of sex discrimination — it constructs women's subordination by eroticizing dominance and submission. It does not represent reality; it creates it. Every image normalizes a power relation. Liberal free-speech doctrine protects the mechanism of women's oppression in the name of liberty.",prescription:"Civil rights legislation allowing suits against pornography producers is the appropriate remedy. This is not censorship — it is recognizing that some practices cause measurable harm to a subordinated group, just as harassment and discrimination law already does."},
+{name:"Socialist Feminism",diagnosis:"The pornography industry is an industry — it extracts profit from the commodification of women's bodies. The women who perform in it are disproportionately poor, often lacking alternatives. Framing this as a free-speech debate obscures the economic coercion that drives the labour supply.",prescription:"Address the material conditions. Women who enter the industry out of economic necessity are not exercising free choice. Provide economic alternatives, labour protections, and exit pathways. The speech debate is a distraction from the class-and-gender structure of the industry."},
+{name:"Okin (Justice in the Family)",diagnosis:"If pornography shapes how men view women within intimate relationships — normalizing dominance, shaping sexual expectations, reducing empathy — then it affects justice within the family. The personal is political: what happens in the bedroom is not outside the scope of justice if it systematically disadvantages one party.",prescription:"The Rawlsian question is whether, behind the veil of ignorance, you would permit an industry whose products systematically shape intimate relations to the disadvantage of one sex. The answer is likely no."}
+]
+},
+{
+title:"7. Domestic Workers in Northern Cyprus",
+desc:"Thousands of migrant women from Southeast Asia and Sub-Saharan Africa work as live-in domestic workers in Northern Cyprus. Many lack formal contracts, work 14–16 hour days, and have limited legal protections. Their employers are often middle-class families — including families where both partners work outside the home.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"These workers lack the basic rights and protections that liberalism promises all individuals: fair contracts, reasonable hours, legal recourse, and freedom of movement. Their exclusion from labour law is a failure of liberal principles, not a consequence of them.",prescription:"Extend legal protections: enforceable contracts, minimum wage, regulated hours, access to the legal system. Citizenship status should not determine whether a worker has rights."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"The migrant domestic worker exists at the intersection of multiple systems of domination: gender, race, citizenship, and class. Her labour is invisible not by accident but by design — the system needs her to be invisible so that the families she serves can maintain the fiction of equality. The professional woman's 'liberation' is built on the subordination of another woman.",prescription:"This cannot be solved by better contracts. The entire arrangement — one woman's freedom purchased through another woman's servitude — must be named as a structure of domination. Whose liberation counts?"},
+{name:"Socialist Feminism",diagnosis:"The migrant domestic worker performs the care and household labour that enables both partners in a middle-class family to participate in the paid economy. She is the hidden subsidy that makes dual-income families possible. Her low wages are not a market outcome — they are the product of gendered, racialized, and citizenship-based exploitation.",prescription:"The cost of social reproduction must be socialized, not outsourced to the most vulnerable women in the global economy. Public childcare, elder care, and domestic support services — funded by taxation — would reduce the demand for exploited migrant labour."},
+{name:"Okin (Justice in the Family)",diagnosis:"The family that employs a domestic worker has not solved the problem of gendered domestic labour — it has exported it. The injustice within the family has not been addressed; it has been displaced onto a less powerful woman. Rawls's difference principle, if applied to the household, would ask whether this arrangement benefits the least advantaged person in it — and the answer is clearly no.",prescription:"Justice in the family means confronting the division of labour within it, not outsourcing the problem. If both partners cannot maintain the household equitably between themselves, the solution is structural support, not the employment of a person with fewer rights."}
+]
+},
+{
+title:"8. Gendered School Uniforms",
+desc:"A secondary school requires girls to wear skirts and boys to wear trousers. The school argues the policy reflects tradition and community values. Some parents support it; some students protest it. The administration says students are free to attend other schools if they disagree.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"A policy that prescribes different clothing based on sex restricts individual autonomy and reinforces gender stereotypes. The 'freedom to leave' argument is weak — exit is not always a real option, and the policy affects all students who remain. Dress codes should not encode gender roles.",prescription:"Allow all students to choose from the full range of uniform options regardless of sex. Autonomy in self-presentation is a basic aspect of individual freedom."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"Gendered uniforms are not trivial. They are part of a system that inscribes gender difference onto bodies from childhood — training girls into femininity and boys into masculinity. The skirt is not just clothing; it is a marker of a social position. The school is a site where gender hierarchy is produced and normalized.",prescription:"The uniform policy is a symptom of a deeper structure. Changing it matters, but only as part of a broader interrogation of how schools construct gender through curriculum, discipline, expectations, and embodied norms."},
+{name:"Socialist Feminism",diagnosis:"Gendered uniforms serve an economic function: they prepare girls for roles in the feminized, lower-paid sectors of the economy by habituating them to restricted movement, appearance-consciousness, and compliance. The 'tradition' the school defends is the tradition of producing gendered workers.",prescription:"Connect the dress code to the broader economic pipeline. What occupations does the school implicitly prepare girls and boys for? The uniform is the visible surface of a gendered economic sorting mechanism."},
+{name:"Okin (Justice in the Family)",diagnosis:"The school enforces a gender norm that many families also enforce at home. A girl who wants to wear trousers faces resistance from both the institution and her family. The injustice is layered: the school defers to 'community values,' and the community reproduces gendered expectations. Neither institution takes responsibility for justice.",prescription:"Ask the Rawlsian question: behind the veil of ignorance, not knowing your sex, would you choose a dress code that restricts one group's clothing options based on gender? The answer reveals the injustice."}
+]
+},
+{
+title:"9. Emotional Labour in Relationships",
+desc:"Research consistently shows that in heterosexual relationships, women perform a disproportionate share of emotional labour: remembering birthdays, managing social relationships, mediating family conflicts, monitoring partners' wellbeing, and planning household logistics. This labour is invisible, uncompensated, and rarely acknowledged.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"Emotional labour is a form of work that is not recognized as such. If individuals are to be treated as free and equal, then the unequal distribution of invisible cognitive and emotional work within relationships is a problem of fairness. Both partners should share these responsibilities.",prescription:"Make emotional labour visible through education and awareness. Encourage explicit negotiation of domestic and emotional responsibilities within relationships. Provide relationship education that challenges gendered defaults."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"Women's emotional labour is not a choice or a personal trait — it is a product of a system in which women are socialized to serve men's emotional needs. Femininity itself is constructed as attentiveness, care, and self-effacement. Women do not 'happen' to be better at emotional labour; they are trained into it by a system of male dominance that requires their service.",prescription:"Individual negotiation will not solve this. The construction of femininity as service must be challenged at the structural level — in media, education, culture, and the organization of intimate life. The personal is political precisely here."},
+{name:"Socialist Feminism",diagnosis:"Emotional labour subsidizes the economy. A worker who arrives at work emotionally regulated, socially connected, and psychologically stable has been maintained by someone's unpaid labour — typically a woman's. Employers benefit from this labour without paying for it. Therapists, life coaches, and wellness apps now commodify what women have always provided for free.",prescription:"Recognize emotional labour as labour with economic value. The growing 'wellness economy' proves the market knows this labour is valuable — it simply prefers that women perform it for free within relationships."},
+{name:"Okin (Justice in the Family)",diagnosis:"The unequal distribution of emotional labour is a clear case of injustice within the family. It reduces women's time, energy, and psychological resources while increasing men's. Behind the veil of ignorance, no rational person would choose to bear a disproportionate share of invisible, uncompensated emotional work.",prescription:"Rawls's framework, properly applied, demands that emotional labour be distributed justly within relationships. The family is not a private sphere exempt from principles of fairness."}
+]
+},
+{
+title:"10. 'Choosing' to Stay Home",
+desc:"A well-educated woman with a professional career decides to leave her job and become a full-time homemaker after having children. She describes this as a free choice that reflects her values and priorities. Her partner continues working and becomes the sole earner. She says she is happy and fulfilled.",
+lenses:[
+{name:"Liberal Feminism",diagnosis:"If the choice is genuinely free — made without economic coercion, social pressure, or lack of alternatives — then it should be respected. Autonomy means respecting individuals' decisions about their own lives. However, the conditions of choice matter: were affordable childcare options available? Would her career have penalized her for being a mother? Was the 'choice' shaped by a context that made staying home the only rational option?",prescription:"Ensure that the choice is real by providing the conditions for genuine alternatives: affordable childcare, flexible work, parental leave for both parents, and career structures that do not penalize caregiving. Then respect the decision."},
+{name:"Radical Feminism (MacKinnon)",diagnosis:"The question is not whether she is happy but whether her happiness is produced within a system of male dominance. If women are socialized from birth to find fulfilment in domestic service — if femininity itself is constructed around caregiving, self-sacrifice, and dependence — then the 'choice' to stay home is not a free choice. It is the system working as designed.",prescription:"Do not take stated preferences at face value when those preferences are formed within a structure of domination. The harder question is: in a world without patriarchy, would this choice still be made? We cannot know — and that uncertainty is the point."},
+{name:"Socialist Feminism",diagnosis:"Her unpaid domestic labour subsidizes her partner's career and his employer's profits. She produces a functioning worker — fed, clothed, emotionally supported, with children cared for — without compensation. If she divorces, she will have no pension, no career continuity, and diminished earning power. The 'choice' to stay home is an economic risk that falls entirely on her.",prescription:"Compensate domestic labour. Ensure pension rights, property rights, and economic security for caregivers independent of their partners. The vulnerability is structural, not personal."},
+{name:"Okin (Justice in the Family)",diagnosis:"The arrangement may appear consensual, but it creates a profound power imbalance. The earning partner accumulates career capital, social status, pension rights, and economic independence. The homemaking partner accumulates none of these. Over time, the 'choice' becomes a trap — exit becomes economically devastating. This is not justice within the family.",prescription:"Rawls would ask: behind the veil of ignorance, would you choose an arrangement where one partner bears all the economic risk of caregiving? The answer reveals that the arrangement, however freely entered, is structurally unjust."}
+]
+}
+];
+
+var lensNames=["Liberal Feminism","Radical Feminism (MacKinnon)","Socialist Feminism","Okin (Justice in the Family)"];
+var lensKeys=["liberal","radical","socialist","okin"];
+var choices=[];
+var currentScen=0;
+var userName="";
+var userID="";
+
+function startApp(){
+ userName=document.getElementById('fname').value.trim();
+ userID=document.getElementById('sid').value.trim();
+ if(!userName||!userID){alert("Please enter your name and student ID.");return;}
+ document.getElementById('intro').classList.remove('active');
+ document.getElementById('scenarioScreen').classList.add('active');
+ showScenario(0);
+}
+
+function showScenario(idx){
+ currentScen=idx;
+ var s=scenarios[idx];
+ document.getElementById('scenarioCounter').textContent="Scenario "+(idx+1)+" of "+scenarios.length;
+ document.getElementById('progFill').style.width=((idx/scenarios.length)*100)+"%";
+ document.getElementById('scenTitle').textContent=s.title;
+ document.getElementById('scenDesc').textContent=s.desc;
+ var lw=document.getElementById('lensesWrap');
+ lw.innerHTML="";
+ for(var i=0;i<s.lenses.length;i++){
+  var l=s.lenses[i];
+  var d=document.createElement('div');
+  d.className='lens-panel';
+  d.innerHTML='<h3>'+l.name+'</h3><p class="diagnosis"><strong>What this lens sees:</strong> '+l.diagnosis+'</p><p class="prescription"><strong>What this lens prescribes:</strong> '+l.prescription+'</p>';
+  lw.appendChild(d);
+ }
+ var cr=document.getElementById('choiceRow');
+ cr.innerHTML="";
+ for(var j=0;j<lensNames.length;j++){
+  var b=document.createElement('button');
+  b.className='choice-btn';
+  b.textContent=lensNames[j];
+  b.setAttribute('data-idx',j);
+  b.onclick=function(){pickLens(this);};
+  cr.appendChild(b);
+ }
+ document.getElementById('nextBtn').style.display='none';
+}
+
+function pickLens(btn){
+ var all=document.querySelectorAll('#choiceRow .choice-btn');
+ for(var i=0;i<all.length;i++) all[i].classList.remove('picked');
+ btn.classList.add('picked');
+ choices[currentScen]=parseInt(btn.getAttribute('data-idx'));
+ document.getElementById('nextBtn').style.display='inline-block';
+}
+
+function nextScenario(){
+ if(currentScen+1<scenarios.length){
+  showScenario(currentScen+1);
+  window.scrollTo(0,0);
+ } else {
+  showResults();
+ }
+}
+
+function showResults(){
+ document.getElementById('scenarioScreen').classList.remove('active');
+ document.getElementById('results').classList.add('active');
+ document.getElementById('progFill').style.width="100%";
+ var counts=[0,0,0,0];
+ for(var i=0;i<choices.length;i++) counts[choices[i]]++;
+ var max=Math.max.apply(null,counts);
+ var colors=["#7c3aed","#dc2626","#ea580c","#0891b2"];
+ var bw=document.getElementById('barsWrap');
+ bw.innerHTML="";
+ for(var j=0;j<4;j++){
+  var pct=(counts[j]/scenarios.length)*100;
+  bw.innerHTML+='<div class="result-bar-wrap"><div class="result-bar-label"><span>'+lensNames[j]+'</span><span>'+counts[j]+'/'+scenarios.length+'</span></div><div class="result-bar"><div class="result-bar-inner" style="width:'+pct+'%;background:'+colors[j]+';"></div></div></div>';
+ }
+ var profileIdx=counts.indexOf(max);
+ var tied=counts.filter(function(c){return c===max;}).length>1;
+ var profiles=[
+  {label:"The Liberal Feminist",desc:"You consistently gravitate toward extending liberal principles — rights, autonomy, equal opportunity — to address gender inequality. You believe liberalism has the resources to accommodate the feminist critique if applied consistently. You take structural inequality seriously but trust that reform within the liberal framework can address it. Kymlicka would largely agree with you. MacKinnon would say you are not going deep enough."},
+  {label:"The Radical Critic",desc:"You consistently find MacKinnon's dominance approach most revealing. You see gender inequality as a system of power, not a policy failure. You are skeptical that liberalism's own tools — rights, choice, consent — can dismantle a structure they were built within. You push past symptoms to interrogate the construction of gender itself. Kymlicka takes your position seriously but ultimately sides with the liberals. The question for you is whether radical critique can generate a viable alternative, or only a diagnosis."},
+  {label:"The Material Analyst",desc:"You consistently focus on the economic structures behind gender inequality — unpaid labour, class, the intersection of capitalism and patriarchy. You see the household and the market as a single system and insist that gender justice requires economic transformation. You share common ground with the Marxism module and extend it into the domestic sphere. Your challenge is the one Marx himself faced: how do you reorganize an economy without creating new forms of domination?"},
+  {label:"The Consistent Rawlsian",desc:"You consistently apply Rawls's own principles — the veil of ignorance, the difference principle — to domains Rawls himself left unexamined, especially the family. You believe that liberalism's failure on gender is not a problem with the theory but with its incomplete application. Okin is your guide. Your challenge is that applying the difference principle to the family requires a level of state involvement in private life that many liberals — including Rawls — would resist."}
+ ];
+ var tiedProfile={label:"The Pluralist Feminist",desc:"No single lens dominates your choices. You move between liberal, radical, socialist, and Rawlsian frameworks depending on the case — selecting whichever lens is most revealing for the specific arrangement in question. This is not indecision; it is theoretical flexibility. You recognize that different situations expose different structures of power, and no single feminist approach captures them all. Kymlicka might approve: his own method is comparative and pluralist. The risk is that without a consistent theoretical foundation, your critique may lack the force to demand structural change."};
+ var prof=tied?tiedProfile:profiles[profileIdx];
+ var tags=[];
+ if(counts[0]>=3) tags.push("Rights-Oriented");
+ if(counts[1]>=3) tags.push("Power-Sensitive");
+ if(counts[2]>=3) tags.push("Economically Grounded");
+ if(counts[3]>=3) tags.push("Institutionally Consistent");
+ if(counts[1]>=4) tags.push("Structural Critic");
+ if(counts[0]>=2&&counts[3]>=2) tags.push("Liberal Reformist");
+ if(counts[1]>=2&&counts[2]>=2) tags.push("Radical-Material Bridge");
+ if(tied) tags.push("Theoretically Flexible");
+ var pb=document.getElementById('profileBox');
+ pb.innerHTML='<h2>Your Profile</h2><div class="profile-label">'+prof.label+'</div><p>'+prof.desc+'</p>'+(tags.length?'<p style="text-align:center;margin-top:0.8rem;">'+tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join(' ')+'</p>':'');
+ var pa=document.getElementById('patternAnalysis');
+ var lines=[];
+ lines.push("<h3>Your Choices by Scenario</h3>");
+ for(var k=0;k<scenarios.length;k++){
+  lines.push('<p><strong>'+scenarios[k].title+'</strong> → '+lensNames[choices[k]]+'</p>');
+ }
+ pa.innerHTML=lines.join('');
+ var summary="PSIR 308 – Gender Lens Analyzer Results\n";
+ summary+="Name: "+userName+"\nStudent ID: "+userID+"\n";
+ summary+="Profile: "+prof.label+"\n";
+ summary+="Scores: Liberal "+counts[0]+", Radical "+counts[1]+", Socialist "+counts[2]+", Okin "+counts[3]+"\n";
+ summary+="Tags: "+tags.join(", ")+"\n\n";
+ summary+="Choices:\n";
+ for(var m=0;m<scenarios.length;m++){
+  summary+=(m+1)+". "+scenarios[m].title.replace(/^\d+\.\s*/,'')+" → "+lensNames[choices[m]]+"\n";
+ }
+ document.getElementById('copyBox').textContent=summary;
+ window.scrollTo(0,0);
+}
+
+function copyResults(){
+ var text=document.getElementById('copyBox').textContent;
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(text).then(function(){alert("Results copied to clipboard!");});
+ } else {
+  var ta=document.createElement('textarea');
+  ta.value=text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  alert("Results copied to clipboard!");
+ }
+}
+</script>
+</body>
+</html>
