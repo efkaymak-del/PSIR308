@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<title>PSIR 308 – The Pre-Political Lens</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:Georgia,'Times New Roman',serif;background:#fef2f2;color:#1a1a1a;min-height:100vh;}
+.container{max-width:52rem;margin:0 auto;padding:1.5rem 1.2rem 3rem;}
+h1{font-size:clamp(1.5rem,3.5vw,2.2rem);text-align:center;color:#7c2d12;margin-bottom:0.3rem;}
+h2{font-size:clamp(1.15rem,2.5vw,1.6rem);color:#7c2d12;margin-bottom:0.8rem;}
+h3{font-size:clamp(1rem,2vw,1.3rem);color:#1a1a1a;margin-bottom:0.5rem;}
+.subtitle{text-align:center;color:#555;font-size:clamp(0.85rem,1.5vw,1.05rem);margin-bottom:1.8rem;}
+p{font-size:clamp(0.95rem,1.8vw,1.15rem);line-height:1.7;margin-bottom:0.8rem;}
+.screen{display:none;}
+.screen.active{display:block;}
+label{display:block;font-size:clamp(0.95rem,1.6vw,1.1rem);margin-bottom:0.3rem;font-weight:600;}
+input[type="text"]{width:100%;padding:0.7rem;font-size:1rem;border:2px solid #fdba74;border-radius:8px;font-family:inherit;margin-bottom:1rem;background:#fff;}
+input[type="text"]:focus{outline:none;border-color:#7c2d12;}
+button{background:#7c2d12;color:#fff;border:none;padding:0.75rem 1.8rem;font-size:clamp(0.95rem,1.6vw,1.1rem);border-radius:8px;cursor:pointer;font-family:inherit;margin:0.3rem 0.3rem 0.3rem 0;transition:background 0.2s;}
+button:hover{background:#6c2710;}
+button.secondary{background:#c2410c;}
+button.secondary:hover{background:#9a3412;}
+.progress{width:100%;height:6px;background:#fed7aa;border-radius:3px;margin:1rem 0;}
+.progress-fill{height:100%;background:#7c2d12;border-radius:3px;transition:width 0.4s;}
+.counter-text{text-align:center;color:#888;font-size:0.9rem;margin-bottom:0.5rem;}
+.scenario-box{background:#fff;border:2px solid #fdba74;border-radius:12px;padding:1.5rem;margin-bottom:1.2rem;}
+.scenario-box h2{margin-bottom:0.5rem;}
+.scenario-box .context{font-style:italic;color:#555;margin-bottom:1rem;border-left:4px solid #7c2d12;padding-left:1rem;background:#fff7ed;}
+.question-block{background:#fff7ed;border-radius:10px;padding:1.2rem;margin-bottom:1rem;}
+.question-block h3{color:#7c2d12;margin-bottom:0.6rem;}
+.option-btn{display:block;width:100%;text-align:left;background:#fff;border:2px solid #fdba74;border-radius:8px;padding:0.8rem 1rem;margin-bottom:0.5rem;cursor:pointer;font-family:inherit;font-size:clamp(0.9rem,1.5vw,1.05rem);line-height:1.6;transition:all 0.2s;color:#1a1a1a;}
+.option-btn:hover{border-color:#c2410c;background:#fff7ed;}
+.option-btn.selected{border-color:#7c2d12;background:#7c2d12;color:#fff;}
+.reveal-box{background:#fff;border:2px solid #7c2d12;border-radius:12px;padding:1.3rem;margin:1.2rem 0;display:none;}
+.reveal-box h3{color:#7c2d12;margin-bottom:0.5rem;}
+.reveal-box .beauvoir{border-left:4px solid #9333ea;padding-left:1rem;margin-bottom:0.8rem;}
+.reveal-box .fanon{border-left:4px solid #dc2626;padding-left:1rem;margin-bottom:0.8rem;}
+.reveal-box .liberal{border-left:4px solid #2563eb;padding-left:1rem;margin-bottom:0.8rem;}
+.result-bar-wrap{margin-bottom:1rem;}
+.result-bar-label{display:flex;justify-content:space-between;font-size:clamp(0.88rem,1.4vw,1.05rem);margin-bottom:0.25rem;}
+.result-bar{width:100%;height:22px;background:#fed7aa;border-radius:6px;overflow:hidden;}
+.result-bar-inner{height:100%;border-radius:6px;transition:width 0.6s;}
+.profile-box{background:#fff;border:2px solid #7c2d12;border-radius:12px;padding:1.5rem;margin:1.5rem 0;text-align:center;}
+.profile-box .profile-label{font-size:clamp(1.3rem,2.5vw,1.8rem);color:#7c2d12;font-weight:700;margin-bottom:0.8rem;}
+.profile-box p{text-align:left;}
+.tag{display:inline-block;background:#fff7ed;color:#7c2d12;padding:0.25rem 0.7rem;border-radius:20px;font-size:0.85rem;margin:0.2rem;}
+.copy-box{background:#f9fafb;border:1px solid #fdba74;border-radius:8px;padding:1rem;margin:1rem 0;font-size:0.9rem;white-space:pre-wrap;line-height:1.6;}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- INTRO -->
+<div class="screen active" id="intro">
+<h1>The Pre-Political Lens</h1>
+<p class="subtitle">PSIR 308 · Critical Theory · Beauvoir & Fanon</p>
+<p>Every political theory you have studied this semester begins with subjects — individuals who have preferences, identities, rights, and the capacity to choose. Justice is then about how to treat these subjects fairly.</p>
+<p>Beauvoir and Fanon ask a prior question: <strong>how were those subjects made?</strong></p>
+<p>The "pre-political" is everything that shapes who you are before you enter the political arena — gendered socialization, racial construction, colonial history, cultural norms, internalized hierarchies. These forces determine what you believe you deserve, what you can imagine for yourself, and whether you are recognized as fully human.</p>
+<p>In this simulation, you will examine eight scenarios. For each one, you will first identify what a <strong>liberal theory</strong> sees (rights, fairness, distribution). Then you will identify what the <strong>pre-political lens</strong> reveals — what Beauvoir or Fanon would see that liberalism misses. Finally, you will judge whether the pre-political critique <strong>changes the verdict</strong> or merely deepens the liberal analysis.</p>
+<p>Your pattern of judgments will reveal how far you think political philosophy needs to go beneath the surface.</p>
+<label for="fname">Full Name</label>
+<input type="text" id="fname" placeholder="Enter your name">
+<label for="sid">Student ID</label>
+<input type="text" id="sid" placeholder="Enter your student ID">
+<button onclick="startApp()">Begin</button>
+</div>
+
+<!-- SCENARIO SCREEN -->
+<div class="screen" id="scenScreen">
+<div class="counter-text" id="scenCounter"></div>
+<div class="progress"><div class="progress-fill" id="progFill"></div></div>
+<div class="scenario-box">
+<h2 id="scenTitle"></h2>
+<div class="context" id="scenContext"></div>
+<p id="scenDesc"></p>
+</div>
+
+<div class="question-block" id="q1block">
+<h3>Step 1: What does liberal theory see?</h3>
+<p id="q1prompt"></p>
+<div id="q1options"></div>
+</div>
+
+<div class="question-block" id="q2block" style="display:none;">
+<h3>Step 2: What does the pre-political lens reveal?</h3>
+<p id="q2prompt"></p>
+<div id="q2options"></div>
+</div>
+
+<div class="question-block" id="q3block" style="display:none;">
+<h3>Step 3: Does the pre-political critique change the verdict?</h3>
+<div id="q3options"></div>
+</div>
+
+<div class="reveal-box" id="revealBox">
+<h3>What Beauvoir and Fanon Would Say</h3>
+<div class="beauvoir" id="beauvoirSays"></div>
+<div class="fanon" id="fanonSays"></div>
+<div class="liberal" id="liberalResponse"></div>
+</div>
+
+<button id="nextBtn" style="display:none;" onclick="nextScenario()">Next Scenario →</button>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="results">
+<h2 style="text-align:center;">Your Pre-Political Profile</h2>
+<div id="barsWrap"></div>
+<div class="profile-box" id="profileBox"></div>
+<div id="scenarioLog"></div>
+<div class="copy-box" id="copyBox"></div>
+<button onclick="copyResults()">Copy Results to Clipboard</button>
+<button class="secondary" onclick="location.reload()">Start Over</button>
+</div>
+
+</div>
+
+<script>
+var scenarios=[
+{
+title:"1. The Scholarship Exam",
+context:"A university in Northern Cyprus offers ten full scholarships based on a single entrance exam. The exam is the same for all applicants. No demographic information is considered.",
+desc:"A young woman from a rural village in Eastern Turkey scores just below the cutoff. She attended an under-resourced school, had no access to private tutoring, and spent two hours each day on domestic chores that her brother did not share. A male applicant from a wealthy Istanbul family, who attended a private preparatory school, scores just above the cutoff and receives the scholarship.",
+q1prompt:"What does a liberal egalitarian (Rawls/Dworkin) see in this scenario?",
+q1options:[
+{text:"The exam is fair because it applies the same standard to everyone. Equal treatment is all justice requires.",correct:false},
+{text:"The exam is formally fair but substantively unfair. The difference in background means the two applicants did not compete on equal terms. Dworkin would say her disadvantage is a circumstance, not a choice.",correct:true},
+{text:"The exam is irrelevant. Scholarships should be distributed by lottery to avoid any bias.",correct:false}
+],
+q1explain:"Rawls and Dworkin would recognize that formal equality of process does not guarantee substantive equality of opportunity. Her disadvantage — under-resourced schooling, domestic labour burden — is a circumstance she did not choose.",
+q2prompt:"What would Beauvoir or Fanon see that the liberal analysis misses?",
+q2options:[
+{text:"The exam is biased because it tests the wrong subjects.",correct:false},
+{text:"The young woman's domestic burden is not just an unlucky circumstance. It is the product of a gendered system that constructed her as a caretaker before she could choose otherwise. Her subjectivity — what she believes she deserves, what she imagines is possible — was shaped before she sat the exam.",correct:true},
+{text:"The exam should include questions about gender to make it more inclusive.",correct:false}
+],
+q2explain:"Beauvoir would argue that the domestic labour burden is not a random disadvantage but a systematic construction of femininity as immanence. The young woman did not simply lack resources — she was made into someone whose role is service. Her aspirations, confidence, and sense of possibility were shaped by this construction before any exam was administered.",
+q3verdictOptions:[
+"Yes — the liberal analysis misses the root cause. Without addressing how gendered subjects are constructed, equal opportunity is an illusion.",
+"Partially — the pre-political lens deepens the analysis but liberalism can expand to accommodate it (e.g., affirmative action, structural investment).",
+"No — the liberal analysis is sufficient. Addressing material disadvantage (better schools, removing the domestic burden) solves the problem without needing a theory of subject-construction."
+],
+beauvoir:"Beauvoir would say the young woman has been confined to immanence — trapped in repetitive domestic labour that forecloses transcendence. The exam measures her capacity for transcendence after a lifetime spent being constructed for immanence. It is not a neutral test; it measures the damage done to her subjectivity.",
+fanon:"Fanon would draw a parallel with the colonized student who sits the colonizer's exam in the colonizer's language, measured against the colonizer's standards. The exam is not just unfair — it is an instrument of a system that defines intelligence, merit, and worth in terms that were never designed to include her.",
+liberalResp:"A liberal might respond: Beauvoir and Fanon diagnose real problems, but the solution is still liberal — invest in girls' education, redistribute domestic labour, provide material support. You do not need to abandon liberal principles to act on the pre-political diagnosis."
+},
+{
+title:"2. The Job Interview",
+context:"A multinational company in Famagusta interviews two equally qualified candidates for a management position. One is a Turkish Cypriot man; the other is a Nigerian woman who has lived in Northern Cyprus for eight years.",
+desc:"Both candidates have identical qualifications and experience. The interview panel — three Turkish Cypriot men — selects the male candidate. When asked, they say he was 'a better cultural fit' and 'more authoritative in his presentation.' The woman suspects bias but cannot prove it.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"If there is no explicit discriminatory policy, the decision is the employer's prerogative. Nozick would defend the right to hire freely.",correct:false},
+{text:"The decision may constitute indirect discrimination. The criteria 'cultural fit' and 'authoritative presentation' may function as proxies for gender and race. A liberal egalitarian would demand transparent, bias-tested hiring criteria.",correct:true},
+{text:"The company should be required to hire the woman to correct historical imbalance.",correct:false}
+],
+q1explain:"Liberal egalitarianism would recognize that subjective criteria like 'cultural fit' can embed bias. The solution is procedural: transparent criteria, diverse panels, accountability mechanisms.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"The panel members are personally racist and sexist.",correct:false},
+{text:"The company needs better HR training.",correct:false},
+{text:"'Authority' and 'cultural fit' are not neutral qualities. They are constructed through systems of racial and gendered power. A Black woman's presentation style is read as 'less authoritative' not because of how she presents but because of how the panel's subjectivity has been constructed — to recognize authority in male, familiar, racially similar bodies.",correct:true}
+],
+q2explain:"Fanon would say the panel does not need to be consciously racist. The colonial legacy has constructed whiteness (and local ethnic dominance) as the default human — as authoritative, competent, trustworthy. The Nigerian woman is seen through a gaze that was formed before anyone in the room made a conscious decision. Beauvoir would add that femininity is read as deference, not authority — the woman's competence is filtered through a gendered lens that diminishes it.",
+q3verdictOptions:[
+"Yes — procedural fixes cannot address the pre-political construction of who 'looks like a leader.' The categories themselves must be interrogated.",
+"Partially — bias training and diverse panels can mitigate the effects, even if they do not eliminate the underlying construction.",
+"No — better procedures are sufficient. We do not need a theory of constructed subjectivity to design fair hiring practices."
+],
+beauvoir:"Beauvoir would argue that the woman's 'presentation' is judged against a male standard of authority. Assertiveness in women is read as aggression; deference is read as weakness. There is no way for her to perform 'authority' that will be received as neutral, because the concept itself is gendered.",
+fanon:"Fanon would identify the colonial gaze at work: the panel sees a Black body before they see a candidate. Her qualifications are filtered through a racial schema that positions her as Other — competent perhaps, but never quite belonging. 'Cultural fit' is the polite language of the zone of non-being.",
+liberalResp:"A liberal might argue: we can design institutions that counteract bias — blind CVs, structured interviews, diverse panels. We do not need to accept that bias is so deep it cannot be addressed through institutional reform."
+},
+{
+title:"3. The Language of Instruction",
+context:"At EMU, instruction is primarily in English. Students whose first language is Turkish, Arabic, French, or another language must study, think, write, and be evaluated in a language that carries its own cultural assumptions.",
+desc:"A student from Yemen writes a political philosophy essay in English. His argument is sophisticated but his prose is marked down for 'lack of clarity' and 'awkward phrasing.' A native English speaker with a simpler argument receives a higher grade for 'clear and well-structured writing.' Both students understand Kymlicka equally well.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"The grading is fair — clear writing is a legitimate academic standard that applies equally to all students.",correct:false},
+{text:"The student faces a linguistic disadvantage that is a circumstance, not a choice. Dworkin's framework would demand accommodation — extra time, language support, or evaluation criteria that separate content from prose quality.",correct:true},
+{text:"All instruction should be in the student's native language.",correct:false}
+],
+q1explain:"Liberal egalitarianism would recognize the linguistic disadvantage as a circumstance requiring accommodation. The formal standard (everyone writes in English) produces substantively unequal outcomes.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"English instruction is a practical necessity in international education.",correct:false},
+{text:"The requirement to think, argue, and be evaluated in English is not a neutral academic standard. It is a legacy of colonial power — English as the language of knowledge, authority, and intellectual legitimacy. The Yemeni student is not just linguistically disadvantaged; he is required to translate his thought into a framework that was constructed without his intellectual tradition. His 'lack of clarity' may be the friction between two ways of knowing.",correct:true},
+{text:"The university should lower standards for non-native speakers.",correct:false}
+],
+q2explain:"Fanon wrote extensively about language as a tool of colonialism. To speak the colonizer's language is to enter the colonizer's world — to adopt categories, modes of argument, and standards of clarity that encode a particular civilization's assumptions. The Yemeni student does not simply lack vocabulary; he is being asked to think inside a structure that was built without him.",
+q3verdictOptions:[
+"Yes — the colonial dimension transforms this from a fairness issue into a structural one. Accommodation within the English-language system does not address the deeper epistemic violence.",
+"Partially — awareness of the colonial legacy should inform pedagogy (valuing diverse argument structures, multilingual resources) even within the practical constraint of English instruction.",
+"No — English is a practical lingua franca, and liberal accommodations (language support, adjusted criteria) are sufficient to address the disadvantage."
+],
+beauvoir:"Beauvoir would note a parallel: just as women must perform within standards defined by male subjectivity, non-Western students must perform within standards defined by Western intellectual traditions. 'Clarity' is not universal — it is the Western academic voice naturalized as the only legitimate way to think.",
+fanon:"Fanon would say: 'To speak a language is to take on a world, a culture.' The student is not just learning English; he is being required to inhabit a subjectivity that was constructed through empire. His intellectual tradition — Arabic philosophy, Islamic political thought — is invisible in the curriculum. He is being measured by what he has lost, not by what he knows.",
+liberalResp:"A liberal might respond: these are real concerns, but the practical alternative is unclear. Multilingual instruction, decolonized curricula, and accommodated assessment are all achievable within a liberal framework. You do not need to reject English-language education to recognize its colonial dimensions."
+},
+{
+title:"4. The Domestic Worker's Day Off",
+context:"A middle-class family in Kyrenia employs a live-in domestic worker from the Philippines. She works six days a week. On her one day off, she gathers with other Filipina workers at a park near the old harbour.",
+desc:"The municipality receives complaints from residents that the park has become 'noisy' and 'unwelcoming' on Sundays. Officials consider restricting access or relocating the gathering to a less central location. The domestic workers have no political representation, no vote, and no formal channel to contest the decision.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"The workers have a right to public space. Restricting access based on complaints about noise is discriminatory if applied selectively to one group. Liberal principles demand equal access to public goods.",correct:true},
+{text:"The municipality is within its rights to manage public spaces as it sees fit.",correct:false},
+{text:"The workers should apply for a permit to use the park.",correct:false}
+],
+q1explain:"Liberal theory would identify a rights violation: public space should be accessible to all. The selective enforcement against a particular group raises discrimination concerns. Additionally, the workers' lack of political voice (no vote, no representation) violates liberal principles of political equality.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"The municipality should build a dedicated space for migrant workers.",correct:false},
+{text:"The noise complaints are subjective and should be ignored.",correct:false},
+{text:"The domestic workers exist in a zone of non-being. They are physically present — their labour sustains the households that sustain the city — but they are politically invisible. The complaint is not really about noise; it is about the discomfort of seeing the Other occupy space as subjects rather than servants. Their visibility as people, not workers, disrupts the arrangement.",correct:true}
+],
+q2explain:"Fanon would recognize the zone of non-being: the workers are accepted as labour but not as persons. Their presence is tolerable in kitchens and nurseries but disturbing in public parks — because in the park, they are visible as human beings with social lives, not as functions. The complaint is a reaction to their unauthorized subjectivity.",
+q3verdictOptions:[
+"Yes — this is not a rights issue that better law can fix. It is an ontological issue: these women are not recognized as full persons. No amount of procedural reform addresses the fundamental non-recognition.",
+"Partially — the pre-political lens explains the depth of the exclusion, but legal protections (labour rights, path to citizenship, anti-discrimination law) would materially improve their situation.",
+"No — the liberal analysis is sufficient. Enforce equal access, extend political rights, and the problem is addressed."
+],
+beauvoir:"Beauvoir would see the double bind of immanence: these women are confined to domestic labour — the repetitive, invisible maintenance of other people's lives — six days a week. On the seventh day, they seek transcendence: social connection, community, selfhood. The complaint seeks to push them back into immanence — to make them invisible again.",
+fanon:"Fanon would identify this as the colonial dynamic in miniature: the colonized are acceptable as labour but threatening as subjects. When they gather, speak their own language, laugh, take up space — they disrupt the arrangement that depends on their non-personhood. The municipality's response is not about noise. It is about the boundaries of recognized humanity.",
+liberalResp:"A liberal might argue: extend citizenship rights, enforce anti-discrimination law, guarantee access to public space. These are achievable reforms that do not require a theory of ontological exclusion — and they would concretely improve the workers' lives."
+},
+{
+title:"5. The Student Who Does Not Speak",
+context:"In a seminar at EMU, the professor encourages open discussion. Most students who speak are male. One female student — articulate in private conversation — never raises her hand in class.",
+desc:"When asked privately, she says she does not feel her contributions would be taken seriously. She has noticed that when she does speak, male students interrupt or rephrase her points as their own. She has stopped trying. Her participation grade suffers.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"The professor should enforce equal speaking time and penalize interruptions. Procedural fairness can address the imbalance.",correct:true},
+{text:"If the student chooses not to speak, that is her decision and should not affect grading.",correct:false},
+{text:"The student should be given a separate, written participation option.",correct:false}
+],
+q1explain:"Liberal theory would identify a procedural problem: the classroom norms allow some voices to dominate. Fair rules (turn-taking, anti-interruption policies, diverse assessment methods) can address the imbalance without abandoning the principle of participation.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"The student needs assertiveness training.",correct:false},
+{text:"Her silence is not a choice. It is the product of a lifetime of gendered socialization in which female speech is devalued, female authority is questioned, and female intellectual ambition is subtly punished. She has learned — not consciously, but through thousands of micro-interactions — that her voice does not carry the same weight. The classroom does not create this; it activates a pre-political construction of gendered subjectivity.",correct:true},
+{text:"Male students should be required to speak less.",correct:false}
+],
+q2explain:"Beauvoir would argue that the student's silence is the expression of immanence internalized: she has been constructed as someone whose role is to listen, support, and defer. Her 'choice' not to speak is the system working as designed. Procedural fixes (turn-taking) address the symptom but not the construction of a subjectivity that has already learned its place.",
+q3verdictOptions:[
+"Yes — no classroom procedure can undo a lifetime of gendered subject-construction. The pre-political dimension must be addressed through deeper structural and cultural change.",
+"Partially — procedural interventions can create conditions where she might begin to experience herself differently, even if they do not undo the construction entirely.",
+"No — better classroom management is sufficient. Most silent students speak up when the environment is structured to support them."
+],
+beauvoir:"Beauvoir would say: she has been made. Her silence is not timidity — it is the internalization of a system that constructed femininity as receptivity, not assertion. She does not believe her voice matters — and she is right, within the system as it operates. Changing the rules changes the surface; changing her subjectivity requires changing the civilization that produced it.",
+fanon:"Fanon would recognize a parallel: the colonized intellectual who has mastered the colonizer's language and concepts but still hesitates to speak — because the system has taught them that their authority is always provisional, always subject to the gaze of those who belong. She knows the material. She does not feel she owns the right to speak it.",
+liberalResp:"A liberal might respond: this is precisely what institutional design is for. Create norms that reward diverse participation, train facilitators, use varied assessment methods. The pre-political diagnosis is compelling but the prescription is unclear — what would Beauvoir actually do differently in the classroom?"
+},
+{
+title:"6. The Property Dispute",
+context:"After the 1974 partition of Cyprus, Greek Cypriot families lost property in the north and Turkish Cypriot families lost property in the south. Decades later, legal and political disputes over property restitution remain unresolved.",
+desc:"A Greek Cypriot family claims a house in Famagusta that they fled in 1974. A Turkish Cypriot family, displaced from the south, has lived in that house for fifty years. Both families have legitimate grievances. International law, domestic law, and communal memory offer conflicting verdicts.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"Property rights must be respected. The original owners have a just claim to restitution, following Nozick's rectification principle.",correct:false},
+{text:"This is a conflict between competing justice claims — original ownership (Nozick), the needs of current occupants (Rawls), and the impossibility of restoring a status quo that was itself produced by prior injustice. Liberal theory sees a genuine dilemma requiring negotiated compromise.",correct:true},
+{text:"The current occupants should keep the property because possession creates legitimate ownership over time.",correct:false}
+],
+q1explain:"Liberal theory recognizes the complexity: Nozick's rectification principle supports the original owners, but Rawls would consider the current occupants' needs and the broader social consequences of mass displacement. No single liberal principle resolves the conflict cleanly.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"Both sides should compromise and move on.",correct:false},
+{text:"The property dispute is real, but it sits on top of a deeper question: what kind of subjects did the partition produce? A generation of Greek Cypriots constructed as exiles, defined by loss. A generation of Turkish Cypriots constructed as occupiers in others' eyes, legitimate inhabitants in their own. The identities through which each side experiences the dispute — victim, survivor, occupier, refugee — were made by a political event that preceded any individual choice. The conflict is not just about property; it is about who you were made into.",correct:true},
+{text:"International law should determine the outcome.",correct:false}
+],
+q2explain:"Fanon would recognize that the partition did not just redistribute property — it constructed subjects. The Greek Cypriot is made into an exile whose identity is organized around return. The Turkish Cypriot is made into someone whose home is always contested, whose presence is always provisional. These are pre-political constructions: the political event produced the identities through which the political dispute is now experienced.",
+q3verdictOptions:[
+"Yes — the property dispute cannot be resolved by legal or distributive principles alone because the identities of the disputants are themselves products of the injustice. Any resolution must address the construction of subjectivity, not just the distribution of property.",
+"Partially — the pre-political lens explains why the dispute is so intractable (it is about identity, not just property), but practical resolution still requires legal and political mechanisms.",
+"No — property disputes are resolved through law, negotiation, and compensation. The construction of identity is real but cannot be the basis for legal or political decision-making."
+],
+beauvoir:"Beauvoir would note that both communities have been confined to narratives written for them by history — neither chose to be an exile or an occupier. The question is whether they can create new subjectivities — new ways of being Cypriot — that are not determined by the 1974 event. Transcendence requires imagining a future not defined by the past.",
+fanon:"Fanon would see the colonial structure persisting: the partition was not a natural event but a product of imperial borders, Cold War politics, and ethnic engineering. Both communities are living inside identities that were produced by forces larger than themselves. The property dispute is the surface; the construction of ethnic subjectivity is the depth. And he would ask: whose interests are served by keeping the dispute alive?",
+liberalResp:"A liberal might respond: the pre-political lens illuminates the depth of the conflict, but people need their houses. Legal frameworks, truth commissions, compensation schemes, and political negotiation are imperfect but necessary. We cannot wait for a revolution in subjectivity before we address material claims."
+},
+{
+title:"7. The Beauty Standard",
+context:"A cosmetics company launches a marketing campaign in Northern Cyprus featuring exclusively light-skinned, European-looking models. The campaign is commercially successful.",
+desc:"A Sub-Saharan African student at EMU sees the advertisements daily. She notices that skin-lightening products are widely available in local shops. She begins to feel that her natural appearance is inadequate — not because anyone says so directly, but because everything around her communicates it. She considers using a lightening product.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"This is a free market issue. The company has a right to advertise; the student has a right to buy or not buy. Consumer sovereignty applies.",correct:false},
+{text:"The student may be experiencing the effects of a cultural environment that devalues her appearance. A liberal egalitarian might support media diversity regulations or anti-discrimination standards in advertising to ensure fair representation.",correct:true},
+{text:"The government should ban skin-lightening products.",correct:false}
+],
+q1explain:"Liberal egalitarianism would recognize that the cultural environment affects individuals' self-perception and opportunities. Regulations promoting diverse representation in media are consistent with liberal principles of equal respect.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"The student should develop stronger self-esteem.",correct:false},
+{text:"The advertisements are not just images. They are part of a system that constructs whiteness as beauty, as worth, as humanity — and Blackness as its negation. The student's desire to lighten her skin is not a personal insecurity. It is the internalization of a colonial gaze that defined Black bodies as inferior. She is experiencing what Fanon described: the colonized person who tries to become white because the system has made whiteness the only path to recognition as fully human.",correct:true},
+{text:"The company should include more diverse models for business reasons.",correct:false}
+],
+q2explain:"Fanon wrote directly about this: the Black person who adopts the colonizer's standards — straightening hair, lightening skin, speaking the colonizer's language — is not making a free choice. They are responding to a system that has made their natural self unacceptable. The desire to change is itself the evidence of colonial damage.",
+q3verdictOptions:[
+"Yes — media regulation addresses the symptom but not the system. The colonial construction of beauty, worth, and humanity must be dismantled at the level of culture, education, and identity — not just advertising standards.",
+"Partially — the pre-political lens explains the depth of the harm, but media regulation, representation policies, and cultural education are practical steps that can begin to shift the construction.",
+"No — regulate advertising, promote diversity, and protect consumer rights. The market responds to demand, and demand changes when representation changes."
+],
+beauvoir:"Beauvoir would see the construction of femininity at work: the student is being told, through every image, that her worth lies in her appearance — and that her appearance fails. She is caught between two systems of constructed inferiority: gender and race. Her 'choice' to use skin-lightening products is the expression of a subjectivity that has been produced to desire its own transformation.",
+fanon:"Fanon would recognize the most intimate form of colonial violence: the colonized person who has internalized the colonizer's standard of humanity. 'I wish I were white' is not a preference; it is a wound. The advertisements did not create the wound — colonialism did. The advertisements reopen it daily.",
+liberalResp:"A liberal might respond: we share the diagnosis. But the prescription — dismantling the colonial construction of beauty — is a generational cultural project. In the meantime, media regulation, anti-discrimination law, and representation standards are concrete, achievable steps that liberalism can deliver now."
+},
+{
+title:"8. The Political Philosophy Classroom",
+context:"You are sitting in this course — PSIR 308 — studying political philosophy. The texts are by Kymlicka, Rawls, Nozick, Marx, Beauvoir, Fanon. The language of instruction is English. The framework is Western academic philosophy.",
+desc:"The course asks you to evaluate theories of justice. But every theory you are asked to evaluate emerged from a particular tradition — European Enlightenment philosophy. The assessment criteria (essay structure, critical analysis, citation norms) reflect that tradition. Students from non-Western backgrounds may have rich intellectual traditions of justice — Islamic jurisprudence, Ubuntu philosophy, Confucian ethics — that are invisible in the curriculum.",
+q1prompt:"What does liberal theory see?",
+q1options:[
+{text:"The curriculum is fine as long as students are evaluated fairly on the assigned material.",correct:false},
+{text:"A diverse curriculum that includes non-Western philosophical traditions would better serve the principle of equal respect. Students should see their intellectual heritage represented in the course.",correct:true},
+{text:"Western philosophy is the foundation of political science and must be taught first.",correct:false}
+],
+q1explain:"Liberal egalitarianism would support curricular diversity as an expression of equal respect and intellectual inclusion. If the curriculum systematically excludes some traditions, it fails to treat all students' intellectual backgrounds as equally worthy of engagement.",
+q2prompt:"What does the pre-political lens reveal?",
+q2options:[
+{text:"Non-Western philosophy should replace Western philosophy in the curriculum.",correct:false},
+{text:"The course does not merely teach Western philosophy. It teaches you to think like a Western philosopher — to adopt a particular mode of argument, a particular relationship to authority and tradition, a particular conception of what counts as knowledge. This is not intellectually neutral; it is a form of subject-construction. You are being made into a particular kind of thinker. The pre-political question is: whose thinker?",correct:true},
+{text:"Students should be allowed to write essays using their own intellectual traditions.",correct:false}
+],
+q2explain:"Fanon would say that the university is the most refined instrument of colonial subject-construction. It does not need to be violent; it works by teaching the colonized to think inside the colonizer's categories. The student who masters Rawls and forgets Islamic jurisprudence has not been educated — they have been assimilated. Beauvoir would add: the academic who learns to argue like a man, to write like a man, to suppress embodied knowledge in favour of abstract reason, has been made, not liberated.",
+q3verdictOptions:[
+"Yes — the entire educational framework must be decolonized. Adding diversity to a Western curriculum does not change the structure of knowledge production; it decorates it.",
+"Partially — the pre-political critique is powerful but teaching this course, including Beauvoir and Fanon, is already an act of self-interrogation. The framework can be stretched from within.",
+"No — the liberal curriculum, taught critically, equips students to interrogate any system of power, including the one that produced the curriculum itself. This course is proof."
+],
+beauvoir:"Beauvoir would turn the lens on the classroom itself: who is the Subject here? The professor who assigns the texts, designs the simulations, sets the criteria. Who is the Other? The student who must perform within those criteria to be recognized as competent. The power relation is invisible because it is naturalized as education.",
+fanon:"Fanon would say: you are studying me in the colonizer's language, in the colonizer's institution, using the colonizer's methods. The fact that I am on the syllabus does not mean the syllabus has been decolonized. It means I have been domesticated — turned into an object of study rather than a force of liberation. The question is whether reading me changes what you do, or only what you say.",
+liberalResp:"A liberal might respond: self-critique is the highest expression of the liberal tradition. The fact that this course includes Beauvoir and Fanon — and asks students to use their tools against the course itself — demonstrates that liberalism can interrogate its own foundations. No other tradition demands this of itself with such consistency."
+}
+];
+
+var userName="",userID="";
+var currentScen=0;
+var answers=[];
+var step=0;
+
+function startApp(){
+ userName=document.getElementById('fname').value.trim();
+ userID=document.getElementById('sid').value.trim();
+ if(!userName||!userID){alert("Please enter your name and student ID.");return;}
+ document.getElementById('intro').classList.remove('active');
+ document.getElementById('scenScreen').classList.add('active');
+ showScenario(0);
+}
+
+function showScenario(idx){
+ currentScen=idx;
+ step=0;
+ answers[idx]={q1:-1,q2:-1,q3:-1};
+ var s=scenarios[idx];
+ document.getElementById('scenCounter').textContent="Scenario "+(idx+1)+" of "+scenarios.length;
+ document.getElementById('progFill').style.width=((idx/scenarios.length)*100)+"%";
+ document.getElementById('scenTitle').textContent=s.title;
+ document.getElementById('scenContext').textContent=s.context;
+ document.getElementById('scenDesc').textContent=s.desc;
+ document.getElementById('q1prompt').textContent=s.q1prompt;
+ var q1d=document.getElementById('q1options');
+ q1d.innerHTML="";
+ for(var i=0;i<s.q1options.length;i++){
+  var b=document.createElement('button');
+  b.className='option-btn';
+  b.textContent=s.q1options[i].text;
+  b.setAttribute('data-idx',i);
+  b.setAttribute('data-correct',s.q1options[i].correct);
+  b.onclick=function(){pickQ1(this);};
+  q1d.appendChild(b);
+ }
+ document.getElementById('q2block').style.display='none';
+ document.getElementById('q3block').style.display='none';
+ document.getElementById('revealBox').style.display='none';
+ document.getElementById('nextBtn').style.display='none';
+ document.getElementById('q1block').style.display='block';
+ window.scrollTo(0,0);
+}
+
+function pickQ1(btn){
+ var all=document.querySelectorAll('#q1options .option-btn');
+ for(var i=0;i<all.length;i++){
+  all[i].classList.remove('selected');
+  if(all[i].getAttribute('data-correct')==='true') all[i].style.borderColor='#16a34a';
+ }
+ btn.classList.add('selected');
+ answers[currentScen].q1=parseInt(btn.getAttribute('data-idx'));
+ var s=scenarios[currentScen];
+ document.getElementById('q2prompt').textContent=s.q2prompt;
+ var q2d=document.getElementById('q2options');
+ q2d.innerHTML="";
+ for(var i=0;i<s.q2options.length;i++){
+  var b=document.createElement('button');
+  b.className='option-btn';
+  b.textContent=s.q2options[i].text;
+  b.setAttribute('data-idx',i);
+  b.setAttribute('data-correct',s.q2options[i].correct);
+  b.onclick=function(){pickQ2(this);};
+  q2d.appendChild(b);
+ }
+ setTimeout(function(){document.getElementById('q2block').style.display='block';document.getElementById('q2block').scrollIntoView({behavior:'smooth'});},400);
+}
+
+function pickQ2(btn){
+ var all=document.querySelectorAll('#q2options .option-btn');
+ for(var i=0;i<all.length;i++){
+  all[i].classList.remove('selected');
+  if(all[i].getAttribute('data-correct')==='true') all[i].style.borderColor='#16a34a';
+ }
+ btn.classList.add('selected');
+ answers[currentScen].q2=parseInt(btn.getAttribute('data-idx'));
+ var s=scenarios[currentScen];
+ var q3d=document.getElementById('q3options');
+ q3d.innerHTML="";
+ for(var i=0;i<s.q3verdictOptions.length;i++){
+  var b=document.createElement('button');
+  b.className='option-btn';
+  b.textContent=s.q3verdictOptions[i];
+  b.setAttribute('data-idx',i);
+  b.onclick=function(){pickQ3(this);};
+  q3d.appendChild(b);
+ }
+ setTimeout(function(){document.getElementById('q3block').style.display='block';document.getElementById('q3block').scrollIntoView({behavior:'smooth'});},400);
+}
+
+function pickQ3(btn){
+ var all=document.querySelectorAll('#q3options .option-btn');
+ for(var i=0;i<all.length;i++) all[i].classList.remove('selected');
+ btn.classList.add('selected');
+ answers[currentScen].q3=parseInt(btn.getAttribute('data-idx'));
+ var s=scenarios[currentScen];
+ document.getElementById('beauvoirSays').innerHTML='<p><strong>Beauvoir:</strong> '+s.beauvoir+'</p>';
+ document.getElementById('fanonSays').innerHTML='<p><strong>Fanon:</strong> '+s.fanon+'</p>';
+ document.getElementById('liberalResponse').innerHTML='<p><strong>Liberal response:</strong> '+s.liberalResp+'</p>';
+ setTimeout(function(){
+  document.getElementById('revealBox').style.display='block';
+  document.getElementById('nextBtn').style.display='inline-block';
+  document.getElementById('revealBox').scrollIntoView({behavior:'smooth'});
+ },400);
+}
+
+function nextScenario(){
+ if(currentScen+1<scenarios.length){
+  showScenario(currentScen+1);
+ } else {
+  showResults();
+ }
+}
+
+function showResults(){
+ document.getElementById('scenScreen').classList.remove('active');
+ document.getElementById('results').classList.add('active');
+ document.getElementById('progFill').style.width="100%";
+ var verdictCounts=[0,0,0];
+ var verdictLabels=["Pre-political critique changes the verdict","Pre-political lens deepens but liberalism adapts","Liberal analysis is sufficient"];
+ for(var i=0;i<answers.length;i++) verdictCounts[answers[i].q3]++;
+ var colors=["#7c2d12","#c2410c","#2563eb"];
+ var bw=document.getElementById('barsWrap');
+ bw.innerHTML="<h3>Your Verdict Pattern</h3>";
+ for(var j=0;j<3;j++){
+  var pct=(verdictCounts[j]/scenarios.length)*100;
+  bw.innerHTML+='<div class="result-bar-wrap"><div class="result-bar-label"><span>'+verdictLabels[j]+'</span><span>'+verdictCounts[j]+'/'+scenarios.length+'</span></div><div class="result-bar"><div class="result-bar-inner" style="width:'+pct+'%;background:'+colors[j]+';"></div></div></div>';
+ }
+ var profiles=[
+  {label:"The Radical Deconstructionist",desc:"You consistently judged that the pre-political critique changes the verdict — that liberalism's tools are insufficient to address oppression that operates at the level of identity-construction. You side with Beauvoir and Fanon: the problem is not how resources are distributed but how subjects are made. Justice requires not reform but rupture — a fundamental rethinking of who gets to count as human and on whose terms. Your challenge is the constructive one: if liberalism is inadequate, what do you build in its place?"},
+  {label:"The Critical Liberal",desc:"You consistently found that the pre-political lens deepens the analysis but that liberalism can adapt to accommodate it. You take Beauvoir and Fanon seriously — their diagnoses are powerful — but you believe that liberal institutions, properly expanded, can address the construction of subjectivity through education, cultural policy, anti-discrimination law, and structural reform. Kymlicka would recognize you. Your challenge is to show that expansion is genuine, not cosmetic — that liberalism can reach the pre-political without losing its identity."},
+  {label:"The Institutional Pragmatist",desc:"You consistently judged that the liberal analysis is sufficient — that better institutions, fairer procedures, and material redistribution can address the problems Beauvoir and Fanon identify without requiring a theory of pre-political subject-construction. You are not dismissing their insights; you are questioning whether the prescription follows from the diagnosis. Your challenge is to explain why the same liberal frameworks that coexisted with colonialism and patriarchy for centuries will now produce different results."}
+ ];
+ var max=Math.max.apply(null,verdictCounts);
+ var tied=verdictCounts.filter(function(c){return c===max;}).length>1;
+ var dominant=verdictCounts.indexOf(max);
+ var tiedProfile={label:"The Situational Thinker",desc:"No single verdict dominates your responses. You moved between positions depending on the scenario — sometimes the pre-political critique changed everything, sometimes liberalism's tools seemed sufficient. This is not inconsistency; it may be intellectual honesty. Some forms of oppression go deeper than others, and the appropriate response depends on the case. Your challenge is to articulate a principle that explains when the pre-political lens is decisive and when it is not — otherwise your position is intuitive rather than theoretical."};
+ var prof=tied?tiedProfile:profiles[dominant];
+ var tags=[];
+ if(verdictCounts[0]>=3) tags.push("Structural Critic");
+ if(verdictCounts[1]>=3) tags.push("Adaptive Liberal");
+ if(verdictCounts[2]>=3) tags.push("Procedural Realist");
+ if(verdictCounts[0]>=5) tags.push("Decolonial Orientation");
+ if(verdictCounts[2]>=5) tags.push("Strong Institutionalist");
+ if(verdictCounts[0]>=2&&verdictCounts[1]>=2) tags.push("Critical but Reformist");
+ if(verdictCounts[1]>=2&&verdictCounts[2]>=2) tags.push("Liberal Spectrum");
+ if(tied) tags.push("Context-Dependent");
+ var pb=document.getElementById('profileBox');
+ pb.innerHTML='<h2>Your Profile</h2><div class="profile-label">'+prof.label+'</div><p>'+prof.desc+'</p>'+(tags.length?'<p style="text-align:center;margin-top:0.8rem;">'+tags.map(function(t){return '<span class="tag">'+t+'</span>';}).join(' ')+'</p>':'');
+ var sl=document.getElementById('scenarioLog');
+ var lines=["<h3>Your Verdicts by Scenario</h3>"];
+ for(var k=0;k<scenarios.length;k++){
+  lines.push('<p><strong>'+scenarios[k].title+'</strong> → '+verdictLabels[answers[k].q3]+'</p>');
+ }
+ sl.innerHTML=lines.join('');
+ var summary="PSIR 308 – Pre-Political Lens Results\n";
+ summary+="Name: "+userName+"\nStudent ID: "+userID+"\n";
+ summary+="Profile: "+prof.label+"\n";
+ summary+="Verdicts: Changes verdict "+verdictCounts[0]+", Deepens but adapts "+verdictCounts[1]+", Liberal sufficient "+verdictCounts[2]+"\n";
+ summary+="Tags: "+tags.join(", ")+"\n\n";
+ summary+="Scenario Verdicts:\n";
+ for(var m=0;m<scenarios.length;m++){
+  summary+=(m+1)+". "+scenarios[m].title.replace(/^\d+\.\s*/,'')+" → "+verdictLabels[answers[m].q3]+"\n";
+ }
+ document.getElementById('copyBox').textContent=summary;
+ window.scrollTo(0,0);
+}
+
+function copyResults(){
+ var text=document.getElementById('copyBox').textContent;
+ if(navigator.clipboard){
+  navigator.clipboard.writeText(text).then(function(){alert("Results copied to clipboard!");});
+ } else {
+  var ta=document.createElement('textarea');
+  ta.value=text;
+  document.body.appendChild(ta);
+  ta.select();
+  document.execCommand('copy');
+  document.body.removeChild(ta);
+  alert("Results copied to clipboard!");
+ }
+}
+</script>
+</body>
+</html>
