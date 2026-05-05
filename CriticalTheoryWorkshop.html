@@ -7,26 +7,42 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:Georgia,'Times New Roman',serif;background:#1a1a1a;color:#f5f5f5;overflow:hidden;height:100vh;width:100vw;}
-.slide{display:none;flex-direction:column;justify-content:center;align-items:center;height:100vh;width:100vw;padding:8vh 8vw;text-align:center;position:absolute;top:0;left:0;}
+.slide{display:none;flex-direction:column;justify-content:center;align-items:center;height:100vh;width:100vw;padding:5vh 5vw;text-align:center;position:absolute;top:0;left:0;overflow-y:auto;}
 .slide.active{display:flex;}
 h1{font-size:clamp(1.8rem,4vw,2.8rem);margin-bottom:1.5rem;line-height:1.2;color:#fff;}
-h2{font-size:clamp(1.4rem,3.2vw,2.2rem);margin-bottom:1.2rem;line-height:1.3;color:#fdba74;}
-p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-width:54rem;text-align:center;}
+h2{font-size:clamp(1.4rem,3.2vw,2.2rem);margin-bottom:1rem;line-height:1.3;color:#fdba74;}
+p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-width:54rem;text-align:center;}
 .subtitle{font-size:clamp(0.9rem,1.6vw,1.15rem);color:#aaa;text-align:center;margin-bottom:0.5rem;}
-.prompt{font-size:clamp(1.2rem,2.5vw,1.7rem);line-height:1.7;max-width:50rem;text-align:center;color:#fff;font-style:italic;margin:1rem auto;}
+.prompt{font-size:clamp(1.15rem,2.3vw,1.6rem);line-height:1.7;max-width:50rem;text-align:center;color:#fff;font-style:italic;margin:0.8rem auto;}
 .highlight{background:rgba(253,186,116,0.2);padding:0.15em 0.4em;border-radius:4px;color:#fdba74;font-weight:600;}
-.big-question{font-size:clamp(1.4rem,3vw,2rem);line-height:1.6;max-width:48rem;text-align:center;color:#fdba74;font-weight:600;margin:1.5rem auto;}
-.grid{display:flex;flex-wrap:wrap;gap:2rem;justify-content:center;margin:1.5rem auto;max-width:50rem;}
-.grid-item{background:rgba(255,255,255,0.08);border:2px solid #fdba74;border-radius:12px;padding:1.5rem;flex:1;min-width:200px;max-width:280px;}
-.grid-item h3{color:#fdba74;font-size:clamp(1rem,1.8vw,1.3rem);margin-bottom:0.5rem;}
-.grid-item p{font-size:clamp(0.9rem,1.5vw,1.1rem);text-align:center;margin-bottom:0;}
-.vote-row{display:flex;gap:2rem;justify-content:center;margin:2rem auto;max-width:48rem;}
-.vote-box{background:rgba(255,255,255,0.06);border:2px solid #fdba74;border-radius:12px;padding:2rem 2.5rem;text-align:center;flex:1;}
-.vote-box h3{color:#fdba74;font-size:clamp(1.3rem,2.5vw,1.8rem);margin-bottom:0.5rem;}
-.vote-box p{font-size:clamp(1rem,1.8vw,1.2rem);color:#ccc;margin-bottom:0;}
+.big-question{font-size:clamp(1.3rem,2.8vw,1.9rem);line-height:1.6;max-width:48rem;text-align:center;color:#fdba74;font-weight:600;margin:1.2rem auto;}
+.grid{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin:1.2rem auto;max-width:50rem;}
+.grid-item{background:rgba(255,255,255,0.08);border:2px solid #fdba74;border-radius:12px;padding:1.2rem;flex:1;min-width:180px;max-width:260px;}
+.grid-item h3{color:#fdba74;font-size:clamp(0.95rem,1.6vw,1.2rem);margin-bottom:0.4rem;}
+.grid-item .count{font-size:2.2rem;color:#fdba74;font-weight:700;}
+.vote-row{display:flex;gap:1.5rem;justify-content:center;margin:1.5rem auto;max-width:48rem;}
+.vote-box{background:rgba(255,255,255,0.06);border:2px solid #fdba74;border-radius:12px;padding:1.5rem 2rem;text-align:center;flex:1;}
+.vote-box h3{color:#fdba74;font-size:clamp(1.1rem,2vw,1.5rem);margin-bottom:0.3rem;}
+.vote-box .count{font-size:2.2rem;color:#fdba74;font-weight:700;}
 .dim{color:#888;font-size:clamp(0.85rem,1.4vw,1rem);}
 .counter{position:fixed;bottom:1.2rem;right:1.5rem;font-size:0.85rem;color:#555;}
 .timer{font-size:clamp(0.9rem,1.5vw,1.1rem);color:#888;margin-bottom:0.5rem;}
+
+/* FORM STYLES */
+.form-panel{background:rgba(255,255,255,0.06);border:2px solid rgba(253,186,116,0.4);border-radius:14px;padding:1.5rem 2rem;margin:1rem auto;max-width:42rem;text-align:left;}
+.form-panel label{display:block;font-size:clamp(0.95rem,1.6vw,1.1rem);color:#fdba74;margin-bottom:0.4rem;font-weight:600;}
+.form-panel input[type="text"]{width:100%;padding:0.6rem 0.8rem;font-size:1rem;border:2px solid rgba(253,186,116,0.4);border-radius:8px;background:rgba(255,255,255,0.08);color:#fff;font-family:inherit;margin-bottom:1rem;outline:none;}
+.form-panel input[type="text"]:focus{border-color:#fdba74;}
+.form-panel input[type="text"]::placeholder{color:#777;}
+.radio-group{margin-bottom:1rem;}
+.radio-group .radio-label{display:block;padding:0.5rem 0.8rem;margin-bottom:0.3rem;border-radius:8px;cursor:pointer;font-size:clamp(0.9rem,1.5vw,1.05rem);color:#ddd;transition:background 0.2s;line-height:1.5;}
+.radio-group .radio-label:hover{background:rgba(253,186,116,0.1);}
+.radio-group input[type="radio"]{display:none;}
+.radio-group input[type="radio"]:checked+.radio-label{background:rgba(253,186,116,0.2);color:#fdba74;font-weight:600;}
+.submit-btn{background:#fdba74;color:#1a1a1a;border:none;padding:0.7rem 2rem;font-size:clamp(0.95rem,1.6vw,1.1rem);border-radius:8px;cursor:pointer;font-family:inherit;font-weight:600;transition:background 0.2s;display:block;margin:0.5rem auto 0;}
+.submit-btn:hover{background:#fbbf24;}
+.submit-btn:disabled{background:#555;color:#888;cursor:not-allowed;}
+.form-success{text-align:center;color:#4ade80;font-size:clamp(1rem,1.8vw,1.3rem);margin-top:1rem;display:none;}
 </style>
 </head>
 <body>
@@ -48,31 +64,42 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p class="big-question">What is your profile?</p>
 </div>
 
-<!-- SLIDE 3: PROFILE COUNT -->
+<!-- SLIDE 3: FORM — BLOCK 1 -->
+<div class="slide">
+<h2>Submit Your Profile</h2>
+<div class="form-panel" id="form1panel">
+<label for="f1name">Full Name</label>
+<input type="text" id="f1name" placeholder="Your name">
+<label>What is your profile label?</label>
+<div class="radio-group" id="f1profile">
+<input type="radio" name="profile" id="p1" value="The Radical Deconstructionist"><label class="radio-label" for="p1">The Radical Deconstructionist</label>
+<input type="radio" name="profile" id="p2" value="The Critical Liberal"><label class="radio-label" for="p2">The Critical Liberal</label>
+<input type="radio" name="profile" id="p3" value="The Institutional Pragmatist"><label class="radio-label" for="p3">The Institutional Pragmatist</label>
+<input type="radio" name="profile" id="p4" value="The Situational Thinker"><label class="radio-label" for="p4">The Situational Thinker</label>
+</div>
+<label>Was your verdict pattern consistent or did you shift?</label>
+<div class="radio-group" id="f1pattern">
+<input type="radio" name="pattern" id="pt1" value="Mostly consistent"><label class="radio-label" for="pt1">Mostly consistent</label>
+<input type="radio" name="pattern" id="pt2" value="I shifted depending on the case"><label class="radio-label" for="pt2">I shifted depending on the case</label>
+</div>
+<button class="submit-btn" id="btn1" onclick="submitBlock1()">Submit</button>
+<div class="form-success" id="success1">Submitted ✓</div>
+</div>
+</div>
+
+<!-- SLIDE 4: PROFILE RESULTS -->
 <div class="slide">
 <h2>Profile Distribution</h2>
 <div class="grid">
-<div class="grid-item">
-<h3>Radical Deconstructionist</h3>
-<p style="font-size:2.5rem;color:#fdba74;">___</p>
+<div class="grid-item"><h3>Radical Deconstructionist</h3><div class="count" id="countRD">—</div></div>
+<div class="grid-item"><h3>Critical Liberal</h3><div class="count" id="countCL">—</div></div>
+<div class="grid-item"><h3>Institutional Pragmatist</h3><div class="count" id="countIP">—</div></div>
+<div class="grid-item"><h3>Situational Thinker</h3><div class="count" id="countST">—</div></div>
 </div>
-<div class="grid-item">
-<h3>Critical Liberal</h3>
-<p style="font-size:2.5rem;color:#fdba74;">___</p>
-</div>
-<div class="grid-item">
-<h3>Institutional Pragmatist</h3>
-<p style="font-size:2.5rem;color:#fdba74;">___</p>
-</div>
-<div class="grid-item">
-<h3>Situational Thinker</h3>
-<p style="font-size:2.5rem;color:#fdba74;">___</p>
-</div>
-</div>
-<p class="dim">Write the numbers on the board.</p>
+<p class="dim">Check Google Sheets on your device and read the numbers aloud.</p>
 </div>
 
-<!-- SLIDE 4: CONSISTENCY QUESTION -->
+<!-- SLIDE 5: CONSISTENCY QUESTION -->
 <div class="slide">
 <h2>Consistency Check</h2>
 <p class="big-question">Who gave the same verdict for all eight scenarios?</p>
@@ -80,41 +107,41 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p class="dim">One student from each group: what drove your pattern?</p>
 </div>
 
-<!-- SLIDE 5: FRAMING QUESTION -->
+<!-- SLIDE 6: FRAMING QUESTION -->
 <div class="slide">
 <h2>The Big Question</h2>
 <p class="big-question">Does the pre-political critique change the verdict on the entire semester?</p>
 <p>Does Beauvoir and Fanon's intervention <span class="highlight">break</span> what we built in Weeks 2–8, or does it <span class="highlight">deepen</span> it?</p>
 </div>
 
-<!-- SLIDE 6: BLOCK 2 HEADER -->
+<!-- SLIDE 7: BLOCK 2 HEADER -->
 <div class="slide">
 <p class="timer">BLOCK 2 · ~20 minutes</p>
 <h2>The Theories on Trial</h2>
 <p>Three theories. Beauvoir and Fanon are the prosecutors.</p>
 </div>
 
-<!-- SLIDE 7: RAWLS ON TRIAL -->
+<!-- SLIDE 8: RAWLS ON TRIAL -->
 <div class="slide">
 <h2>Theory 1 — Rawls</h2>
 <p class="prompt">Rawls puts you behind the veil of ignorance to design just institutions.</p>
-<p class="prompt">Beauvoir says the person behind the veil has already been <span class="highlight">gendered</span> — their imagination of what is possible has been shaped before they arrive.</p>
-<p class="prompt">Fanon says the veil assumes everyone behind it is recognized as <span class="highlight">rational and human</span>, which the colonial system denies.</p>
+<p class="prompt">Beauvoir says the person behind the veil has already been <span class="highlight">gendered</span>.</p>
+<p class="prompt">Fanon says the veil assumes everyone behind it is recognized as <span class="highlight">rational and human</span>.</p>
 <p class="big-question">Does the veil of ignorance survive this critique?</p>
 <p class="dim">Push: "needs modification" vs. "fundamentally broken"</p>
 </div>
 
-<!-- SLIDE 8: NOZICK ON TRIAL -->
+<!-- SLIDE 9: NOZICK ON TRIAL -->
 <div class="slide">
 <h2>Theory 2 — Nozick</h2>
 <p class="prompt">Nozick says you <span class="highlight">own yourself</span>.</p>
-<p class="prompt">Fanon says the colonized person does not own themselves — their body and identity have been <span class="highlight">claimed</span> by the colonial system.</p>
+<p class="prompt">Fanon says the colonized person's body and identity have been <span class="highlight">claimed</span> by the colonial system.</p>
 <p class="prompt">Beauvoir says women's selves have been <span class="highlight">constructed for them</span>.</p>
 <p class="big-question">Is self-ownership a starting point or a conclusion?</p>
 <p class="dim">Press defenders: how does self-ownership apply to someone whose subjectivity was constructed by the system?</p>
 </div>
 
-<!-- SLIDE 9: MACKINNON ON TRIAL -->
+<!-- SLIDE 10: MACKINNON ON TRIAL -->
 <div class="slide">
 <h2>Theory 3 — MacKinnon</h2>
 <p class="prompt">MacKinnon argued that gender inequality is <span class="highlight">domination</span>, not discrimination.</p>
@@ -124,35 +151,53 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p class="dim">Let the tension sit. If intersectionality or essentialism comes up, follow it.</p>
 </div>
 
-<!-- SLIDE 10: SHOW OF HANDS -->
+<!-- SLIDE 11: FORM — BLOCK 2 -->
+<div class="slide">
+<h2>Cast Your Verdicts</h2>
+<div class="form-panel" id="form2panel">
+<label>Did Rawls (the veil of ignorance) survive the pre-political critique?</label>
+<div class="radio-group">
+<input type="radio" name="rawls" id="r1" value="Survived intact"><label class="radio-label" for="r1">Survived intact</label>
+<input type="radio" name="rawls" id="r2" value="Needs revision but not broken"><label class="radio-label" for="r2">Needs revision but not broken</label>
+<input type="radio" name="rawls" id="r3" value="Fundamentally broken"><label class="radio-label" for="r3">Fundamentally broken</label>
+</div>
+<label>Did Nozick (self-ownership) survive the pre-political critique?</label>
+<div class="radio-group">
+<input type="radio" name="nozick" id="n1" value="Survived intact"><label class="radio-label" for="n1">Survived intact</label>
+<input type="radio" name="nozick" id="n2" value="Needs revision but not broken"><label class="radio-label" for="n2">Needs revision but not broken</label>
+<input type="radio" name="nozick" id="n3" value="Fundamentally broken"><label class="radio-label" for="n3">Fundamentally broken</label>
+</div>
+<label>Did MacKinnon (dominance approach) survive the pre-political critique?</label>
+<div class="radio-group">
+<input type="radio" name="mackinnon" id="m1" value="Survived intact"><label class="radio-label" for="m1">Survived intact</label>
+<input type="radio" name="mackinnon" id="m2" value="Needs revision but not broken"><label class="radio-label" for="m2">Needs revision but not broken</label>
+<input type="radio" name="mackinnon" id="m3" value="Fundamentally broken"><label class="radio-label" for="m3">Fundamentally broken</label>
+</div>
+<button class="submit-btn" id="btn2" onclick="submitBlock2()">Submit Verdicts</button>
+<div class="form-success" id="success2">Verdicts submitted ✓</div>
+</div>
+</div>
+
+<!-- SLIDE 12: VERDICT RESULTS -->
 <div class="slide">
 <h2>The Verdict</h2>
 <p>Did any of these theories survive the pre-political critique intact?</p>
 <div class="vote-row">
-<div class="vote-box">
-<h3>Survived</h3>
-<p>___</p>
+<div class="vote-box"><h3>Survived</h3><div class="count">___</div></div>
+<div class="vote-box"><h3>Revised</h3><div class="count">___</div></div>
+<div class="vote-box"><h3>Broken</h3><div class="count">___</div></div>
 </div>
-<div class="vote-box">
-<h3>Revised</h3>
-<p>___</p>
-</div>
-<div class="vote-box">
-<h3>Broken</h3>
-<p>___</p>
-</div>
-</div>
-<p class="dim">Show of hands. Write the count.</p>
+<p class="dim">Read from Google Sheets and fill in. Compare across the three theories.</p>
 </div>
 
-<!-- SLIDE 11: BLOCK 3 HEADER -->
+<!-- SLIDE 13: BLOCK 3 HEADER -->
 <div class="slide">
 <p class="timer">BLOCK 3 · ~10–15 minutes</p>
 <h2>The Classroom Itself</h2>
 <p>Simulation Scenario 8</p>
 </div>
 
-<!-- SLIDE 12: SCENARIO 8 -->
+<!-- SLIDE 14: SCENARIO 8 -->
 <div class="slide">
 <h2>Scenario 8</h2>
 <p class="prompt">You are studying Beauvoir and Fanon in English, at a university modelled on Western higher education, in a territory shaped by colonialism and partition.</p>
@@ -160,7 +205,7 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p class="big-question">Is this course an act of liberation or an act of assimilation — or both?</p>
 </div>
 
-<!-- SLIDE 13: DEBATE PROMPT -->
+<!-- SLIDE 15: DEBATE PROMPT -->
 <div class="slide">
 <h2>Defend Your Position</h2>
 <p class="prompt">Those who chose <span class="highlight">"the liberal analysis is sufficient"</span> for Scenario 8 —</p>
@@ -168,7 +213,42 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p class="big-question">What would you say to each other?</p>
 </div>
 
-<!-- SLIDE 14: CLOSING -->
+<!-- SLIDE 16: FORM — BLOCK 3 -->
+<div class="slide">
+<h2>Final Vote</h2>
+<div class="form-panel" id="form3panel">
+<label>Is this course an act of liberation or an act of assimilation?</label>
+<div class="radio-group">
+<input type="radio" name="liberation" id="l1" value="Liberation — studying these thinkers gives us tools to challenge the system"><label class="radio-label" for="l1">Liberation — studying these thinkers gives us tools to challenge the system</label>
+<input type="radio" name="liberation" id="l2" value="Assimilation — studying them in English at a Western-modelled university reproduces the system"><label class="radio-label" for="l2">Assimilation — studying them in English at a Western-modelled university reproduces the system</label>
+<input type="radio" name="liberation" id="l3" value="Both — the course is simultaneously liberating and assimilating"><label class="radio-label" for="l3">Both — the course is simultaneously liberating and assimilating</label>
+<input type="radio" name="liberation" id="l4" value="I'm not sure"><label class="radio-label" for="l4">I'm not sure</label>
+</div>
+<label>Has your position on the egalitarian plateau changed since the beginning of the semester?</label>
+<div class="radio-group">
+<input type="radio" name="plateau" id="ep1" value="Yes — I now think the plateau fractures"><label class="radio-label" for="ep1">Yes — I now think the plateau fractures</label>
+<input type="radio" name="plateau" id="ep2" value="Yes — I now think the plateau holds more strongly than I expected"><label class="radio-label" for="ep2">Yes — I now think the plateau holds more strongly than I expected</label>
+<input type="radio" name="plateau" id="ep3" value="No — my position has not changed"><label class="radio-label" for="ep3">No — my position has not changed</label>
+<input type="radio" name="plateau" id="ep4" value="I haven't decided yet"><label class="radio-label" for="ep4">I haven't decided yet</label>
+</div>
+<button class="submit-btn" id="btn3" onclick="submitBlock3()">Submit Final Vote</button>
+<div class="form-success" id="success3">Final vote submitted ✓</div>
+</div>
+</div>
+
+<!-- SLIDE 17: LIVE RESULTS -->
+<div class="slide">
+<h2>The Room Has Spoken</h2>
+<div class="grid">
+<div class="grid-item"><h3>Liberation</h3><div class="count">___</div></div>
+<div class="grid-item"><h3>Assimilation</h3><div class="count">___</div></div>
+<div class="grid-item"><h3>Both</h3><div class="count">___</div></div>
+<div class="grid-item"><h3>Not Sure</h3><div class="count">___</div></div>
+</div>
+<p class="dim">Read from Google Sheets summary. This is the data — not a conclusion.</p>
+</div>
+
+<!-- SLIDE 18: CLOSING -->
 <div class="slide">
 <h2>Closing</h2>
 <p class="prompt">Your theoretical autobiography asks where your thinking started, how it changed, and where it stands now.</p>
@@ -176,7 +256,7 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p>You do not have to answer it. But you should not pretend it does not exist.</p>
 </div>
 
-<!-- SLIDE 15: PREVIEW -->
+<!-- SLIDE 19: PREVIEW -->
 <div class="slide">
 <h2>Next Week</h2>
 <p class="prompt"><span class="highlight">Communitarianism</span> argues that identity is formed in communities — that the liberal individual is an abstraction.</p>
@@ -185,9 +265,68 @@ p{font-size:clamp(1.1rem,2.2vw,1.5rem);line-height:1.7;margin-bottom:1rem;max-wi
 <p class="dim">Kymlicka Chapter 6 + Taylor · Brief 5 due Sunday May 11</p>
 </div>
 
-<div class="counter" id="counter">1 / 15</div>
+<div class="counter" id="counter">1 / 19</div>
 
 <script>
+var FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSc-WX4-rTx0czLhc2uJ3MiimqmILuFuP1LACMWzYR0_7C-C6g/formResponse";
+
+function submitToGoogle(data,btnId,successId){
+ var btn=document.getElementById(btnId);
+ btn.disabled=true;
+ btn.textContent="Submitting...";
+ var params=[];
+ for(var key in data){
+  params.push(encodeURIComponent(key)+"="+encodeURIComponent(data[key]));
+ }
+ var url=FORM_URL+"?"+params.join("&");
+ var img=new Image();
+ img.onload=img.onerror=function(){
+  btn.style.display="none";
+  document.getElementById(successId).style.display="block";
+ };
+ img.src=url;
+}
+
+function getRadio(name){
+ var r=document.querySelector('input[name="'+name+'"]:checked');
+ return r?r.value:"";
+}
+
+function submitBlock1(){
+ var name=document.getElementById('f1name').value.trim();
+ var profile=getRadio('profile');
+ var pattern=getRadio('pattern');
+ if(!name||!profile||!pattern){alert("Please fill in all fields.");return;}
+ var data={};
+ data["entry.825731389"]=name;
+ data["entry.1798347580"]=profile;
+ data["entry.253634321"]=pattern;
+ submitToGoogle(data,"btn1","success1");
+}
+
+function submitBlock2(){
+ var rawls=getRadio('rawls');
+ var nozick=getRadio('nozick');
+ var mackinnon=getRadio('mackinnon');
+ if(!rawls||!nozick||!mackinnon){alert("Please answer all three verdicts.");return;}
+ var data={};
+ data["entry.1094031660"]=rawls;
+ data["entry.1119298216"]=nozick;
+ data["entry.289997156"]=mackinnon;
+ submitToGoogle(data,"btn2","success2");
+}
+
+function submitBlock3(){
+ var lib=getRadio('liberation');
+ var plateau=getRadio('plateau');
+ if(!lib||!plateau){alert("Please answer both questions.");return;}
+ var data={};
+ data["entry.370640416"]=lib;
+ data["entry.1668186960"]=plateau;
+ submitToGoogle(data,"btn3","success3");
+}
+
+/* SLIDE NAVIGATION */
 var slides=document.querySelectorAll('.slide');
 var current=0;
 var total=slides.length;
@@ -201,16 +340,19 @@ function show(n){
  counter.textContent=(current+1)+' / '+total;
 }
 document.addEventListener('keydown',function(e){
+ if(e.target.tagName==='INPUT')return;
  if(e.key==='ArrowRight'||e.key===' '||e.key==='PageDown'){e.preventDefault();show(current+1);}
  if(e.key==='ArrowLeft'||e.key==='PageUp'){e.preventDefault();show(current-1);}
 });
 document.addEventListener('click',function(e){
- if(e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.tagName==='INPUT')return;
+ if(e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.tagName==='INPUT'||e.target.tagName==='LABEL')return;
+ if(e.target.classList.contains('radio-label'))return;
  var x=e.clientX;
  if(x>window.innerWidth/2){show(current+1);}else{show(current-1);}
 });
 document.addEventListener('touchend',function(e){
- if(e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.tagName==='INPUT')return;
+ if(e.target.tagName==='BUTTON'||e.target.tagName==='A'||e.target.tagName==='INPUT'||e.target.tagName==='LABEL')return;
+ if(e.target.classList.contains('radio-label'))return;
  var x=e.changedTouches[0].clientX;
  if(x>window.innerWidth/2){show(current+1);}else{show(current-1);}
 });
