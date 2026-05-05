@@ -19,16 +19,22 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 .grid{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:center;margin:1.2rem auto;max-width:50rem;}
 .grid-item{background:rgba(255,255,255,0.08);border:2px solid #fdba74;border-radius:12px;padding:1.2rem;flex:1;min-width:180px;max-width:260px;}
 .grid-item h3{color:#fdba74;font-size:clamp(0.95rem,1.6vw,1.2rem);margin-bottom:0.4rem;}
-.grid-item .count{font-size:2.2rem;color:#fdba74;font-weight:700;}
-.vote-row{display:flex;gap:1.5rem;justify-content:center;margin:1.5rem auto;max-width:48rem;}
-.vote-box{background:rgba(255,255,255,0.06);border:2px solid #fdba74;border-radius:12px;padding:1.5rem 2rem;text-align:center;flex:1;}
-.vote-box h3{color:#fdba74;font-size:clamp(1.1rem,2vw,1.5rem);margin-bottom:0.3rem;}
+.grid-item .count{font-size:2.5rem;color:#fdba74;font-weight:700;transition:all 0.3s;}
+.vote-row{display:flex;gap:1.5rem;justify-content:center;margin:1.5rem auto;max-width:52rem;flex-wrap:wrap;}
+.vote-box{background:rgba(255,255,255,0.06);border:2px solid #fdba74;border-radius:12px;padding:1.2rem 1rem;text-align:center;flex:1;min-width:140px;}
+.vote-box h3{color:#fdba74;font-size:clamp(0.9rem,1.6vw,1.2rem);margin-bottom:0.3rem;}
 .vote-box .count{font-size:2.2rem;color:#fdba74;font-weight:700;}
+.theory-verdict-row{display:flex;gap:1rem;justify-content:center;margin:0.8rem auto;max-width:52rem;flex-wrap:wrap;}
+.theory-col{flex:1;min-width:150px;background:rgba(255,255,255,0.06);border:2px solid rgba(253,186,116,0.4);border-radius:12px;padding:1rem;text-align:center;}
+.theory-col h3{color:#fdba74;font-size:clamp(0.85rem,1.4vw,1.05rem);margin-bottom:0.6rem;}
+.theory-col .tv-row{display:flex;justify-content:space-between;margin-bottom:0.3rem;font-size:clamp(0.8rem,1.2vw,0.95rem);}
+.theory-col .tv-row .tv-label{color:#aaa;text-align:left;}
+.theory-col .tv-row .tv-count{color:#fdba74;font-weight:700;}
 .dim{color:#888;font-size:clamp(0.85rem,1.4vw,1rem);}
 .counter{position:fixed;bottom:1.2rem;right:1.5rem;font-size:0.85rem;color:#555;}
 .timer{font-size:clamp(0.9rem,1.5vw,1.1rem);color:#888;margin-bottom:0.5rem;}
-
-/* FORM STYLES */
+.refresh-btn{background:transparent;border:2px solid #fdba74;color:#fdba74;padding:0.5rem 1.5rem;font-size:clamp(0.85rem,1.4vw,1rem);border-radius:8px;cursor:pointer;font-family:inherit;margin-top:0.8rem;transition:all 0.2s;}
+.refresh-btn:hover{background:rgba(253,186,116,0.15);}
 .form-panel{background:rgba(255,255,255,0.06);border:2px solid rgba(253,186,116,0.4);border-radius:14px;padding:1.5rem 2rem;margin:1rem auto;max-width:42rem;text-align:left;}
 .form-panel label{display:block;font-size:clamp(0.95rem,1.6vw,1.1rem);color:#fdba74;margin-bottom:0.4rem;font-weight:600;}
 .form-panel input[type="text"]{width:100%;padding:0.6rem 0.8rem;font-size:1rem;border:2px solid rgba(253,186,116,0.4);border-radius:8px;background:rgba(255,255,255,0.08);color:#fff;font-family:inherit;margin-bottom:1rem;outline:none;}
@@ -43,6 +49,7 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 .submit-btn:hover{background:#fbbf24;}
 .submit-btn:disabled{background:#555;color:#888;cursor:not-allowed;}
 .form-success{text-align:center;color:#4ade80;font-size:clamp(1rem,1.8vw,1.3rem);margin-top:1rem;display:none;}
+.loading{color:#888;font-style:italic;}
 </style>
 </head>
 <body>
@@ -71,14 +78,14 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 <label for="f1name">Full Name</label>
 <input type="text" id="f1name" placeholder="Your name">
 <label>What is your profile label?</label>
-<div class="radio-group" id="f1profile">
+<div class="radio-group">
 <input type="radio" name="profile" id="p1" value="The Radical Deconstructionist"><label class="radio-label" for="p1">The Radical Deconstructionist</label>
 <input type="radio" name="profile" id="p2" value="The Critical Liberal"><label class="radio-label" for="p2">The Critical Liberal</label>
 <input type="radio" name="profile" id="p3" value="The Institutional Pragmatist"><label class="radio-label" for="p3">The Institutional Pragmatist</label>
 <input type="radio" name="profile" id="p4" value="The Situational Thinker"><label class="radio-label" for="p4">The Situational Thinker</label>
 </div>
 <label>Was your verdict pattern consistent or did you shift?</label>
-<div class="radio-group" id="f1pattern">
+<div class="radio-group">
 <input type="radio" name="pattern" id="pt1" value="Mostly consistent"><label class="radio-label" for="pt1">Mostly consistent</label>
 <input type="radio" name="pattern" id="pt2" value="I shifted depending on the case"><label class="radio-label" for="pt2">I shifted depending on the case</label>
 </div>
@@ -87,16 +94,17 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 </div>
 </div>
 
-<!-- SLIDE 4: PROFILE RESULTS -->
-<div class="slide">
+<!-- SLIDE 4: PROFILE RESULTS (LIVE) -->
+<div class="slide" id="slide4">
 <h2>Profile Distribution</h2>
 <div class="grid">
-<div class="grid-item"><h3>Radical Deconstructionist</h3><div class="count" id="countRD">—</div></div>
-<div class="grid-item"><h3>Critical Liberal</h3><div class="count" id="countCL">—</div></div>
-<div class="grid-item"><h3>Institutional Pragmatist</h3><div class="count" id="countIP">—</div></div>
-<div class="grid-item"><h3>Situational Thinker</h3><div class="count" id="countST">—</div></div>
+<div class="grid-item"><h3>Radical Deconstructionist</h3><div class="count" id="cRD">—</div></div>
+<div class="grid-item"><h3>Critical Liberal</h3><div class="count" id="cCL">—</div></div>
+<div class="grid-item"><h3>Institutional Pragmatist</h3><div class="count" id="cIP">—</div></div>
+<div class="grid-item"><h3>Situational Thinker</h3><div class="count" id="cST">—</div></div>
 </div>
-<p class="dim">Check Google Sheets on your device and read the numbers aloud.</p>
+<p class="dim" id="profileStatus">Loading live data...</p>
+<button class="refresh-btn" onclick="fetchAndDisplayProfiles()">↻ Refresh Results</button>
 </div>
 
 <!-- SLIDE 5: CONSISTENCY QUESTION -->
@@ -155,19 +163,19 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 <div class="slide">
 <h2>Cast Your Verdicts</h2>
 <div class="form-panel" id="form2panel">
-<label>Did Rawls (the veil of ignorance) survive the pre-political critique?</label>
+<label>Did Rawls (the veil of ignorance) survive?</label>
 <div class="radio-group">
 <input type="radio" name="rawls" id="r1" value="Survived intact"><label class="radio-label" for="r1">Survived intact</label>
 <input type="radio" name="rawls" id="r2" value="Needs revision but not broken"><label class="radio-label" for="r2">Needs revision but not broken</label>
 <input type="radio" name="rawls" id="r3" value="Fundamentally broken"><label class="radio-label" for="r3">Fundamentally broken</label>
 </div>
-<label>Did Nozick (self-ownership) survive the pre-political critique?</label>
+<label>Did Nozick (self-ownership) survive?</label>
 <div class="radio-group">
 <input type="radio" name="nozick" id="n1" value="Survived intact"><label class="radio-label" for="n1">Survived intact</label>
 <input type="radio" name="nozick" id="n2" value="Needs revision but not broken"><label class="radio-label" for="n2">Needs revision but not broken</label>
 <input type="radio" name="nozick" id="n3" value="Fundamentally broken"><label class="radio-label" for="n3">Fundamentally broken</label>
 </div>
-<label>Did MacKinnon (dominance approach) survive the pre-political critique?</label>
+<label>Did MacKinnon (dominance approach) survive?</label>
 <div class="radio-group">
 <input type="radio" name="mackinnon" id="m1" value="Survived intact"><label class="radio-label" for="m1">Survived intact</label>
 <input type="radio" name="mackinnon" id="m2" value="Needs revision but not broken"><label class="radio-label" for="m2">Needs revision but not broken</label>
@@ -178,16 +186,31 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 </div>
 </div>
 
-<!-- SLIDE 12: VERDICT RESULTS -->
-<div class="slide">
-<h2>The Verdict</h2>
-<p>Did any of these theories survive the pre-political critique intact?</p>
-<div class="vote-row">
-<div class="vote-box"><h3>Survived</h3><div class="count">___</div></div>
-<div class="vote-box"><h3>Revised</h3><div class="count">___</div></div>
-<div class="vote-box"><h3>Broken</h3><div class="count">___</div></div>
+<!-- SLIDE 12: VERDICT RESULTS (LIVE) -->
+<div class="slide" id="slide12">
+<h2>The Theories — Verdict</h2>
+<div class="theory-verdict-row">
+<div class="theory-col">
+<h3>Rawls</h3>
+<div class="tv-row"><span class="tv-label">Survived</span><span class="tv-count" id="rawlsS">—</span></div>
+<div class="tv-row"><span class="tv-label">Revised</span><span class="tv-count" id="rawlsR">—</span></div>
+<div class="tv-row"><span class="tv-label">Broken</span><span class="tv-count" id="rawlsB">—</span></div>
 </div>
-<p class="dim">Read from Google Sheets and fill in. Compare across the three theories.</p>
+<div class="theory-col">
+<h3>Nozick</h3>
+<div class="tv-row"><span class="tv-label">Survived</span><span class="tv-count" id="nozickS">—</span></div>
+<div class="tv-row"><span class="tv-label">Revised</span><span class="tv-count" id="nozickR">—</span></div>
+<div class="tv-row"><span class="tv-label">Broken</span><span class="tv-count" id="nozickB">—</span></div>
+</div>
+<div class="theory-col">
+<h3>MacKinnon</h3>
+<div class="tv-row"><span class="tv-label">Survived</span><span class="tv-count" id="mackS">—</span></div>
+<div class="tv-row"><span class="tv-label">Revised</span><span class="tv-count" id="mackR">—</span></div>
+<div class="tv-row"><span class="tv-label">Broken</span><span class="tv-count" id="mackB">—</span></div>
+</div>
+</div>
+<p class="dim" id="verdictStatus">Loading live data...</p>
+<button class="refresh-btn" onclick="fetchAndDisplayVerdicts()">↻ Refresh Results</button>
 </div>
 
 <!-- SLIDE 13: BLOCK 3 HEADER -->
@@ -219,15 +242,15 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 <div class="form-panel" id="form3panel">
 <label>Is this course an act of liberation or an act of assimilation?</label>
 <div class="radio-group">
-<input type="radio" name="liberation" id="l1" value="Liberation — studying these thinkers gives us tools to challenge the system"><label class="radio-label" for="l1">Liberation — studying these thinkers gives us tools to challenge the system</label>
-<input type="radio" name="liberation" id="l2" value="Assimilation — studying them in English at a Western-modelled university reproduces the system"><label class="radio-label" for="l2">Assimilation — studying them in English at a Western-modelled university reproduces the system</label>
-<input type="radio" name="liberation" id="l3" value="Both — the course is simultaneously liberating and assimilating"><label class="radio-label" for="l3">Both — the course is simultaneously liberating and assimilating</label>
+<input type="radio" name="liberation" id="l1" value="Liberation — studying these thinkers gives us tools to challenge the system"><label class="radio-label" for="l1">Liberation — these thinkers give us tools to challenge the system</label>
+<input type="radio" name="liberation" id="l2" value="Assimilation — studying them in English at a Western-modelled university reproduces the system"><label class="radio-label" for="l2">Assimilation — studying them in this context reproduces the system</label>
+<input type="radio" name="liberation" id="l3" value="Both — the course is simultaneously liberating and assimilating"><label class="radio-label" for="l3">Both — simultaneously liberating and assimilating</label>
 <input type="radio" name="liberation" id="l4" value="I'm not sure"><label class="radio-label" for="l4">I'm not sure</label>
 </div>
-<label>Has your position on the egalitarian plateau changed since the beginning of the semester?</label>
+<label>Has your position on the egalitarian plateau changed?</label>
 <div class="radio-group">
-<input type="radio" name="plateau" id="ep1" value="Yes — I now think the plateau fractures"><label class="radio-label" for="ep1">Yes — I now think the plateau fractures</label>
-<input type="radio" name="plateau" id="ep2" value="Yes — I now think the plateau holds more strongly than I expected"><label class="radio-label" for="ep2">Yes — I now think the plateau holds more strongly than I expected</label>
+<input type="radio" name="plateau" id="ep1" value="Yes — I now think the plateau fractures"><label class="radio-label" for="ep1">Yes — the plateau fractures</label>
+<input type="radio" name="plateau" id="ep2" value="Yes — I now think the plateau holds more strongly than I expected"><label class="radio-label" for="ep2">Yes — the plateau holds more strongly than I expected</label>
 <input type="radio" name="plateau" id="ep3" value="No — my position has not changed"><label class="radio-label" for="ep3">No — my position has not changed</label>
 <input type="radio" name="plateau" id="ep4" value="I haven't decided yet"><label class="radio-label" for="ep4">I haven't decided yet</label>
 </div>
@@ -236,16 +259,24 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 </div>
 </div>
 
-<!-- SLIDE 17: LIVE RESULTS -->
-<div class="slide">
+<!-- SLIDE 17: FINAL RESULTS (LIVE) -->
+<div class="slide" id="slide17">
 <h2>The Room Has Spoken</h2>
 <div class="grid">
-<div class="grid-item"><h3>Liberation</h3><div class="count">___</div></div>
-<div class="grid-item"><h3>Assimilation</h3><div class="count">___</div></div>
-<div class="grid-item"><h3>Both</h3><div class="count">___</div></div>
-<div class="grid-item"><h3>Not Sure</h3><div class="count">___</div></div>
+<div class="grid-item"><h3>Liberation</h3><div class="count" id="cLib">—</div></div>
+<div class="grid-item"><h3>Assimilation</h3><div class="count" id="cAss">—</div></div>
+<div class="grid-item"><h3>Both</h3><div class="count" id="cBoth">—</div></div>
+<div class="grid-item"><h3>Not Sure</h3><div class="count" id="cNS">—</div></div>
 </div>
-<p class="dim">Read from Google Sheets summary. This is the data — not a conclusion.</p>
+<h2 style="margin-top:1.5rem;">The Egalitarian Plateau</h2>
+<div class="grid">
+<div class="grid-item"><h3>Fractures</h3><div class="count" id="cFrac">—</div></div>
+<div class="grid-item"><h3>Holds</h3><div class="count" id="cHold">—</div></div>
+<div class="grid-item"><h3>No Change</h3><div class="count" id="cNoC">—</div></div>
+<div class="grid-item"><h3>Undecided</h3><div class="count" id="cUnd">—</div></div>
+</div>
+<p class="dim" id="finalStatus">Loading live data...</p>
+<button class="refresh-btn" onclick="fetchAndDisplayFinal()">↻ Refresh Results</button>
 </div>
 
 <!-- SLIDE 18: CLOSING -->
@@ -269,22 +300,168 @@ p{font-size:clamp(1.05rem,2vw,1.4rem);line-height:1.7;margin-bottom:0.8rem;max-w
 
 <script>
 var FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSc-WX4-rTx0czLhc2uJ3MiimqmILuFuP1LACMWzYR0_7C-C6g/formResponse";
+var CSV_URL="https://docs.google.com/spreadsheets/d/e/2PACX-1vRVWlh4jqrS1Ybs3dW4RVdpd8CEpxKEYjUbMAU_GKKaKYuszh8NxJiA9BjnBGTHKlIEC2K9UJ3jFD_Q/pub?output=csv";
 
-function submitToGoogle(data,btnId,successId){
- var btn=document.getElementById(btnId);
- btn.disabled=true;
- btn.textContent="Submitting...";
- var params=[];
- for(var key in data){
-  params.push(encodeURIComponent(key)+"="+encodeURIComponent(data[key]));
+/* ---- CSV PARSER ---- */
+function parseCSV(text){
+ var lines=text.split('\n');
+ if(lines.length<2) return [];
+ var headers=splitCSVLine(lines[0]);
+ var rows=[];
+ for(var i=1;i<lines.length;i++){
+  if(!lines[i].trim()) continue;
+  var vals=splitCSVLine(lines[i]);
+  var obj={};
+  for(var j=0;j<headers.length;j++){
+   obj[headers[j]?headers[j].trim():('col'+j)]=(vals[j]||'').trim();
+  }
+  rows.push(obj);
  }
- var url=FORM_URL+"?"+params.join("&");
+ return rows;
+}
+function splitCSVLine(line){
+ var result=[];var current='';var inQuotes=false;
+ for(var i=0;i<line.length;i++){
+  var c=line[i];
+  if(inQuotes){
+   if(c==='"'&&line[i+1]==='"'){current+='"';i++;}
+   else if(c==='"'){inQuotes=false;}
+   else{current+=c;}
+  } else {
+   if(c==='"'){inQuotes=true;}
+   else if(c===','){result.push(current);current='';}
+   else{current+=c;}
+  }
+ }
+ result.push(current);
+ return result;
+}
+
+function fetchCSV(callback){
+ var xhr=new XMLHttpRequest();
+ xhr.open('GET',CSV_URL+'&_t='+Date.now(),true);
+ xhr.onload=function(){
+  if(xhr.status===200){callback(parseCSV(xhr.responseText));}
+  else{callback([]);}
+ };
+ xhr.onerror=function(){callback([]);};
+ xhr.send();
+}
+
+/* ---- COUNT HELPERS ---- */
+function countCol(rows,colName,value){
+ var c=0;
+ for(var i=0;i<rows.length;i++){
+  if(rows[i][colName]&&rows[i][colName].indexOf(value)!==-1) c++;
+ }
+ return c;
+}
+function countExact(rows,colName,value){
+ var c=0;
+ for(var i=0;i<rows.length;i++){
+  if(rows[i][colName]&&rows[i][colName]===value) c++;
+ }
+ return c;
+}
+
+/* ---- DISPLAY FUNCTIONS ---- */
+function fetchAndDisplayProfiles(){
+ document.getElementById('profileStatus').textContent='Fetching...';
+ fetchCSV(function(rows){
+  var col=null;
+  for(var key in (rows[0]||{})){
+   if(key.toLowerCase().indexOf('profile')!==-1 && key.toLowerCase().indexOf('label')!==-1){col=key;break;}
+  }
+  if(!col){
+   for(var key in (rows[0]||{})){
+    if(key.toLowerCase().indexOf('profile')!==-1){col=key;break;}
+   }
+  }
+  if(!col&&rows[0]){
+   var keys=Object.keys(rows[0]);
+   if(keys.length>=4) col=keys[3];
+  }
+  if(col){
+   document.getElementById('cRD').textContent=countCol(rows,col,'Radical Deconstructionist');
+   document.getElementById('cCL').textContent=countCol(rows,col,'Critical Liberal');
+   document.getElementById('cIP').textContent=countCol(rows,col,'Institutional Pragmatist');
+   document.getElementById('cST').textContent=countCol(rows,col,'Situational Thinker');
+   document.getElementById('profileStatus').textContent='Live data · '+rows.length+' responses · Last refreshed: '+new Date().toLocaleTimeString();
+  } else {
+   document.getElementById('profileStatus').textContent='Could not find profile column. Check Google Sheet headers.';
+  }
+ });
+}
+
+function fetchAndDisplayVerdicts(){
+ document.getElementById('verdictStatus').textContent='Fetching...';
+ fetchCSV(function(rows){
+  var keys=Object.keys(rows[0]||{});
+  var rawlsCol=null,nozickCol=null,mackCol=null;
+  for(var i=0;i<keys.length;i++){
+   var k=keys[i].toLowerCase();
+   if(k.indexOf('rawls')!==-1) rawlsCol=keys[i];
+   if(k.indexOf('nozick')!==-1) nozickCol=keys[i];
+   if(k.indexOf('mackinnon')!==-1||k.indexOf('mackinno')!==-1) mackCol=keys[i];
+  }
+  if(rawlsCol){
+   document.getElementById('rawlsS').textContent=countCol(rows,rawlsCol,'Survived intact');
+   document.getElementById('rawlsR').textContent=countCol(rows,rawlsCol,'Needs revision');
+   document.getElementById('rawlsB').textContent=countCol(rows,rawlsCol,'Fundamentally broken');
+  }
+  if(nozickCol){
+   document.getElementById('nozickS').textContent=countCol(rows,nozickCol,'Survived intact');
+   document.getElementById('nozickR').textContent=countCol(rows,nozickCol,'Needs revision');
+   document.getElementById('nozickB').textContent=countCol(rows,nozickCol,'Fundamentally broken');
+  }
+  if(mackCol){
+   document.getElementById('mackS').textContent=countCol(rows,mackCol,'Survived intact');
+   document.getElementById('mackR').textContent=countCol(rows,mackCol,'Needs revision');
+   document.getElementById('mackB').textContent=countCol(rows,mackCol,'Fundamentally broken');
+  }
+  document.getElementById('verdictStatus').textContent='Live data · '+rows.length+' responses · Last refreshed: '+new Date().toLocaleTimeString();
+ });
+}
+
+function fetchAndDisplayFinal(){
+ document.getElementById('finalStatus').textContent='Fetching...';
+ fetchCSV(function(rows){
+  var keys=Object.keys(rows[0]||{});
+  var libCol=null,platCol=null;
+  for(var i=0;i<keys.length;i++){
+   var k=keys[i].toLowerCase();
+   if(k.indexOf('liberation')!==-1||k.indexOf('assimilation')!==-1||k.indexOf('course')!==-1) libCol=keys[i];
+   if(k.indexOf('plateau')!==-1||k.indexOf('egalitarian')!==-1) platCol=keys[i];
+  }
+  if(libCol){
+   document.getElementById('cLib').textContent=countCol(rows,libCol,'Liberation');
+   document.getElementById('cAss').textContent=countCol(rows,libCol,'Assimilation');
+   document.getElementById('cBoth').textContent=countCol(rows,libCol,'Both');
+   document.getElementById('cNS').textContent=countCol(rows,libCol,'not sure');
+  }
+  if(platCol){
+   document.getElementById('cFrac').textContent=countCol(rows,platCol,'fractures');
+   document.getElementById('cHold').textContent=countCol(rows,platCol,'holds');
+   document.getElementById('cNoC').textContent=countCol(rows,platCol,'not changed');
+   document.getElementById('cUnd').textContent=countCol(rows,platCol,'decided yet');
+  }
+  document.getElementById('finalStatus').textContent='Live data · '+rows.length+' responses · Last refreshed: '+new Date().toLocaleTimeString();
+ });
+}
+
+/* ---- FORM SUBMISSION ---- */
+function submitToGoogle(data,btnId,successId,callback){
+ var btn=document.getElementById(btnId);
+ btn.disabled=true;btn.textContent="Submitting...";
+ var params=[];
+ for(var key in data) params.push(encodeURIComponent(key)+"="+encodeURIComponent(data[key]));
  var img=new Image();
  img.onload=img.onerror=function(){
   btn.style.display="none";
   document.getElementById(successId).style.display="block";
+  if(callback) setTimeout(callback,3000);
  };
- img.src=url;
+ img.src=FORM_URL+"?"+params.join("&")+"&submit=Submit";
 }
 
 function getRadio(name){
@@ -297,11 +474,11 @@ function submitBlock1(){
  var profile=getRadio('profile');
  var pattern=getRadio('pattern');
  if(!name||!profile||!pattern){alert("Please fill in all fields.");return;}
- var data={};
- data["entry.825731389"]=name;
- data["entry.1798347580"]=profile;
- data["entry.253634321"]=pattern;
- submitToGoogle(data,"btn1","success1");
+ submitToGoogle({
+  "entry.825731389":name,
+  "entry.1798347580":profile,
+  "entry.253634321":pattern
+ },"btn1","success1",fetchAndDisplayProfiles);
 }
 
 function submitBlock2(){
@@ -309,24 +486,31 @@ function submitBlock2(){
  var nozick=getRadio('nozick');
  var mackinnon=getRadio('mackinnon');
  if(!rawls||!nozick||!mackinnon){alert("Please answer all three verdicts.");return;}
- var data={};
- data["entry.1094031660"]=rawls;
- data["entry.1119298216"]=nozick;
- data["entry.289997156"]=mackinnon;
- submitToGoogle(data,"btn2","success2");
+ submitToGoogle({
+  "entry.1094031660":rawls,
+  "entry.1119298216":nozick,
+  "entry.289997156":mackinnon
+ },"btn2","success2",fetchAndDisplayVerdicts);
 }
 
 function submitBlock3(){
  var lib=getRadio('liberation');
  var plateau=getRadio('plateau');
  if(!lib||!plateau){alert("Please answer both questions.");return;}
- var data={};
- data["entry.370640416"]=lib;
- data["entry.1668186960"]=plateau;
- submitToGoogle(data,"btn3","success3");
+ submitToGoogle({
+  "entry.370640416":lib,
+  "entry.1668186960":plateau
+ },"btn3","success3",fetchAndDisplayFinal);
 }
 
-/* SLIDE NAVIGATION */
+/* ---- AUTO-FETCH ON SLIDE CHANGE ---- */
+function onSlideChange(idx){
+ if(idx===3) fetchAndDisplayProfiles();
+ if(idx===11) fetchAndDisplayVerdicts();
+ if(idx===16) fetchAndDisplayFinal();
+}
+
+/* ---- SLIDE NAVIGATION ---- */
 var slides=document.querySelectorAll('.slide');
 var current=0;
 var total=slides.length;
@@ -338,6 +522,7 @@ function show(n){
  if(current>=total)current=total-1;
  slides[current].classList.add('active');
  counter.textContent=(current+1)+' / '+total;
+ onSlideChange(current);
 }
 document.addEventListener('keydown',function(e){
  if(e.target.tagName==='INPUT')return;
@@ -359,3 +544,4 @@ document.addEventListener('touchend',function(e){
 </script>
 </body>
 </html>
+
