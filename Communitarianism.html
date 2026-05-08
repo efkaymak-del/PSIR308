@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSIR 308 – Communitarianism</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#fafafa;color:#1a1a1a;overflow:hidden;height:100vh}
+.slide{display:none;flex-direction:column;justify-content:center;align-items:center;height:100vh;padding:4vw 6vw;text-align:center;position:relative}
+.slide.active{display:flex}
+h1{font-size:clamp(2rem,4.5vw,3.2rem);color:#1a1a1a;margin-bottom:0.8rem;line-height:1.2;font-weight:700}
+h2{font-size:clamp(1.4rem,3vw,2.2rem);color:#4a148c;margin-bottom:1rem;line-height:1.3;font-weight:600}
+h3{font-size:clamp(1.1rem,2vw,1.5rem);color:#6a1b9a;margin-bottom:0.8rem;font-weight:600}
+p,.desc{font-size:clamp(1rem,1.8vw,1.25rem);line-height:1.75;max-width:800px;margin:0.4rem auto;color:#333}
+.subtitle{font-size:clamp(1rem,2vw,1.4rem);color:#666;margin-top:0.5rem}
+.highlight{color:#c62828;font-weight:600}
+.concept{color:#4a148c;font-weight:600}
+.tag{display:inline-block;background:#f3e5f5;border:1px solid #ce93d8;border-radius:20px;padding:6px 18px;margin:4px;font-size:0.95rem;color:#6a1b9a}
+.quote-box{background:#f5f5f5;border-left:4px solid #4a148c;padding:1.2rem 1.5rem;margin:1rem auto;max-width:750px;text-align:left;border-radius:0 8px 8px 0;font-size:clamp(0.95rem,1.6vw,1.15rem);line-height:1.7;font-style:italic;color:#444}
+.quote-box .attr{font-style:normal;font-size:0.9rem;color:#888;margin-top:0.5rem;display:block}
+.prompt-box{background:#fff3e0;border-left:4px solid #e65100;padding:1.2rem 1.5rem;margin:1rem auto;max-width:750px;text-align:left;border-radius:0 8px 8px 0;font-size:clamp(0.95rem,1.6vw,1.15rem);line-height:1.7}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:850px;margin:1rem auto;text-align:left}
+.col-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1.2rem 1.5rem;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.col-card h3{margin-bottom:0.5rem;font-size:1.1rem}
+.col-card p{font-size:0.95rem;line-height:1.6;margin:0}
+.thinker-row{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin:1rem auto;max-width:900px}
+.thinker-card{background:#fff;border:1px solid #e0e0e0;border-radius:12px;padding:1rem 1.3rem;min-width:180px;max-width:220px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.thinker-card h3{color:#4a148c;margin-bottom:0.3rem;font-size:1rem}
+.thinker-card p{font-size:0.85rem;line-height:1.5;color:#555;margin:0}
+.counter{position:fixed;bottom:15px;right:20px;color:#999;font-size:0.85rem;z-index:100}
+.section-tag{position:absolute;top:15px;left:20px;font-size:0.8rem;color:#4a148c;text-transform:uppercase;letter-spacing:2px;font-weight:600}
+.link{color:#4a148c;text-decoration:underline}
+ul.clean{list-style:none;text-align:left;max-width:700px;margin:0.8rem auto}
+ul.clean li{padding:0.35rem 0;font-size:clamp(0.95rem,1.6vw,1.1rem);color:#333}
+ul.clean li::before{content:"· ";color:#4a148c;font-weight:700}
+@media(max-width:700px){.two-col{grid-template-columns:1fr}.thinker-row{flex-direction:column;align-items:center}}
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1 — Title -->
+<div class="slide active" id="s1">
+<p class="subtitle">PSIR 308 · Contemporary Political Philosophy · Week 10</p>
+<h1>Communitarianism</h1>
+<p class="subtitle">Kymlicka, Chapter 6</p>
+<p style="margin-top:2rem;color:#888">The self is not prior to its ends — or is it?</p>
+</div>
+
+<!-- SLIDE 2 — Where we've been -->
+<div class="slide" id="s2">
+<span class="section-tag">Context</span>
+<h2>The semester so far</h2>
+<p>Every theory we've studied shares what Dworkin calls the <span class="concept">egalitarian plateau</span> — the conviction that the interests of each person matter, and matter equally.</p>
+<p style="margin-top:0.8rem">They disagree on <em>what</em> those interests are and <em>how</em> to treat them equally.</p>
+<p style="margin-top:0.8rem">Last week, Beauvoir and Fanon asked: <span class="highlight">who counts as a person on that plateau?</span></p>
+<p style="margin-top:0.8rem">This week, the communitarians ask a different question.</p>
+</div>
+
+<!-- SLIDE 3 — The communitarian question -->
+<div class="slide" id="s3">
+<span class="section-tag">The Challenge</span>
+<h2>The communitarian question</h2>
+<p style="font-size:clamp(1.2rem,2.5vw,1.7rem);color:#c62828;max-width:700px;line-height:1.5;margin:1.5rem auto">
+Can a theory of justice that treats persons as isolated, autonomous individuals ever make sense — when every person is <em>already</em> embedded in communities that shaped who they are?
+</p>
+</div>
+
+<!-- SLIDE 4 — What is communitarianism? -->
+<div class="slide" id="s4">
+<span class="section-tag">Definition</span>
+<h2>What is communitarianism?</h2>
+<p>Not a single theory but a family of critiques of liberalism, united by one claim: liberals misunderstand the relationship between the individual and the community.</p>
+<p style="margin-top:1rem">The community is not just an association individuals choose to join. It is the <span class="concept">source</span> of their identity, values, and capacity for moral reasoning.</p>
+<p style="margin-top:1rem">Communitarians differ from earlier critics (Marxists, feminists) because they attack liberalism not for its <em>outcomes</em> but for its <em>picture of the person</em>.</p>
+</div>
+
+<!-- SLIDE 5 — The four thinkers -->
+<div class="slide" id="s5">
+<span class="section-tag">Thinkers</span>
+<h2>Four communitarian voices</h2>
+<div class="thinker-row">
+<div class="thinker-card"><h3>Sandel</h3><p>The self is constituted by its ends, not prior to them</p></div>
+<div class="thinker-card"><h3>Taylor</h3><p>Identity requires social recognition and cultural horizons</p></div>
+<div class="thinker-card"><h3>MacIntyre</h3><p>Morality is rooted in traditions and narrative, not abstract principles</p></div>
+<div class="thinker-card"><h3>Walzer</h3><p>Justice is local — it depends on shared social meanings</p></div>
+</div>
+<p style="margin-top:1rem;color:#888">Kymlicka engages all four, but Sandel and Taylor are his primary targets.</p>
+</div>
+
+<!-- SLIDE 6 — The liberal self -->
+<div class="slide" id="s6">
+<span class="section-tag">The Debate</span>
+<h2>The liberal self (what communitarians reject)</h2>
+<p>For Rawls, the self is <span class="concept">prior to its ends</span>. We can always step back, examine our deepest commitments, and ask: is this really worth pursuing?</p>
+<p style="margin-top:0.8rem">This is why the veil of ignorance works — we strip away particular identities to find principles everyone could accept.</p>
+<p style="margin-top:0.8rem">And this is why liberals defend autonomy — because our most essential interest is in getting our beliefs about the good life <em>right</em>, which requires the freedom to revise them.</p>
+</div>
+
+<!-- SLIDE 7 — Sandel's critique -->
+<div class="slide" id="s7">
+<span class="section-tag">Sandel</span>
+<h2>Sandel: the constituted self</h2>
+<div class="quote-box">
+"We cannot regard ourselves as independent in this way without great cost to those loyalties and convictions whose moral force consists partly in the fact that living by them is inseparable from understanding ourselves as the particular persons we are."
+<span class="attr">— Michael Sandel, <em>Liberalism and the Limits of Justice</em></span>
+</div>
+<p style="margin-top:1rem">Sandel's claim: my identity as a Cypriot, a Muslim, a daughter, a member of this community is not a costume I chose. It is <span class="highlight">who I am</span>. The liberal self, stripped of these attachments, is empty — "radically thin."</p>
+</div>
+
+<!-- SLIDE 8 — Kymlicka's response to Sandel -->
+<div class="slide" id="s8">
+<span class="section-tag">Kymlicka responds</span>
+<h2>The self prior to its ends ≠ the self without ends</h2>
+<p>Kymlicka argues Sandel confuses two things. Rawls is not saying we can perceive a self stripped of all commitments — a ghostly "substrate" behind our identities.</p>
+<p style="margin-top:0.8rem">He is saying that <span class="concept">no particular end is exempt from re-examination</span>. We always have commitments, but we can always question any one of them.</p>
+<p style="margin-top:0.8rem">Sandel himself admits that the self can be "reconstituted" — boundaries redrawn, new ends incorporated, old ones shed. But at that point, Kymlicka says, the distinction between his view and Rawls's collapses.</p>
+</div>
+
+<!-- SLIDE 9 — Taylor's emptiness argument -->
+<div class="slide" id="s9">
+<span class="section-tag">Taylor</span>
+<h2>Taylor: the emptiness argument</h2>
+<div class="quote-box">
+"Complete freedom would be a void in which nothing would be worth doing, nothing would deserve to count for anything."
+<span class="attr">— Charles Taylor, <em>Hegel and Modern Society</em></span>
+</div>
+<p style="margin-top:1rem">Taylor argues that total freedom to choose is meaningless unless there are already things <em>worth choosing</em>. Those things come from our cultural and communal horizons. Without them, we get Nietzschean nihilism — the rejection of all shared values as arbitrary.</p>
+</div>
+
+<!-- SLIDE 10 — Kymlicka's response to Taylor -->
+<div class="slide" id="s10">
+<span class="section-tag">Kymlicka responds</span>
+<h2>Freedom is not pursued for its own sake</h2>
+<p>Kymlicka agrees that freedom without purpose is empty. But that's not the liberal claim. Liberals don't say freedom is the highest value — they say our <span class="concept">projects and commitments</span> are the most important things in our lives.</p>
+<p style="margin-top:0.8rem">Freedom matters <em>because</em> those projects matter so much that we need the ability to revise them when we discover we were wrong.</p>
+<p style="margin-top:0.8rem">The real debate is not whether we need shared cultural resources to make choices meaningful — Kymlicka agrees we do. It is whether the community's values must be treated as <span class="highlight">authoritative horizons</span> that individuals cannot question.</p>
+</div>
+
+<!-- SLIDE 11 — MacIntyre -->
+<div class="slide" id="s11">
+<span class="section-tag">MacIntyre</span>
+<h2>MacIntyre: the embedded narrative self</h2>
+<div class="quote-box">
+"We all approach our own circumstances as bearers of a particular social identity. I am someone's son or daughter, someone else's cousin or uncle; I am a citizen of this or that city... Hence what is good for me has to be the good for one who inhabits these roles."
+<span class="attr">— Alasdair MacIntyre, <em>After Virtue</em></span>
+</div>
+<p style="margin-top:1rem">For MacIntyre, moral reasoning is not abstract principle-application. It is interpreting the narrative you are already living — discovering the story you are part of.</p>
+</div>
+
+<!-- SLIDE 12 — Kymlicka on MacIntyre -->
+<div class="slide" id="s12">
+<span class="section-tag">Kymlicka responds</span>
+<h2>MacIntyre's ambiguity</h2>
+<p>MacIntyre insists we cannot question our communal roles. But then he says: <em>"rebellion against my identity is always one possible mode of expressing it."</em></p>
+<p style="margin-top:0.8rem">If I can rebel against my inherited roles — if I can reject the expectations of my clan, tradition, or community — then I am exercising exactly the kind of revisability that Rawls defends.</p>
+<p style="margin-top:0.8rem">Kymlicka's point: the <span class="highlight">strong claim</span> (self-discovery replaces judgment) is implausible. The <span class="highlight">weak claim</span> (we are shaped by communities but can question them) is attractive — but it's just liberalism.</p>
+</div>
+
+<!-- SLIDE 13 — Walzer -->
+<div class="slide" id="s13">
+<span class="section-tag">Walzer</span>
+<h2>Walzer: justice as shared meanings</h2>
+<p>Walzer takes a different route. Instead of arguing about the self, he argues that <span class="concept">justice is local</span> — it depends on the shared social meanings of a particular community.</p>
+<p style="margin-top:0.8rem">Health care is a right in a society that treats it as a communal good. It isn't in a society that treats it as a market commodity. There is no universal answer — only the meanings a community has collectively constructed.</p>
+<p style="margin-top:0.8rem">Kymlicka's objection: shared meanings often reflect the interests of the powerful. Who gets to define "our" shared meanings? And what about dissenters within the community?</p>
+</div>
+
+<!-- SLIDE 14 — The politics of the common good -->
+<div class="slide" id="s14">
+<span class="section-tag">Politics</span>
+<h2>The politics of the common good</h2>
+<p>If communitarianism is right, political life should be organized around a <span class="concept">substantive common good</span> — shared values that define the community — rather than a neutral framework that lets individuals choose their own good.</p>
+<div class="two-col" style="margin-top:1rem">
+<div class="col-card"><h3>Liberal state</h3><p>Neutral between conceptions of the good. Provides a fair framework (rights, liberties, resources) within which individuals pursue their own visions.</p></div>
+<div class="col-card"><h3>Communitarian state</h3><p>Promotes a shared conception of the good rooted in the community's traditions. The common good is not just procedural but substantive.</p></div>
+</div>
+</div>
+
+<!-- SLIDE 15 — The problem with the common good -->
+<div class="slide" id="s15">
+<span class="section-tag">Critique</span>
+<h2>Whose common good?</h2>
+<p>Kymlicka identifies a deep problem. Communitarians say the community's shared practices should define justice. But:</p>
+<p style="margin-top:0.8rem">Many communities have endorsed slavery, patriarchy, caste hierarchies, and persecution of dissenters — all as expressions of shared values.</p>
+<p style="margin-top:0.8rem">Sandel's own communitarianism, applied consistently, could justify a community's <span class="highlight">rejection of homosexuality</span> if that reflects its shared moral traditions.</p>
+<p style="margin-top:0.8rem">The feminist critique from last week applies directly: whose community? Whose traditions? And who gets silenced within them?</p>
+</div>
+
+<!-- SLIDE 16 — Political liberalism (Rawls responds) -->
+<div class="slide" id="s16">
+<span class="section-tag">Rawls responds</span>
+<h2>Political liberalism</h2>
+<p>Rawls tried to accommodate the communitarian critique by shifting from "comprehensive liberalism" (autonomy is good for everyone) to <span class="concept">political liberalism</span> (we only need an "overlapping consensus" on basic principles, not agreement on the value of autonomy).</p>
+<p style="margin-top:0.8rem">This was meant to welcome communities that don't value individual autonomy — religious groups, traditional communities — into the liberal framework.</p>
+<p style="margin-top:0.8rem">Kymlicka thinks this retreat <span class="highlight">fails</span>. You cannot protect tolerance between groups without also protecting tolerance <em>within</em> groups — and that requires precisely the autonomy Rawls tried to downplay.</p>
+</div>
+
+<!-- SLIDE 17 — The social thesis -->
+<div class="slide" id="s17">
+<span class="section-tag">Taylor's Social Thesis</span>
+<h2>The social thesis</h2>
+<p>Taylor makes a more subtle argument. Liberals assume that individual autonomy is natural. But the capacity for autonomous choice is itself a <span class="concept">social product</span> — it depends on a cultural structure that provides meaningful options, education, free expression.</p>
+<p style="margin-top:0.8rem">This is a real challenge to liberal neutrality. If the state must protect the cultural structure that makes autonomy possible, then it cannot be truly neutral — it must actively sustain certain cultural conditions.</p>
+<p style="margin-top:0.8rem">Kymlicka accepts this point. But he distinguishes <span class="concept">social perfectionism</span> (society promoting conditions for autonomy) from <span class="concept">state perfectionism</span> (the state imposing a particular vision of the good life). Only the latter is objectionable.</p>
+</div>
+
+<!-- SLIDE 18 — Social unity and solidarity -->
+<div class="slide" id="s18">
+<span class="section-tag">Solidarity</span>
+<h2>Social unity: the communitarian's strongest point</h2>
+<p>Taylor asks: why would citizens accept the burdens of justice — redistributive taxation, mutual obligation — for strangers with radically different conceptions of the good?</p>
+<p style="margin-top:0.8rem">Rawls and Dworkin assume a <span class="concept">bounded political community</span> within which citizens feel solidarity. But they never explain <em>why</em> citizens feel that solidarity, or what holds the community together.</p>
+<p style="margin-top:0.8rem">Kymlicka concedes this is the communitarians' strongest insight. Liberals take for granted a sense of shared belonging that they cannot generate from their own principles.</p>
+</div>
+
+<!-- SLIDE 19 — Nationhood -->
+<div class="slide" id="s19">
+<span class="section-tag">Nations</span>
+<h2>Nationhood as the missing link</h2>
+<p>Kymlicka argues that the source of solidarity liberals take for granted is <span class="concept">nationhood</span> — a shared national identity, typically built through a common language, public institutions, and historical narrative.</p>
+<p style="margin-top:0.8rem">Liberal democracies have always engaged in <em>nation-building</em>: standardizing languages, establishing national education systems, creating shared civic myths. This is how they generate the solidarity that makes redistribution and mutual obligation possible.</p>
+<p style="margin-top:0.8rem">But nation-building has often been achieved through <span class="highlight">morally questionable means</span>: suppression of minority languages, forced assimilation, exclusion of indigenous peoples.</p>
+</div>
+
+<!-- SLIDE 20 — Northern Cyprus -->
+<div class="slide" id="s20">
+<span class="section-tag">EMU Context</span>
+<h2>Communitarianism in Northern Cyprus</h2>
+<p>This is not an abstract debate for us. Consider:</p>
+<p style="margin-top:0.8rem"><span class="concept">Turkish Cypriot identity</span> — is it discovered or chosen? When the community defines its shared values, who is included? What about the diverse student body at EMU — students from dozens of countries?</p>
+<p style="margin-top:0.8rem"><span class="concept">Shared meanings</span> — Walzer says justice depends on communal consensus. But Northern Cyprus has no consensus on its own political status. Whose shared meanings define justice here?</p>
+<p style="margin-top:0.8rem"><span class="concept">Solidarity</span> — what binds this political community together? Ethnicity? Territory? Shared institutions? And what happens to those who don't fit?</p>
+</div>
+
+<!-- SLIDE 21 — The egalitarian plateau revisited -->
+<div class="slide" id="s21">
+<span class="section-tag">Synthesis</span>
+<h2>The egalitarian plateau, revisited</h2>
+<p>Communitarians share the egalitarian plateau — they believe people's interests matter equally. But they define those interests differently.</p>
+<div class="two-col" style="margin-top:1rem">
+<div class="col-card"><h3>Liberal view</h3><p>Our essential interest is in leading a life that is genuinely good — which requires the freedom to examine and revise our beliefs about value.</p></div>
+<div class="col-card"><h3>Communitarian view</h3><p>Our essential interest is in belonging to a community whose shared values give our lives meaning — which requires protecting those shared values.</p></div>
+</div>
+<p style="margin-top:1rem">Kymlicka's verdict: the communitarian critique has <em>narrowed</em>. The debate is no longer about whether individuals can question their ends — even communitarians concede they can. It becomes a debate about the <span class="highlight">social conditions</span> that make meaningful choice possible.</p>
+</div>
+
+<!-- SLIDE 22 — Beauvoir and Fanon meet communitarianism -->
+<div class="slide" id="s22">
+<span class="section-tag">Bridge</span>
+<h2>Last week meets this week</h2>
+<p>Beauvoir and Fanon asked: <em>who constructed the subject</em> that liberalism places on the egalitarian plateau?</p>
+<p style="margin-top:0.8rem">The communitarians answer: <span class="concept">the community</span>. The self is always already shaped by communal roles, narratives, and traditions.</p>
+<p style="margin-top:0.8rem">But Beauvoir and Fanon would push further: what if the community itself is a structure of domination? What if "shared values" are just the values of those who hold power? What if the narrative MacIntyre celebrates is a story written by the colonizer?</p>
+<p style="margin-top:0.8rem">This tension — between community as <em>home</em> and community as <em>prison</em> — is the central unresolved question.</p>
+</div>
+
+<!-- SLIDE 23 — Kymlicka's qualified defence -->
+<div class="slide" id="s23">
+<span class="section-tag">Kymlicka's Verdict</span>
+<h2>Can liberalism absorb communitarianism?</h2>
+<p>Kymlicka believes the communitarian critique ultimately <span class="concept">strengthens</span> liberalism rather than defeating it.</p>
+<p style="margin-top:0.8rem">What communitarians get right: autonomy requires social conditions; solidarity cannot be taken for granted; cultural belonging matters for a meaningful life.</p>
+<p style="margin-top:0.8rem">What they get wrong: treating community values as authoritative leads to the oppression of dissenters, women, and minorities. Every communitarian argument that is attractive turns out to be compatible with liberal principles.</p>
+<p style="margin-top:0.8rem">The strong communitarian thesis collapses into liberalism. The interesting residue becomes the subject of <span class="highlight">next week: multiculturalism</span>.</p>
+</div>
+
+<!-- SLIDE 24 — The open question -->
+<div class="slide" id="s24">
+<span class="section-tag">Provocation</span>
+<h2>The question that won't go away</h2>
+<p style="font-size:clamp(1.1rem,2.2vw,1.5rem);color:#c62828;max-width:700px;line-height:1.6;margin:1.5rem auto">
+If every communitarian argument that is attractive is also compatible with liberalism — is that a victory for liberalism, or evidence that liberalism has already absorbed so much from its critics that it is no longer recognizable as the theory Rawls proposed?
+</p>
+</div>
+
+<!-- SLIDE 25 — Simulation -->
+<div class="slide" id="s25">
+<span class="section-tag">Simulation</span>
+<h2>Before Wednesday</h2>
+<p>Complete the <span class="concept">Community Self-Mapper</span> simulation and bring your results to the workshop.</p>
+<p style="margin-top:1rem;font-size:1.1rem"><a class="link" href="https://efkaymak-del.github.io/PSIR308/communitarianism-app.html" target="_blank">efkaymak-del.github.io/PSIR308/communitarianism-app.html</a></p>
+<p style="margin-top:1.5rem">The simulation will test whether your moral reasoning relies on communal attachments more than you think — and whether you can defend that reliance.</p>
+</div>
+
+<!-- SLIDE 26 — Workshop preview -->
+<div class="slide" id="s26">
+<span class="section-tag">Wednesday</span>
+<h2>Workshop: Ayşe, Mehek & Hatice</h2>
+<p>Your facilitators will lead a 20–30 minute interactive session applying communitarianism to a real dilemma.</p>
+<p style="margin-top:1rem">Come prepared with your simulation results and your reading of Kymlicka Chapter 6.</p>
+<p style="margin-top:1.5rem"><strong>Brief 6</strong> will be due Sunday, May 18 — details on Teams.</p>
+</div>
+
+<!-- SLIDE 27 — Reading -->
+<div class="slide" id="s27">
+<span class="section-tag">Reading</span>
+<h2>Required reading</h2>
+<p style="font-size:1.15rem"><strong>Kymlicka, Chapter 6: Communitarianism</strong></p>
+<p style="margin-top:1rem">Focus on: the five communitarian arguments against the liberal self (emptiness, self-perception, embedded self, social confirmation, universality), Kymlicka's responses, the politics of the common good, and the social thesis.</p>
+<p style="margin-top:1.5rem;color:#888">Next week: <strong>Multiculturalism</strong> (Kymlicka Chapter 8) — where communitarianism meets cultural diversity and minority rights.</p>
+</div>
+
+<!-- Counter -->
+<div class="counter" id="counter">1 / 27</div>
+
+<script>
+const slides=document.querySelectorAll('.slide');
+let cur=0;
+function go(n){if(n<0||n>=slides.length)return;slides[cur].classList.remove('active');cur=n;slides[cur].classList.add('active');document.getElementById('counter').textContent=(cur+1)+' / '+slides.length}
+document.addEventListener('keydown',e=>{if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA')return;if(['ArrowRight','ArrowDown',' ','PageDown','Enter'].includes(e.key)){e.preventDefault();go(cur+1)}if(['ArrowLeft','ArrowUp','PageUp','Backspace'].includes(e.key)){e.preventDefault();go(cur-1)}});
+let tx=0;document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX});document.addEventListener('touchend',e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>50){d>0?go(cur+1):go(cur-1)}});
+</script>
+
+</body>
+</html>
