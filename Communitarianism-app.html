@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSIR 308 – Community Self-Mapper</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:#fafafa;color:#1a1a1a;min-height:100vh;display:flex;justify-content:center;align-items:center}
+.container{max-width:820px;width:90%;padding:2rem 1rem}
+h1{font-size:clamp(1.6rem,4vw,2.4rem);text-align:center;margin-bottom:0.5rem;color:#1a1a1a}
+h2{font-size:clamp(1.2rem,3vw,1.8rem);color:#4a148c;margin-bottom:0.8rem;line-height:1.3}
+.subtitle{text-align:center;color:#666;font-size:1.05rem;margin-bottom:1.5rem;line-height:1.6}
+.screen{display:none}
+.screen.active{display:block}
+.intro-text{font-size:1rem;line-height:1.75;color:#444;margin-bottom:1.5rem;text-align:left}
+.intro-text strong{color:#4a148c}
+label{display:block;font-size:0.95rem;font-weight:600;color:#333;margin-bottom:0.3rem}
+input[type="text"]{width:100%;padding:0.7rem 1rem;font-size:1rem;border:1px solid #ccc;border-radius:8px;margin-bottom:1rem;font-family:inherit}
+input[type="text"]:focus{outline:none;border-color:#4a148c;box-shadow:0 0 0 2px rgba(74,20,140,0.15)}
+.btn{display:inline-block;background:#4a148c;color:#fff;padding:0.75rem 2rem;border:none;border-radius:8px;font-size:1.05rem;cursor:pointer;font-family:inherit;transition:background 0.2s}
+.btn:hover{background:#6a1b9a}
+.btn:disabled{background:#ccc;cursor:not-allowed}
+.progress{text-align:center;font-size:0.9rem;color:#888;margin-bottom:1rem}
+.scenario-label{font-size:0.85rem;text-transform:uppercase;letter-spacing:1.5px;color:#4a148c;font-weight:600;margin-bottom:0.5rem}
+.scenario-desc{font-size:1.05rem;line-height:1.7;color:#333;background:#f5f5f5;border-radius:12px;padding:1.2rem 1.5rem;margin-bottom:1.5rem}
+.options{display:flex;flex-direction:column;gap:0.8rem;margin-bottom:1.5rem}
+.option{background:#fff;border:2px solid #e0e0e0;border-radius:12px;padding:1rem 1.2rem;cursor:pointer;transition:all 0.2s;text-align:left}
+.option:hover{border-color:#ce93d8;background:#faf5ff}
+.option.selected{border-color:#4a148c;background:#f3e5f5}
+.option .opt-label{font-weight:600;font-size:0.95rem;margin-bottom:0.3rem}
+.option .opt-label.liberal{color:#1565c0}
+.option .opt-label.communitarian{color:#c62828}
+.option .opt-label.compromise{color:#e6a000}
+.option .opt-text{font-size:0.95rem;line-height:1.6;color:#444}
+.result-profile{text-align:center;background:#f3e5f5;border-radius:16px;padding:2rem;margin:1.5rem 0}
+.result-profile .profile-name{font-size:clamp(1.4rem,3.5vw,2rem);color:#1a1a1a;font-weight:700;margin-bottom:0.5rem}
+.result-profile .profile-desc{font-size:1rem;line-height:1.7;color:#444;max-width:650px;margin:0 auto}
+.score-bar-container{max-width:500px;margin:1.5rem auto}
+.score-row{display:flex;align-items:center;margin-bottom:0.6rem}
+.score-label{width:160px;font-size:0.9rem;font-weight:600;color:#333;text-align:right;padding-right:1rem}
+.score-track{flex:1;background:#e0e0e0;border-radius:8px;height:24px;overflow:hidden}
+.score-fill{height:100%;border-radius:8px;transition:width 0.6s ease}
+.score-fill.liberal{background:#1565c0}
+.score-fill.communitarian{background:#c62828}
+.score-fill.compromise{background:#f9a825}
+.score-num{width:40px;text-align:center;font-size:0.9rem;font-weight:700;color:#333;padding-left:0.5rem}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:0.5rem;margin:1rem 0}
+.tag{background:#fff;border:1px solid #ce93d8;border-radius:20px;padding:5px 16px;font-size:0.85rem;color:#6a1b9a}
+.choices-summary{text-align:left;margin:1.5rem 0}
+.choices-summary h3{font-size:1.1rem;color:#4a148c;margin-bottom:0.8rem}
+.choice-row{font-size:0.9rem;color:#444;padding:0.4rem 0;border-bottom:1px solid #f0f0f0;line-height:1.5}
+.choice-row strong{color:#333}
+.copy-area{background:#f5f5f5;border:1px solid #ddd;border-radius:8px;padding:1rem;font-size:0.85rem;color:#333;line-height:1.6;white-space:pre-wrap;max-height:300px;overflow-y:auto;margin:1rem 0}
+.center{text-align:center}
+.copied-msg{color:#2e7d32;font-weight:600;font-size:0.95rem;margin-top:0.5rem;display:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- INTRO -->
+<div class="screen active" id="intro">
+<h1>Community Self-Mapper</h1>
+<p class="subtitle">PSIR 308 · Communitarianism · Kymlicka Chapter 6</p>
+<div class="intro-text">
+<p>You will face <strong>eight scenarios</strong> involving a tension between individual autonomy and communal belonging. For each, choose the position closest to your instinct:</p>
+<p style="margin-top:0.8rem"><strong style="color:#1565c0">Liberal:</strong> Individual choice and autonomy take priority.</p>
+<p style="margin-top:0.4rem"><strong style="color:#c62828">Communitarian:</strong> Community identity and shared values take priority.</p>
+<p style="margin-top:0.4rem"><strong style="color:#e6a000">Compromise:</strong> Both matter — individual freedom is real but situated in community.</p>
+<p style="margin-top:0.8rem">There are no right answers. The pattern reveals your <strong>theoretical instincts</strong>.</p>
+</div>
+<label for="fname">Full Name</label>
+<input type="text" id="fname" placeholder="Enter your full name">
+<label for="sid">Student ID</label>
+<input type="text" id="sid" placeholder="Enter your student ID">
+<div class="center" style="margin-top:1rem">
+<button class="btn" onclick="startApp()">Begin</button>
+</div>
+</div>
+
+<!-- SCENARIO -->
+<div class="screen" id="scenario-screen">
+<div class="progress" id="progress"></div>
+<div class="scenario-label" id="slabel"></div>
+<h2 id="stitle"></h2>
+<div class="scenario-desc" id="sdesc"></div>
+<div class="options" id="options"></div>
+<div class="center">
+<button class="btn" id="nextBtn" onclick="nextScenario()" disabled>Next</button>
+</div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="results"></div>
+
+</div>
+
+<script>
+const FORM_URL="https://docs.google.com/forms/d/e/1FAIpQLSeQqApfo8dpobWPjo5kUX6oNNsBEZRiXYdHgUtZRe-OO6dF6w/formResponse";
+
+const ENTRY={
+  name:"entry.2039169418",
+  studentId:"entry.1953074284",
+  profile:"entry.1247357520",
+  liberal:"entry.1819851892",
+  communitarian:"entry.1738100616",
+  compromise:"entry.491013463",
+  s1:"entry.128860093",
+  s2:"entry.1354705064",
+  s3:"entry.990346013",
+  s4:"entry.1308755485",
+  s5:"entry.476568644",
+  s6:"entry.792422174",
+  s7:"entry.420866360",
+  s8:"entry.191300437"
+};
+
+function submitToGoogle(data){
+  try{const p=new URLSearchParams(data).toString();const img=new Image();img.src=FORM_URL+"?"+p}catch(e){}
+}
+
+const scenarios=[
+{
+  label:"Scenario 1",title:"Leaving the Faith",
+  desc:"A 22-year-old university student from a devoutly religious family has, after years of reflection, concluded that they no longer believe. Their family and community see the faith as central to who they are \u2014 not just a belief, but an identity that connects generations. The student wants to live openly as a non-believer.",
+  options:[
+    {type:"liberal",label:"Individual autonomy",text:"The student has every right to leave. Religious belief must be freely chosen to be genuine. No community can bind a person to a conviction they no longer hold."},
+    {type:"communitarian",label:"Community identity",text:"The faith is not just a personal belief \u2014 it is a shared identity across generations. Leaving fractures the bonds that give everyone\u2019s life meaning. The individual owes something to the tradition that formed them."},
+    {type:"compromise",label:"Situated freedom",text:"The student can question and ultimately leave, but should recognise that the capacity for questioning was itself nurtured within the community. The departure should be made with awareness of what is owed."}
+  ]
+},
+{
+  label:"Scenario 2",title:"Marrying Outside",
+  desc:"A young woman from a tight-knit ethnic community in Northern Cyprus wants to marry someone from a completely different cultural background. Her family insists that marrying within the community is essential to preserving their cultural survival \u2014 especially as a small minority.",
+  options:[
+    {type:"liberal",label:"Freedom of association",text:"Marriage is a deeply personal choice. No community has the right to dictate whom a person can love or marry. Cultural survival cannot be purchased at the cost of individual freedom."},
+    {type:"communitarian",label:"Cultural preservation",text:"Small communities survive through the choices their members make. Marrying within the community is how a minority culture reproduces itself. The individual has obligations to the group that made them who they are."},
+    {type:"compromise",label:"Negotiated belonging",text:"She should be free to marry whom she chooses, but the community\u2019s survival concern is legitimate. The real question is whether the community can include the outsider rather than losing the member."}
+  ]
+},
+{
+  label:"Scenario 3",title:"The Language Question",
+  desc:"EMU teaches almost entirely in English \u2014 a language that is neither Turkish nor the native language of most international students. A group of students argues this privileges Western academic culture and disconnects them from their own intellectual traditions. The administration says English is the global language of scholarship.",
+  options:[
+    {type:"liberal",label:"Individual opportunity",text:"Students chose EMU knowing the language of instruction. English opens global opportunities. What matters is that each individual can access the best possible education and career."},
+    {type:"communitarian",label:"Cultural authenticity",text:"Language carries an entire worldview. Teaching exclusively in English means students learn to think in someone else\u2019s categories. A university in Northern Cyprus should ground itself in its community\u2019s cultural reality."},
+    {type:"compromise",label:"Bilingual bridge",text:"English is pragmatically necessary, but the university should create space for other languages and intellectual traditions. The goal is to hold both global access and cultural belonging."}
+  ]
+},
+{
+  label:"Scenario 4",title:"The Returning Migrant",
+  desc:"A construction worker from Pakistan has lived in Northern Cyprus for twelve years. He has built relationships, contributes to the economy, and considers Famagusta home. But he has no path to citizenship, cannot vote, and is told he does not belong to the \u2018community\u2019 whose shared values define political life here.",
+  options:[
+    {type:"liberal",label:"Universal rights",text:"Twelve years of residence and contribution should be sufficient for membership. Rights belong to persons, not to cultural insiders. Excluding long-term residents is unjust."},
+    {type:"communitarian",label:"Bounded community",text:"Political community is defined by shared history, culture, and identity \u2014 not just residence. Opening membership to everyone risks dissolving the shared values that hold the community together."},
+    {type:"compromise",label:"Earned belonging",text:"He has a legitimate claim, but belonging is not automatic. The community should create a realistic pathway that acknowledges both his contributions and its need for shared identity."}
+  ]
+},
+{
+  label:"Scenario 5",title:"Family or Career",
+  desc:"A talented student from a traditional family has been accepted to a prestigious graduate programme abroad. Her family expects her to stay \u2014 her aging parents need care, her younger siblings depend on her guidance, and in their community the eldest daughter\u2019s role is clear. She wants to go.",
+  options:[
+    {type:"liberal",label:"Self-determination",text:"She should pursue her own path. No one is obligated to sacrifice their ambitions because of a role they did not choose. Her family\u2019s expectations cannot override her right to shape her own life."},
+    {type:"communitarian",label:"Role and obligation",text:"She is not just an isolated individual \u2014 she is a daughter, a sister, a member of a family that depends on her. These roles are the source of her deepest identity. Abandoning them for personal ambition is a loss."},
+    {type:"compromise",label:"Negotiated responsibility",text:"She can pursue the programme while finding ways to honour family obligations \u2014 deferring, arranging care, staying deeply involved. Freedom and responsibility are not opposites."}
+  ]
+},
+{
+  label:"Scenario 6",title:"The Neighbourhood Rules",
+  desc:"A neighbourhood community in Famagusta has collectively decided to ban loud music after 10 PM, public alcohol consumption, and mixed-gender swimming at the local beach \u2014 based on shared religious and cultural values of the majority of residents. University students who live there object, saying these rules restrict their freedom.",
+  options:[
+    {type:"liberal",label:"Individual liberty",text:"Public spaces belong to everyone. A local majority cannot impose its cultural or religious values through bans. The students\u2019 freedom to live as they choose must be protected, even if the majority disapproves."},
+    {type:"communitarian",label:"Community standards",text:"A neighbourhood has the right to define its shared way of life. The residents who built this community should not have to watch their values eroded. If the students want different norms, they can live elsewhere."},
+    {type:"compromise",label:"Negotiated coexistence",text:"Both sides have legitimate claims. The solution is negotiation \u2014 perhaps zoning, time-based rules, or designated spaces \u2014 rather than one side imposing its values on the other."}
+  ]
+},
+{
+  label:"Scenario 7",title:"Teaching Traditions",
+  desc:"A philosophy professor at EMU proposes replacing half the Western-canon readings with thinkers from Islamic, African, and Asian traditions, arguing that a truly universal curriculum must reflect the communities students come from. Colleagues object that the Western canon represents the highest achievements of the discipline.",
+  options:[
+    {type:"liberal",label:"Universal standards",text:"The best ideas should be taught regardless of origin. Academic quality, not cultural representation, should determine the curriculum. Students benefit most from the strongest arguments, wherever they come from."},
+    {type:"communitarian",label:"Cultural grounding",text:"Knowledge is not culturally neutral. Students understand political philosophy better when they see their own traditions reflected. A curriculum that excludes the heritage of most of its students is not universal \u2014 it is Western."},
+    {type:"compromise",label:"Expanded canon",text:"The Western canon has genuine strengths, but a university serving this diverse student body should integrate other traditions alongside it. Dialogue between traditions is richer than monologue within one."}
+  ]
+},
+{
+  label:"Scenario 8",title:"This Classroom",
+  desc:"Right now, in PSIR 308, you are studying political philosophy through a Western analytical framework (Rawls, Nozick, Marx, Kymlicka) in English, at a university modelled on Western institutions, graded by Western academic standards. A communitarian would ask: does this classroom constitute a community \u2014 and if so, whose values define it?",
+  options:[
+    {type:"liberal",label:"Voluntary association",text:"This classroom is not a community in the communitarian sense \u2014 it is a voluntary association of individuals who enrolled for their own reasons. We are here to acquire tools for thinking, not to share an identity."},
+    {type:"communitarian",label:"Shared practice",text:"Over a semester, we have developed shared references, inside arguments, and collective experiences. This classroom is a community \u2014 a small one, but real. The shared meanings we have built here shape how each of us now thinks."},
+    {type:"compromise",label:"Community in the making",text:"We started as strangers and have become something more \u2014 not a deep community rooted in tradition, but a temporary community of inquiry. That is enough to generate real obligations to each other and to the shared project."}
+  ]
+}
+];
+
+let cur=0, choices=[], selected=null, userName="", userId="";
+
+function startApp(){
+  userName=document.getElementById('fname').value.trim();
+  userId=document.getElementById('sid').value.trim();
+  if(!userName||!userId){alert('Please enter your name and student ID.');return}
+  document.getElementById('intro').classList.remove('active');
+  document.getElementById('scenario-screen').classList.add('active');
+  cur=0;choices=[];showScenario();
+}
+
+function showScenario(){
+  const s=scenarios[cur];
+  document.getElementById('progress').textContent=(cur+1)+' of '+scenarios.length;
+  document.getElementById('slabel').textContent=s.label;
+  document.getElementById('stitle').textContent=s.title;
+  document.getElementById('sdesc').textContent=s.desc;
+  selected=null;
+  document.getElementById('nextBtn').disabled=true;
+  const optDiv=document.getElementById('options');
+  optDiv.innerHTML='';
+  s.options.forEach((o,i)=>{
+    const d=document.createElement('div');
+    d.className='option';
+    d.innerHTML='<div class="opt-label '+o.type+'">'+o.label+'</div><div class="opt-text">'+o.text+'</div>';
+    d.addEventListener('click',()=>pickOption(i,o.type));
+    optDiv.appendChild(d);
+  });
+  window.scrollTo(0,0);
+}
+
+function pickOption(i,type){
+  selected={index:i,type:type};
+  document.querySelectorAll('#options .option').forEach((el,j)=>{el.classList.toggle('selected',j===i)});
+  document.getElementById('nextBtn').disabled=false;
+}
+
+function nextScenario(){
+  if(!selected)return;
+  choices.push({scenario:scenarios[cur].title,type:selected.type,label:scenarios[cur].options[selected.index].label});
+  cur++;
+  if(cur<scenarios.length){showScenario()}else{showResults()}
+}
+
+function showResults(){
+  document.getElementById('scenario-screen').classList.remove('active');
+  document.getElementById('results').classList.add('active');
+
+  let counts={liberal:0,communitarian:0,compromise:0};
+  choices.forEach(c=>counts[c.type]++);
+
+  const L=counts.liberal,C=counts.communitarian,M=counts.compromise;
+  let profileName,profileDesc,profileTags;
+
+  if(C>=5){
+    profileName="Communitarian at Heart";
+    profileDesc="Your instincts consistently favour community, belonging, and shared identity over individual autonomy. You see the self as embedded in roles and traditions that give life its meaning. Sandel and MacIntyre would recognise your reasoning. Kymlicka would ask: what happens to the dissenter in your community?";
+    profileTags=["Embedded self","Shared meanings","Tradition matters","Obligations over rights"];
+  }else if(L>=5){
+    profileName="Committed Liberal";
+    profileDesc="You consistently prioritise individual autonomy, choice, and the right to question inherited roles. For you, the self is prior to its ends \u2014 every commitment is open to revision. Rawls would approve. But Taylor would ask: where do your meaningful choices come from, if not from a community?";
+    profileTags=["Autonomous self","Rights first","Revisable ends","State neutrality"];
+  }else if(M>=5){
+    profileName="The Bridge-Builder";
+    profileDesc="You consistently seek a middle path \u2014 individual freedom that acknowledges communal context. You agree with Kymlicka that autonomy requires social conditions, and with Taylor that freedom must be \u2018situated.\u2019 The question is whether this position is a genuine synthesis or an evasion of the hard choice.";
+    profileTags=["Situated freedom","Social conditions","Negotiation","Both/and thinker"];
+  }else if(L>=C&&L>=M&&C>=2){
+    profileName="Reluctant Liberal";
+    profileDesc="You defend liberal principles but your instincts pull communitarian on certain issues. You believe in autonomy \u2014 but when the scenario gets personal (family, faith, cultural survival), community tugs harder than your theory predicts. Kymlicka would say this tension is productive.";
+    profileTags=["Autonomy with doubt","Theory vs. instinct","Personal pulls communitarian","Liberal in principle"];
+  }else if(C>=L&&C>=M&&L>=2){
+    profileName="Reluctant Communitarian";
+    profileDesc="Your default is communal belonging, but on certain issues individual freedom wins out. You see the value in shared traditions but are unwilling to let them override autonomy on every question. MacIntyre would say you haven\u2019t fully committed; Kymlicka would say you\u2019re already a liberal.";
+    profileTags=["Community first, mostly","Selective autonomy","Narrative self with exits","Tradition with limits"];
+  }else{
+    profileName="Situational Thinker";
+    profileDesc="Your choices shift depending on the scenario \u2014 no single framework dominates. You may be a liberal about religion but a communitarian about family, or vice versa. This is either philosophical flexibility or theoretical inconsistency. The communitarian would say your shifting reveals that context determines your reasoning more than abstract principle does.";
+    profileTags=["Context-dependent","No fixed framework","Case-by-case","Community shapes reasoning"];
+  }
+
+  const typeLabels={liberal:"Liberal",communitarian:"Communitarian",compromise:"Compromise"};
+  let choiceLines=choices.map((c,i)=>'<div class="choice-row"><strong>'+(i+1)+'. '+c.scenario+':</strong> '+typeLabels[c.type]+' \u2014 '+c.label+'</div>').join('');
+
+  let copyText="PSIR 308 \u2013 Community Self-Mapper Results\n";
+  copyText+="Name: "+userName+"\nStudent ID: "+userId+"\n";
+  copyText+="Profile: "+profileName+"\n";
+  copyText+="Scores: Liberal "+L+" | Communitarian "+C+" | Compromise "+M+"\n";
+  copyText+="Tags: "+profileTags.join(", ")+"\n\n";
+  choices.forEach((c,i)=>{copyText+=(i+1)+". "+c.scenario+": "+typeLabels[c.type]+" \u2014 "+c.label+"\n"});
+
+  const pct=n=>Math.round((n/8)*100);
+
+  document.getElementById('results').innerHTML=`
+    <h1>Your Results</h1>
+    <div class="result-profile">
+      <div style="font-size:0.9rem;color:#666;margin-bottom:0.3rem">Your Profile</div>
+      <div class="profile-name">${profileName}</div>
+      <div class="profile-desc">${profileDesc}</div>
+    </div>
+    <div class="score-bar-container">
+      <div class="score-row">
+        <div class="score-label" style="color:#1565c0">Liberal</div>
+        <div class="score-track"><div class="score-fill liberal" style="width:${pct(L)}%"></div></div>
+        <div class="score-num">${L}</div>
+      </div>
+      <div class="score-row">
+        <div class="score-label" style="color:#c62828">Communitarian</div>
+        <div class="score-track"><div class="score-fill communitarian" style="width:${pct(C)}%"></div></div>
+        <div class="score-num">${C}</div>
+      </div>
+      <div class="score-row">
+        <div class="score-label" style="color:#e6a000">Compromise</div>
+        <div class="score-track"><div class="score-fill compromise" style="width:${pct(M)}%"></div></div>
+        <div class="score-num">${M}</div>
+      </div>
+    </div>
+    <div class="tags">${profileTags.map(t=>'<span class="tag">'+t+'</span>').join('')}</div>
+    <div class="choices-summary">
+      <h3>Your Choices</h3>
+      ${choiceLines}
+    </div>
+    <div class="copy-area" id="copyArea">${copyText}</div>
+    <div class="center">
+      <button class="btn" onclick="copyResults()">Copy Results to Clipboard</button>
+      <div class="copied-msg" id="copiedMsg">Copied \u2713</div>
+    </div>
+  `;
+
+  // Submit to Google Form
+  const formData={};
+  formData[ENTRY.name]=userName;
+  formData[ENTRY.studentId]=userId;
+  formData[ENTRY.profile]=profileName;
+  formData[ENTRY.liberal]=String(L);
+  formData[ENTRY.communitarian]=String(C);
+  formData[ENTRY.compromise]=String(M);
+  choices.forEach((c,i)=>{
+    const key=ENTRY['s'+(i+1)];
+    if(key)formData[key]=typeLabels[c.type];
+  });
+  submitToGoogle(formData);
+}
+
+function copyResults(){
+  const text=document.getElementById('copyArea').textContent;
+  navigator.clipboard.writeText(text).then(()=>{
+    const msg=document.getElementById('copiedMsg');
+    msg.style.display='block';
+    setTimeout(()=>{msg.style.display='none'},2000);
+  });
+}
+</script>
+</body>
+</html>
