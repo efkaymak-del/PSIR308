@@ -82,7 +82,6 @@
     color: #b388ff;
   }
 
-  /* Student info */
   .student-info {
     max-width: 800px;
     margin: 1.5rem auto;
@@ -121,7 +120,6 @@
     border-color: #7c4dff;
   }
 
-  /* Case cards */
   .case-card {
     max-width: 800px;
     margin: 1.5rem auto;
@@ -160,6 +158,11 @@
     font-size: 0.92rem;
     color: #bbb;
     line-height: 1.7;
+    margin-bottom: 0.6rem;
+  }
+
+  .case-description p:last-child {
+    margin-bottom: 0;
   }
 
   .case-questions {
@@ -216,7 +219,6 @@
     margin: 1.2rem 0;
   }
 
-  /* Reflection */
   .reflection {
     max-width: 800px;
     margin: 1.5rem auto;
@@ -256,7 +258,6 @@
     border-color: #7c4dff;
   }
 
-  /* Submit */
   .submit-area {
     max-width: 800px;
     margin: 1.5rem auto 2rem;
@@ -351,7 +352,7 @@
   <p>Seven cases. Five questions each. One framework under pressure. Apply Kymlicka's multicultural citizenship categories and Benhabib's normative conditions to real-world cultural rights conflicts — then bring your results to Wednesday's workshop.</p>
 </header>
 
-<div class="intro">
+<div class="intro" id="introBlock">
   <h2>Before You Begin</h2>
   <p>Read Kymlicka Chapter 8 and the Benhabib excerpts before completing this simulation. For each case you will classify the group, identify the type of right claimed, determine whether the policy involves external protection or internal restriction, check Benhabib's three conditions, and assess the adequacy of Kymlicka's framework.</p>
   <p>There are no correct answers — the point is to test where the theory holds and where it breaks. Your responses will be aggregated and displayed during the workshop.</p>
@@ -371,7 +372,6 @@
 
 <form id="boundaryForm">
 
-<!-- STUDENT INFO -->
 <div class="student-info">
   <h2>Student Info</h2>
   <label for="fullName">Full Name <span class="required-star">*</span></label>
@@ -746,7 +746,7 @@
 
 </form>
 
-<!-- SUCCESS MESSAGE (hidden until submit) -->
+<!-- SUCCESS MESSAGE -->
 <div class="success-msg" id="successMsg">
   <h2>Responses Recorded</h2>
   <p>Your responses have been saved. Bring your results to Wednesday's workshop.<br><br><strong>See you on The Boundary.</strong></p>
@@ -760,45 +760,7 @@
 </footer>
 
 <script>
-/*
- * DATA SUBMISSION
- * Option A: Google Sheets via Apps Script (recommended)
- * Option B: Local download as fallback
- *
- * To use Option A:
- * 1. Create a new Google Sheet
- * 2. Go to Extensions → Apps Script
- * 3. Paste this code:
- *
- *    function doPost(e) {
- *      var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
- *      var data = JSON.parse(e.postData.contents);
- *      var row = [
- *        new Date(),
- *        data.fullName,
- *        data.studentId,
- *        data.c1q1, data.c1q2, data.c1q3, data.c1q4, data.c1q5,
- *        data.c2q1, data.c2q2, data.c2q3, data.c2q4, data.c2q5,
- *        data.c3q1, data.c3q2, data.c3q3, data.c3q4, data.c3q5,
- *        data.c4q1, data.c4q2, data.c4q3, data.c4q4, data.c4q5,
- *        data.c5q1, data.c5q2, data.c5q3, data.c5q4, data.c5q5,
- *        data.c6q1, data.c6q2, data.c6q3, data.c6q4, data.c6q5,
- *        data.c7q1, data.c7q2, data.c7q3, data.c7q4, data.c7q5,
- *        data.reflection
- *      ];
- *      sheet.appendRow(row);
- *      return ContentService.createTextOutput(
- *        JSON.stringify({status: 'ok'})
- *      ).setMimeType(ContentService.MimeType.JSON);
- *    }
- *
- * 4. Click Deploy → New deployment → Web app
- *    - Execute as: Me
- *    - Who has access: Anyone
- * 5. Copy the deployment URL and paste it below:
- */
-
-const APPS_SCRIPT_URL = ''; // ← PASTE YOUR APPS SCRIPT URL HERE
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyitC3LburNUHEWClFSFWmLbmhr4AXgAfHCPT_aNVNL3GhnUlRRK08uQy2OaQX0TkNk8A/exec';
 
 document.getElementById('boundaryForm').addEventListener('submit', function(e) {
   e.preventDefault();
@@ -807,7 +769,6 @@ document.getElementById('boundaryForm').addEventListener('submit', function(e) {
   const btn = document.getElementById('submitBtn');
   const errorMsg = document.getElementById('errorMsg');
 
-  // Gather data
   function getRadio(name) {
     const el = form.querySelector('input[name="'+name+'"]:checked');
     return el ? el.value : '';
@@ -838,7 +799,6 @@ document.getElementById('boundaryForm').addEventListener('submit', function(e) {
     reflection: document.getElementById('reflection').value.trim()
   };
 
-  // Validate: check all required fields
   const radioGroups = [
     'c1q1','c1q2','c1q3','c1q5',
     'c2q1','c2q2','c2q3','c2q5',
@@ -852,7 +812,6 @@ document.getElementById('boundaryForm').addEventListener('submit', function(e) {
   const checkboxGroups = ['c1q4','c2q4','c3q4','c4q4','c5q4','c6q4','c7q4'];
 
   let valid = true;
-
   if (!data.fullName || !data.studentId || !data.reflection) valid = false;
   radioGroups.forEach(name => { if (!getRadio(name)) valid = false; });
   checkboxGroups.forEach(name => { if (!getCheckboxes(name)) valid = false; });
@@ -867,36 +826,26 @@ document.getElementById('boundaryForm').addEventListener('submit', function(e) {
   btn.disabled = true;
   btn.textContent = 'Submitting...';
 
-  // Try Apps Script, fall back to local
-  if (APPS_SCRIPT_URL) {
-    fetch(APPS_SCRIPT_URL, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    }).then(() => {
-      showSuccess();
-    }).catch(() => {
-      downloadLocal(data);
-      showSuccess();
-    });
-  } else {
-    downloadLocal(data);
+  fetch(APPS_SCRIPT_URL, {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(data)
+  }).then(() => {
     showSuccess();
-  }
+  }).catch(() => {
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = 'boundary_' + data.studentId + '_' + Date.now() + '.json';
+    a.click();
+    showSuccess();
+  });
 });
-
-function downloadLocal(data) {
-  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'boundary_' + data.studentId + '_' + Date.now() + '.json';
-  a.click();
-}
 
 function showSuccess() {
   document.getElementById('boundaryForm').style.display = 'none';
-  document.querySelector('.intro').style.display = 'none';
+  document.getElementById('introBlock').style.display = 'none';
   document.getElementById('successMsg').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -904,3 +853,4 @@ function showSuccess() {
 
 </body>
 </html>
+
