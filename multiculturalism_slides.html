@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSIR 308 — Multiculturalism: Kymlicka Ch.8 + Benhabib</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    background: #0a0a1a;
+    color: #e0e0e0;
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+  }
+
+  .slide {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 6rem;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    top: 0; left: 0;
+  }
+
+  .slide.active { display: flex; }
+
+  /* Slide types */
+  .slide-title {
+    background: linear-gradient(135deg, #1a1a3e 0%, #2d1b4e 100%);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slide-section {
+    background: linear-gradient(135deg, #0d0d22 0%, #1a1a3e 100%);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .slide-content {
+    background: #0a0a1a;
+  }
+
+  .slide-discussion {
+    background: linear-gradient(135deg, #1a0a2e 0%, #2d1b4e 100%);
+    border-left: 6px solid #ff9800;
+  }
+
+  .slide-case {
+    background: linear-gradient(135deg, #0a1a1a 0%, #1a2a3e 100%);
+    border-left: 6px solid #00bcd4;
+  }
+
+  .slide-break {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+  }
+
+  h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #b388ff;
+    margin-bottom: 1.5rem;
+    line-height: 1.3;
+  }
+
+  h3 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #7c4dff;
+    margin-bottom: 1rem;
+  }
+
+  .subtitle {
+    font-size: 1.2rem;
+    color: #b388ff;
+    margin-bottom: 0.5rem;
+    letter-spacing: 1px;
+  }
+
+  .meta {
+    font-size: 0.95rem;
+    color: #888;
+    margin-top: 1rem;
+  }
+
+  p {
+    font-size: 1.15rem;
+    color: #ccc;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+    max-width: 900px;
+  }
+
+  .point {
+    font-size: 1.15rem;
+    color: #ccc;
+    line-height: 1.7;
+    margin-bottom: 0.8rem;
+    padding-left: 1.5rem;
+    border-left: 3px solid #7c4dff;
+    max-width: 850px;
+  }
+
+  .highlight {
+    color: #b388ff;
+    font-weight: 600;
+  }
+
+  .warn {
+    color: #ff9800;
+    font-weight: 600;
+  }
+
+  .cyan {
+    color: #00bcd4;
+    font-weight: 600;
+  }
+
+  .quote {
+    font-size: 1.2rem;
+    color: #b388ff;
+    font-style: italic;
+    border-left: 4px solid #7c4dff;
+    padding: 1rem 1.5rem;
+    margin: 1rem 0;
+    max-width: 800px;
+    line-height: 1.7;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    margin-top: 1rem;
+    max-width: 950px;
+  }
+
+  .col h3 {
+    margin-bottom: 0.8rem;
+  }
+
+  .col p {
+    font-size: 1.05rem;
+  }
+
+  .discussion-q {
+    font-size: 1.4rem;
+    color: #ff9800;
+    font-weight: 600;
+    line-height: 1.6;
+    max-width: 800px;
+  }
+
+  .discussion-time {
+    font-size: 0.9rem;
+    color: #888;
+    margin-top: 1.5rem;
+  }
+
+  .case-label {
+    font-size: 0.85rem;
+    color: #00bcd4;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.5rem;
+  }
+
+  .table-container {
+    margin-top: 1rem;
+    max-width: 900px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 1rem;
+  }
+
+  th {
+    background: #1a1a3e;
+    color: #b388ff;
+    padding: 0.7rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid #7c4dff;
+  }
+
+  td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #2a2a5a;
+    color: #ccc;
+  }
+
+  tr:nth-child(even) td {
+    background: #111128;
+  }
+
+  /* Navigation */
+  .nav {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 2rem;
+    display: flex;
+    gap: 0.5rem;
+    z-index: 100;
+  }
+
+  .nav button {
+    background: #7c4dff;
+    color: #fff;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  .nav button:hover { background: #6a3de8; }
+  .nav button:disabled { background: #333; cursor: not-allowed; }
+
+  .counter {
+    position: fixed;
+    bottom: 1.8rem;
+    left: 2rem;
+    font-size: 0.85rem;
+    color: #666;
+    z-index: 100;
+  }
+
+  @media (max-width: 768px) {
+    .slide { padding: 2rem 1.5rem; }
+    h1 { font-size: 1.8rem; }
+    h2 { font-size: 1.4rem; }
+    p, .point { font-size: 1rem; }
+    .two-col { grid-template-columns: 1fr; }
+    .discussion-q { font-size: 1.1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- SLIDE 1: Title -->
+<div class="slide slide-title active" id="s1">
+  <div class="subtitle">PSIR 308 — Contemporary Political Philosophy</div>
+  <h1>Multiculturalism</h1>
+  <p style="text-align:center; color:#ccc; max-width:600px; margin:1rem auto 0;">Kymlicka, <em>Contemporary Political Philosophy</em>, Chapter 8<br>Benhabib, <em>The Claims of Culture</em> (excerpts)</p>
+  <div class="meta">Tuesday, June 2, 2026 — Week 12</div>
+</div>
+
+<!-- SLIDE 2: Where we are -->
+<div class="slide slide-content" id="s2">
+  <h2>Where We Are</h2>
+  <p>Over the past eleven weeks we have traced a chain of corrections: utilitarianism's aggregation problem led to Rawls's difference principle; Rawls's insensitivity to choice led to Dworkin's auction; libertarians challenged redistribution entirely; Marxists challenged the liberal property framework; citizenship theorists demanded active civic virtue; feminists exposed the public/private divide; and critical theorists — de Beauvoir and Fanon — argued that liberal categories cannot see pre-political subordination.</p>
+  <p>Today we ask: <span class="highlight">can liberalism accommodate cultural difference?</span> Kymlicka says yes — with modifications. Benhabib says: not so fast.</p>
+</div>
+
+<!-- SLIDE 3: The Question -->
+<div class="slide slide-content" id="s3">
+  <h2>The Central Question</h2>
+  <div class="quote">"A liberal democracy's commitment to individual freedom and equality seems to require identical treatment of all citizens, regardless of group membership. But members of minority cultures argue that identical treatment can itself be a source of injustice."<br>— Kymlicka, Chapter 8</div>
+  <p>This is the multiculturalism paradox: treating everyone the same may require treating some people differently.</p>
+</div>
+
+<!-- SLIDE 4: Section header -->
+<div class="slide slide-section" id="s4">
+  <div class="subtitle">Part I</div>
+  <h1>Kymlicka's Framework</h1>
+  <p style="text-align:center; color:#999;">Societal culture, group-differentiated rights, and the liberal case for minority protection</p>
+</div>
+
+<!-- SLIDE 5: Societal Culture -->
+<div class="slide slide-content" id="s5">
+  <h2>Societal Culture</h2>
+  <p>Kymlicka's argument begins with a concept he borrows and extends: <span class="highlight">societal culture</span> — "a culture which provides its members with meaningful ways of life across the full range of human activities, including social, educational, religious, recreational, and economic life, encompassing both public and private spheres" (Kymlicka, 76).</p>
+  <p>Individual autonomy — the capacity to form, revise, and pursue a conception of the good — requires a <span class="highlight">context of choice</span>. That context is a societal culture. Without it, freedom is empty.</p>
+  <p>This is Kymlicka's liberal move: cultural membership is not opposed to individual freedom — it is a <span class="highlight">precondition</span> of it.</p>
+</div>
+
+<!-- SLIDE 6: Two Kinds of Diversity -->
+<div class="slide slide-content" id="s6">
+  <h2>Two Kinds of Cultural Diversity</h2>
+  <div class="two-col">
+    <div class="col">
+      <h3>National Minorities</h3>
+      <p>Previously self-governing, territorially concentrated cultures that have been incorporated into a larger state — often involuntarily. They seek to maintain themselves as distinct societal cultures.</p>
+      <p><span class="highlight">Examples:</span> Québécois in Canada, Catalans in Spain, Kurds in Türkiye, Māori in New Zealand, Indigenous nations in the Americas.</p>
+    </div>
+    <div class="col">
+      <h3>Polyethnic / Immigrant Groups</h3>
+      <p>Individuals and families who have voluntarily left their national community to join another society. They typically seek integration into the existing societal culture — but on terms that respect their identity.</p>
+      <p><span class="highlight">Examples:</span> Muslim communities in France, Spanish-speaking immigrants in the US, South Asian communities in the UK.</p>
+    </div>
+  </div>
+</div>
+
+<!-- SLIDE 7: Three Types of Rights -->
+<div class="slide slide-content" id="s7">
+  <h2>Three Types of Group-Differentiated Rights</h2>
+  <div class="point"><span class="highlight">1. Self-government rights</span> — Delegation of political authority to national minorities, typically through federalism or territorial autonomy. The strongest claim: a group demands its own political unit.</div>
+  <div class="point"><span class="highlight">2. Polyethnic rights</span> — Legal protections and positive measures for immigrant groups to express their cultural particularity: religious exemptions, funding for cultural festivals, anti-discrimination laws, mother-tongue services.</div>
+  <div class="point"><span class="highlight">3. Special representation rights</span> — Guaranteed seats or quotas in legislative bodies for underrepresented groups, ensuring their voice in collective decision-making.</div>
+  <p>Note: these are not mutually exclusive. A single group may claim more than one type.</p>
+</div>
+
+<!-- SLIDE 8: Internal Restrictions vs External Protections -->
+<div class="slide slide-content" id="s8">
+  <h2>The Liberal Limit: Internal Restrictions vs External Protections</h2>
+  <div class="two-col">
+    <div class="col">
+      <h3 style="color:#4caf50;">External Protections ✓</h3>
+      <p>Rights that protect a minority group from the decisions of the larger society — shielding them from economic or political domination. These are <span class="highlight">consistent</span> with liberal principles.</p>
+      <p><em>Example: Québec's language laws requiring French in workplaces protect the francophone culture from anglophone economic dominance.</em></p>
+    </div>
+    <div class="col">
+      <h3 style="color:#ff5252;">Internal Restrictions ✗</h3>
+      <p>Rules imposed by a group on its own members to prevent internal dissent or deviation. These restrict individual freedom <em>within</em> the group and are <span class="warn">inconsistent</span> with liberalism.</p>
+      <p><em>Example: A community that forbids its members from marrying outside the group or leaving the religion.</em></p>
+    </div>
+  </div>
+  <p style="margin-top:1.5rem;">Kymlicka's line: liberalism supports <span class="highlight">external protections</span> but opposes <span class="warn">internal restrictions</span>. A group can demand protection from the majority but cannot oppress its own members.</p>
+</div>
+
+<!-- SLIDE 9: Discussion 1 -->
+<div class="slide slide-discussion" id="s9">
+  <h3 style="color:#ff9800;">Discussion — 3 minutes</h3>
+  <div class="discussion-q">Québec's Bill 21 bans public-sector employees from wearing religious symbols. Is this an external protection (defending Québec's secular culture from religious fragmentation) or an internal restriction (suppressing the rights of religious minorities within Québec)?</div>
+  <div class="discussion-time">Think about this from Kymlicka's framework. Can a national minority use its self-government powers to impose restrictions on sub-minorities?</div>
+</div>
+
+<!-- SLIDE 10: Section header -->
+<div class="slide slide-section" id="s10">
+  <div class="subtitle">Part II</div>
+  <h1>Problems with Kymlicka</h1>
+  <p style="text-align:center; color:#999;">Where the framework strains, bends, and breaks</p>
+</div>
+
+<!-- SLIDE 11: Problem 1 — The Binary -->
+<div class="slide slide-content" id="s11">
+  <h2>Problem 1: The Binary Is Too Neat</h2>
+  <p>Kymlicka's framework rests on a clean distinction between national minorities and polyethnic immigrants. But many groups fit neither category:</p>
+  <div class="point"><span class="highlight">Roma in Europe</span> — not territorial, not immigrants, centuries-old presence, no demand for self-government. Neither category applies.</div>
+  <div class="point"><span class="highlight">African Americans</span> — not a national minority in Kymlicka's territorial sense, not voluntary immigrants. Their presence is the product of enslavement.</div>
+  <div class="point"><span class="highlight">Maronites of Cyprus</span> — an indigenous community since the twelfth century, forced by the 1960 constitution into the Greek Cypriot community. Not immigrants, not a national minority with territorial claims. Constitutionally invisible.</div>
+  <p>If the framework cannot classify these groups, what use is it?</p>
+</div>
+
+<!-- SLIDE 12: Problem 2 — Static Culture -->
+<div class="slide slide-content" id="s12">
+  <h2>Problem 2: Culture Is Not a Box</h2>
+  <p>Kymlicka treats 'societal culture' as a relatively stable, bounded entity — something you belong to, like a container. But cultures are not containers. They overlap, shift, hybridise, and conflict internally.</p>
+  <div class="quote">"Cultures are not sealed packages but ongoing processes of negotiation, contestation, and transformation."</div>
+  <p>A Kurdish woman in Istanbul participates in Turkish civic culture, Kurdish linguistic culture, Islamic religious culture, feminist intellectual culture, and global digital culture — simultaneously. Which is her 'societal culture'?</p>
+  <p>This is where <span class="highlight">Benhabib</span> enters.</p>
+</div>
+
+<!-- SLIDE 13: Problem 3 — Liberal Precondition -->
+<div class="slide slide-content" id="s13">
+  <h2>Problem 3: The Liberal-Democratic Precondition</h2>
+  <p>Kymlicka's entire framework assumes a functioning liberal-democratic state that recognises rights, tolerates dissent, and provides institutional channels for minority claims. But many of the most urgent multicultural conflicts occur in states where these conditions do not hold:</p>
+  <div class="point"><span class="highlight">Kurds in Türkiye</span> — the state has banned Kurdish parties, imprisoned elected officials, and restricted language rights. There is no liberal framework to appeal to.</div>
+  <div class="point"><span class="highlight">Uyghurs in China</span> — the claim is not for group-differentiated rights but for basic cultural survival under mass detention and forced assimilation.</div>
+  <p>Kymlicka's theory describes what a just liberal state <em>should</em> do. It has much less to say about what happens when the state itself is the problem.</p>
+</div>
+
+<!-- SLIDE 14: Section header -->
+<div class="slide slide-section" id="s14">
+  <div class="subtitle">Part III</div>
+  <h1>Benhabib's Correction</h1>
+  <p style="text-align:center; color:#999;">From static categories to democratic iteration</p>
+</div>
+
+<!-- SLIDE 15: Benhabib's Critique -->
+<div class="slide slide-content" id="s15">
+  <h2>Benhabib Against the "Mosaic" Model</h2>
+  <p>Seyla Benhabib argues that theorists like Kymlicka treat cultures as if they were tiles in a mosaic — clearly bounded, internally uniform, externally distinct. She calls this the <span class="highlight">"reductionist sociology of culture"</span>.</p>
+  <p>The problem: when you grant rights to a 'culture,' you must first decide what that culture is, who speaks for it, and where its boundaries lie. This inevitably empowers conservative elites within the group — the people who claim to represent the 'authentic' culture — and silences dissidents, women, and reformers.</p>
+  <div class="quote">"The right to cultural self-expression should not become the right of cultural elites to police their members."<br>— Benhabib, <em>The Claims of Culture</em></div>
+</div>
+
+<!-- SLIDE 16: Three Conditions -->
+<div class="slide slide-content" id="s16">
+  <h2>Benhabib's Three Normative Conditions</h2>
+  <p>Benhabib does not reject group rights outright. She argues that any cultural accommodation must satisfy three conditions:</p>
+  <div class="point"><span class="highlight">1. Egalitarian reciprocity</span> — Members of a cultural group must not receive fewer rights than members of the majority. Cultural practices that subordinate women, children, or dissenters fail this test.</div>
+  <div class="point"><span class="highlight">2. Voluntary self-ascription</span> — Individuals must be free to define their own relationship to their culture. No one should be assigned a cultural identity by the state or by community leaders against their will.</div>
+  <div class="point"><span class="highlight">3. Freedom of exit and association</span> — Members must be genuinely free to leave the group without facing material ruin, social ostracism, or violence. Exit must be a real option, not merely a formal one.</div>
+</div>
+
+<!-- SLIDE 17: Democratic Iteration -->
+<div class="slide slide-content" id="s17">
+  <h2>Democratic Iteration</h2>
+  <p>Benhabib's alternative to Kymlicka's fixed categories is <span class="highlight">democratic iteration</span> — an ongoing process in which universal norms (human rights, equality, dignity) are reinterpreted and renegotiated through public deliberation in specific local contexts.</p>
+  <p>Cultural meanings are not fixed. They are contested, revised, and transformed through democratic engagement. The French headscarf debate, for example, is not a clash between 'French culture' and 'Islamic culture' — it is an ongoing democratic argument about what secularism, equality, and religious freedom mean in a pluralist republic.</p>
+  <p>The key insight: <span class="highlight">cultural boundaries are politically constructed and can be politically reconstructed</span> — but only if the three conditions above are met.</p>
+</div>
+
+<!-- SLIDE 18: Discussion 2 -->
+<div class="slide slide-discussion" id="s18">
+  <h3 style="color:#ff9800;">Discussion — 5 minutes</h3>
+  <div class="discussion-q">Apply Benhabib's three conditions to the Maronites of Cyprus. The 1960 constitution forced them to choose between the Greek or Turkish community. Does this satisfy voluntary self-ascription? Is freedom of exit meaningful when there are only two options and neither is yours?</div>
+  <div class="discussion-time">Think about what democratic iteration would look like in the Cyprus context. Who would participate? What would be renegotiated?</div>
+</div>
+
+<!-- SLIDE 19: Break -->
+<div class="slide slide-break" id="s19">
+  <h1 style="color:#666;">Break</h1>
+  <p style="text-align:center; color:#555; font-size:1.2rem;">10 minutes — we resume with the seven cases</p>
+</div>
+
+<!-- SLIDE 20: Section header -->
+<div class="slide slide-section" id="s20">
+  <div class="subtitle">Part IV</div>
+  <h1>Seven Cases Under Pressure</h1>
+  <p style="text-align:center; color:#999;">Testing Kymlicka and Benhabib against the real world</p>
+</div>
+
+<!-- SLIDE 21: Case Overview Table -->
+<div class="slide slide-content" id="s21">
+  <h2>The Boundary — Case Map</h2>
+  <div class="table-container">
+    <table>
+      <tr><th>#</th><th>Case</th><th>Category</th><th>What It Tests</th></tr>
+      <tr><td>1</td><td>Québec Bill 21</td><td>National minority</td><td>External protection vs internal restriction</td></tr>
+      <tr><td>2</td><td>Kurdish language rights</td><td>National minority (denied)</td><td>Framework in a non-liberal state</td></tr>
+      <tr><td>3</td><td>French hijab/abaya ban</td><td>Polyethnic-immigrant</td><td>Polyethnic rights vs civic assimilation</td></tr>
+      <tr><td>4</td><td>Trump English-Only EO</td><td>Polyethnic-immigrant</td><td>Language access and integration</td></tr>
+      <tr><td>5</td><td>Roma in the EU</td><td>Neither category fits</td><td>Breaks the binary</td></tr>
+      <tr><td>6</td><td>Uyghur suppression</td><td>National minority</td><td>Limits of liberal-democratic assumption</td></tr>
+      <tr><td>7</td><td>Maronites of Cyprus</td><td>Ancient indigenous community</td><td>Constitutional invisibility</td></tr>
+    </table>
+  </div>
+  <p style="margin-top:1rem; font-size:0.95rem; color:#888;">You completed The Boundary simulation before class. We will now review the aggregate results.</p>
+</div>
+
+<!-- SLIDE 22: Cases 1-2 -->
+<div class="slide slide-case" id="s22">
+  <div class="case-label">Cases 1 & 2 — National Minorities</div>
+  <h2>Québec and the Kurds</h2>
+  <p><span class="cyan">Québec</span> is Kymlicka's strongest case: a national minority with self-government rights within a liberal federation. Bill 21 is the complication — Québec uses those very powers to restrict religious minorities within its borders. Kymlicka's framework can identify this as an internal restriction, but can it stop it?</p>
+  <p><span class="cyan">Kurdish language rights</span> represent the opposite problem: a national minority that clearly meets Kymlicka's criteria but exists in a state that refuses to recognise the framework. The theory can diagnose the injustice but has no institutional lever.</p>
+  <p><span class="highlight">Common thread:</span> Kymlicka's categories work for classification but struggle with enforcement and internal complexity.</p>
+</div>
+
+<!-- SLIDE 23: Cases 3-4 -->
+<div class="slide slide-case" id="s23">
+  <div class="case-label">Cases 3 & 4 — Polyethnic Claims</div>
+  <h2>French Hijab Ban and US English-Only Order</h2>
+  <p><span class="cyan">France</span> frames laïcité as a universal civic principle. Kymlicka would classify French Muslims as a polyethnic group entitled to polyethnic rights — including religious expression. But France rejects the very category of polyethnic rights, insisting on undifferentiated republican citizenship. Whose liberalism wins?</p>
+  <p><span class="cyan">Trump's Executive Order 14224</span> (March 2025) designated English as the sole official language, revoking multilingual federal services. The affected communities are classic polyethnic immigrants — no territorial claim, no self-government demand, just access to public services. Kymlicka would support their polyethnic rights. The state disagrees.</p>
+  <p><span class="highlight">Common thread:</span> both cases show liberal states actively restricting polyethnic accommodation in the name of national unity.</p>
+</div>
+
+<!-- SLIDE 24: Case 5 -->
+<div class="slide slide-case" id="s24">
+  <div class="case-label">Case 5 — The Category Breaker</div>
+  <h2>Roma in the EU</h2>
+  <p>The Roma have lived in Europe for centuries. They are not immigrants. They do not claim territory. They do not seek self-government. They have no 'kin state.' They are systematically excluded, impoverished, and segregated across multiple EU member states despite decades of policy frameworks.</p>
+  <p>Kymlicka's binary — national minority or polyethnic immigrant — simply cannot classify them. This is not a marginal exception; it is <span class="highlight">6 million people</span> falling through the theoretical floor.</p>
+  <p>Benhabib's framework handles them better: the question is not which category they belong to but whether egalitarian reciprocity, voluntary self-ascription, and freedom of exit are being met. The answer, across virtually every EU member state, is no.</p>
+</div>
+
+<!-- SLIDE 25: Case 6 -->
+<div class="slide slide-case" id="s25">
+  <div class="case-label">Case 6 — Beyond Liberalism</div>
+  <h2>Uyghur Cultural Suppression</h2>
+  <p>The Uyghurs are, in Kymlicka's terms, a textbook national minority: territorially concentrated, linguistically distinct, historically self-governing. His framework would grant them self-government rights, polyethnic protections, and special representation.</p>
+  <p>None of this matters. China is not a liberal democracy. There is no constitutional channel, no rights framework, no institutional mechanism through which Uyghur claims can be advanced. The claim has collapsed from group-differentiated rights to <span class="warn">basic human survival</span>.</p>
+  <p>This is the hardest test: <span class="highlight">Kymlicka's theory presupposes the very conditions that are absent.</span> Benhabib's democratic iteration also requires a functioning public sphere — which does not exist in Xinjiang.</p>
+</div>
+
+<!-- SLIDE 26: Case 7 -->
+<div class="slide slide-case" id="s26">
+  <div class="case-label">Case 7 — The Closest to Home</div>
+  <h2>The Maronites of Cyprus</h2>
+  <p>The 1960 Constitution recognised only two communities. Maronites, Armenians, and Latins were classified as 'religious groups' and forced to choose one. The Maronites — present since the crusades, with their own language, their own church, their own villages — became a sub-category of the Greek Cypriot community. Their parliamentary representative cannot vote.</p>
+  <p>Scholar Andrekos Varnava calls this <span class="highlight">'internal exclusion'</span>: the bi-communal framework does not just ignore diversity — it structurally erases it. The constitutional architecture has room for two peoples and only two.</p>
+  <p>Kymlicka would likely classify the Maronites as a national minority. But the constitution does not recognise that category. And Benhabib's voluntary self-ascription was violated at the very founding of the state, when Maronites were compelled to choose an identity that was not theirs.</p>
+</div>
+
+<!-- SLIDE 27: Discussion 3 -->
+<div class="slide slide-discussion" id="s27">
+  <h3 style="color:#ff9800;">Discussion — 5 minutes</h3>
+  <div class="discussion-q">Look at the seven cases together. In how many of them does Kymlicka's framework successfully identify the problem? In how many does it offer a solution? What does the gap between diagnosis and remedy tell us about the limits of liberal multiculturalism?</div>
+</div>
+
+<!-- SLIDE 28: Section header -->
+<div class="slide slide-section" id="s28">
+  <div class="subtitle">Part V</div>
+  <h1>Kymlicka vs Benhabib</h1>
+  <p style="text-align:center; color:#999;">Two liberal responses to cultural difference</p>
+</div>
+
+<!-- SLIDE 29: Comparison -->
+<div class="slide slide-content" id="s29">
+  <h2>Two Frameworks Compared</h2>
+  <div class="table-container">
+    <table>
+      <tr><th>Dimension</th><th>Kymlicka</th><th>Benhabib</th></tr>
+      <tr><td>View of culture</td><td>Societal culture as bounded context of choice</td><td>Culture as contested, fluid 'webs of meaning'</td></tr>
+      <tr><td>Unit of rights</td><td>Groups (national minorities, polyethnic)</td><td>Individuals within cultural contexts</td></tr>
+      <tr><td>Key mechanism</td><td>Group-differentiated rights</td><td>Democratic iteration + three conditions</td></tr>
+      <tr><td>Who speaks for the group?</td><td>Largely unaddressed</td><td>Central concern — rejects elite monopoly</td></tr>
+      <tr><td>Handles non-liberal states?</td><td>Poorly — assumes liberal democracy</td><td>Better — but still requires public sphere</td></tr>
+      <tr><td>Handles groups outside the binary?</td><td>Struggles (Roma, Maronites)</td><td>Conditions apply regardless of category</td></tr>
+    </table>
+  </div>
+</div>
+
+<!-- SLIDE 30: Synthesis -->
+<div class="slide slide-content" id="s30">
+  <h2>The Chain of Corrections — Updated</h2>
+  <p>Kymlicka extended liberal equality to cultural membership: if autonomy requires a context of choice, then protecting minority cultures is a liberal obligation. This was a genuine advance over colour-blind liberalism.</p>
+  <p>But his framework is <span class="highlight">too categorical</span> (the binary breaks), <span class="highlight">too static</span> (cultures change), and <span class="highlight">too optimistic</span> (it assumes liberal states will cooperate). Benhabib corrects each of these: she replaces fixed categories with normative conditions, replaces the mosaic with democratic iteration, and insists on individual agency within cultural contexts.</p>
+  <p>Neither framework fully succeeds. The seven cases we examined today show that <span class="warn">the real world generates forms of cultural injustice that outrun even the best liberal theory</span>. That is not a reason to abandon theory — it is a reason to keep correcting it.</p>
+</div>
+
+<!-- SLIDE 31: Looking Ahead -->
+<div class="slide slide-content" id="s31">
+  <h2>Looking Ahead</h2>
+  <div class="point"><span class="highlight">Wednesday, June 3</span> — Multicultural Team Workshop (Enes, Gurkan, Sarp). We will use The Boundary simulation data in class. Come prepared to discuss your responses and defend your classifications.</div>
+  <div class="point"><span class="highlight">Thursday, June 4, 10:00 PM</span> — Brief 5 due (Weeks 11–12: Communitarianism & Multiculturalism). Compare Taylor's communitarian challenge with Benhabib's critique of Kymlicka. Apply to a concrete case. One genuine question for the capstone.</div>
+  <div class="point"><span class="highlight">Week 13 (June 8–11)</span> — Capstone Debate: Can liberal theory accommodate radical critiques? Everything we've built this semester converges.</div>
+  <div class="point"><span class="highlight">The Boundary simulation</span> — Complete before Wednesday if you haven't already: <span class="cyan">efkaymak-del.github.io/PSIR308/the_boundary.html</span></div>
+</div>
+
+<!-- SLIDE 32: Final -->
+<div class="slide slide-title" id="s32">
+  <div class="subtitle">PSIR 308 — Contemporary Political Philosophy</div>
+  <h1>The Boundary Is Where the Theory Gets Tested</h1>
+  <p style="text-align:center; color:#999; max-width:500px; margin:1rem auto 0;">See you Wednesday.</p>
+</div>
+
+<!-- Navigation -->
+<div class="counter" id="counter">1 / 32</div>
+<div class="nav">
+  <button id="prevBtn" onclick="changeSlide(-1)" disabled>← Prev</button>
+  <button id="nextBtn" onclick="changeSlide(1)">Next →</button>
+</div>
+
+<script>
+let current = 1;
+const total = 32;
+
+function changeSlide(dir) {
+  document.getElementById('s' + current).classList.remove('active');
+  current += dir;
+  if (current < 1) current = 1;
+  if (current > total) current = total;
+  document.getElementById('s' + current).classList.add('active');
+  document.getElementById('counter').textContent = current + ' / ' + total;
+  document.getElementById('prevBtn').disabled = (current === 1);
+  document.getElementById('nextBtn').disabled = (current === total);
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); changeSlide(1); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); changeSlide(-1); }
+});
+
+let touchStartX = 0;
+document.addEventListener('touchstart', function(e) { touchStartX = e.touches[0].clientX; });
+document.addEventListener('touchend', function(e) {
+  const diff = touchStartX - e.changedTouches[0].clientX;
+  if (Math.abs(diff) > 50) changeSlide(diff > 0 ? 1 : -1);
+});
+</script>
+
+</body>
+</html>
