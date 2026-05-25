@@ -22,11 +22,10 @@
   }
 
   header h1 {
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #fff;
     margin-bottom: 0.3rem;
-    letter-spacing: 0.5px;
   }
 
   header .course {
@@ -40,27 +39,27 @@
   header p {
     font-size: 0.95rem;
     color: #ccc;
-    max-width: 700px;
+    max-width: 720px;
     margin: 0 auto;
     line-height: 1.6;
   }
 
-  .instructions {
+  .intro {
     background: #12122a;
     border-left: 4px solid #7c4dff;
-    max-width: 750px;
+    max-width: 800px;
     margin: 1.5rem auto;
     padding: 1.2rem 1.5rem;
     border-radius: 0 8px 8px 0;
   }
 
-  .instructions h2 {
+  .intro h2 {
     font-size: 1rem;
     color: #b388ff;
     margin-bottom: 0.6rem;
   }
 
-  .instructions p {
+  .intro p {
     font-size: 0.9rem;
     color: #bbb;
     line-height: 1.6;
@@ -83,24 +82,241 @@
     color: #b388ff;
   }
 
-  .form-container {
+  /* Student info */
+  .student-info {
     max-width: 800px;
     margin: 1.5rem auto;
-    padding: 0 1rem;
+    padding: 1.5rem;
+    background: #111128;
+    border-radius: 10px;
+    border: 1px solid #2a2a5a;
   }
 
-  .form-container iframe {
+  .student-info h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 1rem;
+  }
+
+  .student-info label {
+    display: block;
+    font-size: 0.9rem;
+    color: #ccc;
+    margin-bottom: 0.3rem;
+  }
+
+  .student-info input {
     width: 100%;
-    height: 4500px;
+    padding: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: #1a1a3e;
+    color: #fff;
+    font-size: 0.95rem;
+  }
+
+  .student-info input:focus {
+    outline: none;
+    border-color: #7c4dff;
+  }
+
+  /* Case cards */
+  .case-card {
+    max-width: 800px;
+    margin: 1.5rem auto;
+    background: #111128;
+    border-radius: 10px;
+    border: 1px solid #2a2a5a;
+    overflow: hidden;
+  }
+
+  .case-header {
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid #2a2a5a;
+  }
+
+  .case-number {
+    font-size: 0.75rem;
+    color: #7c4dff;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 0.3rem;
+  }
+
+  .case-title {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .case-description {
+    padding: 1.2rem 1.5rem;
+    background: #0d0d22;
+    border-bottom: 1px solid #2a2a5a;
+  }
+
+  .case-description p {
+    font-size: 0.92rem;
+    color: #bbb;
+    line-height: 1.7;
+  }
+
+  .case-questions {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .question {
+    margin-bottom: 1.4rem;
+  }
+
+  .question:last-child {
+    margin-bottom: 0;
+  }
+
+  .q-label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #e0e0e0;
+    margin-bottom: 0.6rem;
+  }
+
+  .q-label em {
+    font-weight: 400;
+    color: #888;
+    font-style: normal;
+    font-size: 0.8rem;
+  }
+
+  .option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.4rem 0;
+    cursor: pointer;
+  }
+
+  .option input[type="radio"],
+  .option input[type="checkbox"] {
+    margin-top: 3px;
+    accent-color: #7c4dff;
+    cursor: pointer;
+  }
+
+  .option label {
+    font-size: 0.88rem;
+    color: #ccc;
+    cursor: pointer;
+    line-height: 1.4;
+  }
+
+  .divider {
+    height: 1px;
+    background: #2a2a5a;
+    margin: 1.2rem 0;
+  }
+
+  /* Reflection */
+  .reflection {
+    max-width: 800px;
+    margin: 1.5rem auto;
+    padding: 1.5rem;
+    background: #111128;
+    border-radius: 10px;
+    border: 1px solid #2a2a5a;
+  }
+
+  .reflection h2 {
+    font-size: 1.1rem;
+    color: #fff;
+    margin-bottom: 0.5rem;
+  }
+
+  .reflection p {
+    font-size: 0.88rem;
+    color: #999;
+    margin-bottom: 0.8rem;
+  }
+
+  .reflection textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.8rem;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: #1a1a3e;
+    color: #fff;
+    font-size: 0.92rem;
+    font-family: inherit;
+    resize: vertical;
+  }
+
+  .reflection textarea:focus {
+    outline: none;
+    border-color: #7c4dff;
+  }
+
+  /* Submit */
+  .submit-area {
+    max-width: 800px;
+    margin: 1.5rem auto 2rem;
+    text-align: center;
+  }
+
+  .submit-btn {
+    background: #7c4dff;
+    color: #fff;
     border: none;
+    padding: 0.9rem 2.5rem;
+    font-size: 1rem;
+    font-weight: 600;
     border-radius: 8px;
-    background: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .submit-btn:hover {
+    background: #6a3de8;
+  }
+
+  .submit-btn:disabled {
+    background: #444;
+    cursor: not-allowed;
+  }
+
+  .error-msg {
+    color: #ff5252;
+    font-size: 0.85rem;
+    margin-top: 0.8rem;
+    display: none;
+  }
+
+  .success-msg {
+    display: none;
+    max-width: 800px;
+    margin: 3rem auto;
+    text-align: center;
+    padding: 3rem 1.5rem;
+    background: #111128;
+    border-radius: 10px;
+    border: 1px solid #7c4dff;
+  }
+
+  .success-msg h2 {
+    color: #7c4dff;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .success-msg p {
+    color: #ccc;
+    font-size: 1rem;
+    line-height: 1.6;
   }
 
   footer {
     text-align: center;
     padding: 2rem 1rem;
-    background: #0a0a1a;
     border-top: 1px solid #222;
   }
 
@@ -115,12 +331,15 @@
     text-decoration: none;
   }
 
+  .required-star {
+    color: #ff5252;
+  }
+
   @media (max-width: 600px) {
-    header h1 { font-size: 1.4rem; }
-    header p { font-size: 0.85rem; padding: 0 0.5rem; }
-    .instructions { margin: 1rem 0.5rem; padding: 1rem; }
-    .form-container { padding: 0 0.5rem; }
-    .form-container iframe { height: 5500px; }
+    header h1 { font-size: 1.5rem; }
+    header p { font-size: 0.85rem; }
+    .intro, .student-info, .case-card, .reflection, .submit-area { margin: 1rem 0.5rem; }
+    .case-header, .case-description, .case-questions { padding: 1rem; }
   }
 </style>
 </head>
@@ -132,7 +351,7 @@
   <p>Seven cases. Five questions each. One framework under pressure. Apply Kymlicka's multicultural citizenship categories and Benhabib's normative conditions to real-world cultural rights conflicts — then bring your results to Wednesday's workshop.</p>
 </header>
 
-<div class="instructions">
+<div class="intro">
   <h2>Before You Begin</h2>
   <p>Read Kymlicka Chapter 8 and the Benhabib excerpts before completing this simulation. For each case you will classify the group, identify the type of right claimed, determine whether the policy involves external protection or internal restriction, check Benhabib's three conditions, and assess the adequacy of Kymlicka's framework.</p>
   <p>There are no correct answers — the point is to test where the theory holds and where it breaks. Your responses will be aggregated and displayed during the workshop.</p>
@@ -150,13 +369,387 @@
   </div>
 </div>
 
-<div class="form-container">
-  <iframe
-    src="https://docs.google.com/forms/d/e/1FAIpQLSdgHS0gDMTGALg6P9jXLXSYmhRqDrsLlJi3McOBoQZ2grLqYw/viewform?embedded=true"
-    allowfullscreen
-    loading="lazy">
-    Loading the simulation…
-  </iframe>
+<form id="boundaryForm">
+
+<!-- STUDENT INFO -->
+<div class="student-info">
+  <h2>Student Info</h2>
+  <label for="fullName">Full Name <span class="required-star">*</span></label>
+  <input type="text" id="fullName" name="fullName" required>
+  <label for="studentId">Student ID <span class="required-star">*</span></label>
+  <input type="text" id="studentId" name="studentId" required>
+</div>
+
+<!-- CASE 1 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 1 of 7</div>
+    <div class="case-title">Québec Bill 21 (Canada)</div>
+  </div>
+  <div class="case-description">
+    <p>In 2019, Québec passed Bill 21 (<em>Loi sur la laïcité de l'État</em>), banning public-sector employees in positions of authority — teachers, police officers, judges — from wearing visible religious symbols such as hijabs, kippot, turbans, and crosses. The law invokes the notwithstanding clause to override Charter rights. Supporters frame it as protecting secular civic space; opponents call it discrimination against religious minorities, particularly Muslim women. Canada's Supreme Court is expected to hear the challenge. Québec is a national minority within Canada that is itself restricting the cultural expression of minorities within its borders — a case where Kymlicka's framework must confront a national minority using its self-government powers to impose internal restrictions on vulnerable sub-groups.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify this group (Québécois)? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c1q1" id="c1q1a" value="National minority" required><label for="c1q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c1q1" id="c1q1b" value="Polyethnic-immigrant group"><label for="c1q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c1q1" id="c1q1c" value="Neither fits"><label for="c1q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed or contested? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c1q2" id="c1q2a" value="Self-government rights" required><label for="c1q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c1q2" id="c1q2b" value="Polyethnic rights"><label for="c1q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c1q2" id="c1q2c" value="Special representation rights"><label for="c1q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c1q2" id="c1q2d" value="Basic human rights"><label for="c1q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Does Bill 21 represent an external protection or an internal restriction? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c1q3" id="c1q3a" value="External protection" required><label for="c1q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c1q3" id="c1q3b" value="Internal restriction"><label for="c1q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c1q3" id="c1q3c" value="Both"><label for="c1q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c1q3" id="c1q3d" value="Neither"><label for="c1q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c1q4" id="c1q4a" value="Egalitarian reciprocity"><label for="c1q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c1q4" id="c1q4b" value="Voluntary self-ascription"><label for="c1q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c1q4" id="c1q4c" value="Freedom of exit and association"><label for="c1q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c1q4" id="c1q4d" value="None are met"><label for="c1q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c1q5" id="c1q5a" value="Yes" required><label for="c1q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c1q5" id="c1q5b" value="Partially"><label for="c1q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c1q5" id="c1q5c" value="No"><label for="c1q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 2 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 2 of 7</div>
+    <div class="case-title">Kurdish Language Rights (Türkiye)</div>
+  </div>
+  <div class="case-description">
+    <p>An estimated 15–20 million Kurds live in Türkiye, making them the largest ethnic minority. Despite constitutional reforms in the 2000s that permitted private Kurdish-language broadcasting and education, Kurdish-language electives remain largely unavailable in public universities. Kurdish political parties have repeatedly been banned or prosecuted. The claim spans language rights, mother-tongue education, political representation, and cultural survival. Kurds in Türkiye do not have a federal sub-unit or autonomous region, unlike Kurdish populations in Iraq. This case tests Kymlicka's framework in a state that does not operate under liberal-democratic norms of minority accommodation — the very precondition Kymlicka assumes.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify this group? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c2q1" id="c2q1a" value="National minority" required><label for="c2q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c2q1" id="c2q1b" value="Polyethnic-immigrant group"><label for="c2q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c2q1" id="c2q1c" value="Neither fits"><label for="c2q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c2q2" id="c2q2a" value="Self-government rights" required><label for="c2q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c2q2" id="c2q2b" value="Polyethnic rights"><label for="c2q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c2q2" id="c2q2c" value="Special representation rights"><label for="c2q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c2q2" id="c2q2d" value="Basic human rights"><label for="c2q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Does Türkiye's language policy represent an external protection or an internal restriction? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c2q3" id="c2q3a" value="External protection" required><label for="c2q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c2q3" id="c2q3b" value="Internal restriction"><label for="c2q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c2q3" id="c2q3c" value="Both"><label for="c2q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c2q3" id="c2q3d" value="Neither"><label for="c2q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c2q4" id="c2q4a" value="Egalitarian reciprocity"><label for="c2q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c2q4" id="c2q4b" value="Voluntary self-ascription"><label for="c2q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c2q4" id="c2q4c" value="Freedom of exit and association"><label for="c2q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c2q4" id="c2q4d" value="None are met"><label for="c2q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c2q5" id="c2q5a" value="Yes" required><label for="c2q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c2q5" id="c2q5b" value="Partially"><label for="c2q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c2q5" id="c2q5c" value="No"><label for="c2q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 3 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 3 of 7</div>
+    <div class="case-title">Hijab and Abaya Ban in French Public Schools (France)</div>
+  </div>
+  <div class="case-description">
+    <p>France banned conspicuous religious symbols in public schools in 2004, primarily affecting Muslim girls wearing the hijab. In 2023, the government extended the restriction to include the abaya, a loose-fitting full-length robe, on the grounds that it constituted a religious marker. France's approach is grounded in <em>laïcité</em> — a strict separation of religion from public institutions — and frames the ban as protecting republican civic unity. Critics argue it disproportionately targets Muslim women from immigrant-origin communities and restricts polyethnic religious expression. France's Muslim population of approximately 5–6 million is overwhelmingly descended from North African and West African immigrants who arrived from the 1960s onward. They are not a national minority with a territorial homeland in France; their claims are for religious expression and equal participation within French civic life.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify this group (French Muslims of immigrant origin)? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c3q1" id="c3q1a" value="National minority" required><label for="c3q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c3q1" id="c3q1b" value="Polyethnic-immigrant group"><label for="c3q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c3q1" id="c3q1c" value="Neither fits"><label for="c3q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c3q2" id="c3q2a" value="Self-government rights" required><label for="c3q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c3q2" id="c3q2b" value="Polyethnic rights"><label for="c3q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c3q2" id="c3q2c" value="Special representation rights"><label for="c3q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c3q2" id="c3q2d" value="Basic human rights"><label for="c3q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Does the ban represent an external protection or an internal restriction? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c3q3" id="c3q3a" value="External protection" required><label for="c3q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c3q3" id="c3q3b" value="Internal restriction"><label for="c3q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c3q3" id="c3q3c" value="Both"><label for="c3q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c3q3" id="c3q3d" value="Neither"><label for="c3q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c3q4" id="c3q4a" value="Egalitarian reciprocity"><label for="c3q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c3q4" id="c3q4b" value="Voluntary self-ascription"><label for="c3q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c3q4" id="c3q4c" value="Freedom of exit and association"><label for="c3q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c3q4" id="c3q4d" value="None are met"><label for="c3q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c3q5" id="c3q5a" value="Yes" required><label for="c3q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c3q5" id="c3q5b" value="Partially"><label for="c3q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c3q5" id="c3q5c" value="No"><label for="c3q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 4 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 4 of 7</div>
+    <div class="case-title">Trump's English-Only Executive Order (United States)</div>
+  </div>
+  <div class="case-description">
+    <p>On March 1, 2025, President Trump signed Executive Order 14224 designating English as the sole official language of the United States. The order revoked Executive Order 13166, issued by President Clinton in 2000, which had required federal agencies to improve access to services for persons with limited English proficiency — affecting translated government documents, multilingual healthcare information, court interpretation, and voting materials. The order frames English as the foundation of national unity and civic participation. Critics warn it threatens language access for approximately 25 million US residents with limited English proficiency, disproportionately affecting Spanish-speaking, Chinese-speaking, Vietnamese-speaking, and other immigrant-origin communities. The United States has no constitutionally established official language. The affected populations are overwhelmingly polyethnic immigrant communities who are not seeking self-government or territorial autonomy but equal access to public services in their own languages.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify the affected groups (immigrant-origin language communities)? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c4q1" id="c4q1a" value="National minority" required><label for="c4q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c4q1" id="c4q1b" value="Polyethnic-immigrant group"><label for="c4q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c4q1" id="c4q1c" value="Neither fits"><label for="c4q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c4q2" id="c4q2a" value="Self-government rights" required><label for="c4q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c4q2" id="c4q2b" value="Polyethnic rights"><label for="c4q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c4q2" id="c4q2c" value="Special representation rights"><label for="c4q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c4q2" id="c4q2d" value="Basic human rights"><label for="c4q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Does the English-Only order represent an external protection or an internal restriction? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c4q3" id="c4q3a" value="External protection" required><label for="c4q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c4q3" id="c4q3b" value="Internal restriction"><label for="c4q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c4q3" id="c4q3c" value="Both"><label for="c4q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c4q3" id="c4q3d" value="Neither"><label for="c4q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c4q4" id="c4q4a" value="Egalitarian reciprocity"><label for="c4q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c4q4" id="c4q4b" value="Voluntary self-ascription"><label for="c4q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c4q4" id="c4q4c" value="Freedom of exit and association"><label for="c4q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c4q4" id="c4q4d" value="None are met"><label for="c4q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c4q5" id="c4q5a" value="Yes" required><label for="c4q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c4q5" id="c4q5b" value="Partially"><label for="c4q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c4q5" id="c4q5c" value="No"><label for="c4q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 5 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 5 of 7</div>
+    <div class="case-title">Roma Integration (European Union)</div>
+  </div>
+  <div class="case-description">
+    <p>Approximately 6 million Roma live across the European Union, facing systemic poverty, housing segregation, employment discrimination, and educational exclusion. The EU's 2020–2030 Roma Strategic Framework acknowledged that previous integration efforts had largely failed. Roma do not hold territory, do not seek self-government, and are not recent immigrants — they have lived in Europe for centuries. This makes them extremely difficult to classify under Kymlicka's two-category framework of national minorities and polyethnic immigrant groups. They are not a national minority in Kymlicka's sense (no territorial homeland, no demand for self-government), nor are they an immigrant group seeking integration into a host society. Their claims centre on anti-discrimination, social inclusion, and recognition of cultural identity without any demand for territorial autonomy or political self-governance. The Roma case exposes the limits of a typology built around the national minority / polyethnic binary.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify this group? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c5q1" id="c5q1a" value="National minority" required><label for="c5q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c5q1" id="c5q1b" value="Polyethnic-immigrant group"><label for="c5q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c5q1" id="c5q1c" value="Neither fits"><label for="c5q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c5q2" id="c5q2a" value="Self-government rights" required><label for="c5q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c5q2" id="c5q2b" value="Polyethnic rights"><label for="c5q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c5q2" id="c5q2c" value="Special representation rights"><label for="c5q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c5q2" id="c5q2d" value="Basic human rights"><label for="c5q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Do EU integration policies represent an external protection or an internal restriction? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c5q3" id="c5q3a" value="External protection" required><label for="c5q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c5q3" id="c5q3b" value="Internal restriction"><label for="c5q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c5q3" id="c5q3c" value="Both"><label for="c5q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c5q3" id="c5q3d" value="Neither"><label for="c5q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c5q4" id="c5q4a" value="Egalitarian reciprocity"><label for="c5q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c5q4" id="c5q4b" value="Voluntary self-ascription"><label for="c5q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c5q4" id="c5q4c" value="Freedom of exit and association"><label for="c5q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c5q4" id="c5q4d" value="None are met"><label for="c5q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c5q5" id="c5q5a" value="Yes" required><label for="c5q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c5q5" id="c5q5b" value="Partially"><label for="c5q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c5q5" id="c5q5c" value="No"><label for="c5q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 6 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 6 of 7</div>
+    <div class="case-title">Uyghur Cultural Suppression (China)</div>
+  </div>
+  <div class="case-description">
+    <p>Since 2017, the Chinese government has detained an estimated one million or more Uyghurs and other Turkic Muslims in 're-education' facilities in Xinjiang. Policies include forced labour transfers, restrictions on Islamic practice, suppression of the Uyghur language in schools, mass surveillance, and forced sterilisation. The UN Office of the High Commissioner for Human Rights found in 2022 that these policies may constitute crimes against humanity. In October 2025, the UN renewed its call to end the criminalisation of Uyghur cultural and religious practices. China frames the policies as counter-terrorism and vocational training. The Uyghur claim is not for group-differentiated rights within a liberal democracy — it is for basic cultural survival under an authoritarian state that does not recognise minority rights frameworks. This case tests whether Kymlicka's theory has anything meaningful to say when its foundational assumption — a functioning liberal-democratic state — does not hold.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify this group? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c6q1" id="c6q1a" value="National minority" required><label for="c6q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c6q1" id="c6q1b" value="Polyethnic-immigrant group"><label for="c6q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c6q1" id="c6q1c" value="Neither fits"><label for="c6q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c6q2" id="c6q2a" value="Self-government rights" required><label for="c6q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c6q2" id="c6q2b" value="Polyethnic rights"><label for="c6q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c6q2" id="c6q2c" value="Special representation rights"><label for="c6q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c6q2" id="c6q2d" value="Basic human rights"><label for="c6q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Does China's policy represent an external protection or an internal restriction? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c6q3" id="c6q3a" value="External protection" required><label for="c6q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c6q3" id="c6q3b" value="Internal restriction"><label for="c6q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c6q3" id="c6q3c" value="Both"><label for="c6q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c6q3" id="c6q3d" value="Neither"><label for="c6q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c6q4" id="c6q4a" value="Egalitarian reciprocity"><label for="c6q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c6q4" id="c6q4b" value="Voluntary self-ascription"><label for="c6q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c6q4" id="c6q4c" value="Freedom of exit and association"><label for="c6q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c6q4" id="c6q4d" value="None are met"><label for="c6q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c6q5" id="c6q5a" value="Yes" required><label for="c6q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c6q5" id="c6q5b" value="Partially"><label for="c6q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c6q5" id="c6q5c" value="No"><label for="c6q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- CASE 7 -->
+<div class="case-card">
+  <div class="case-header">
+    <div class="case-number">Case 7 of 7</div>
+    <div class="case-title">The Maronites of Cyprus</div>
+  </div>
+  <div class="case-description">
+    <p>The Maronite community of Cyprus has lived on the island since at least the twelfth century — they are not immigrants, not recent arrivals, and not a diaspora. They have their own language (Cypriot Maronite Arabic, or CMA, recognised by the Council of Europe in 2008), their own religious tradition (Maronite Catholic), and historically distinct villages in the north of the island, most of which were emptied after the Turkish military intervention of 1974. Yet the 1960 Constitution of the Republic of Cyprus recognised only two political communities — Greek Cypriot and Turkish Cypriot — and classified Maronites, Armenians, and Latins as 'religious groups' rather than national minorities. Each group was compelled to choose membership in one of the two dominant communities; the Maronites chose the Greek Cypriot community. Today their elected parliamentary representative sits as a non-voting observer in the House of Representatives.</p>
+    <p>The Cypriot government initially denied the very existence of CMA when the Council of Europe raised it, then claimed it was spoken only by elderly villagers in the occupied north. The bi-communal framework of the Cyprus problem — built around two and only two constituent peoples — structurally excludes Maronites, Armenians, Latins, and Roma from political recognition. Scholar Andrekos Varnava describes this as 'internal exclusion': a system that uses bi-communalism to erase the island's actual diversity. The Maronite case tests whether Kymlicka's categories — national minority or polyethnic immigrant — can account for an ancient, indigenous community that is invisible not because it is small but because the constitutional architecture has no room for it.</p>
+  </div>
+  <div class="case-questions">
+    <div class="question">
+      <div class="q-label">Q1. How would Kymlicka classify the Maronites of Cyprus? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c7q1" id="c7q1a" value="National minority" required><label for="c7q1a">National minority</label></div>
+      <div class="option"><input type="radio" name="c7q1" id="c7q1b" value="Polyethnic-immigrant group"><label for="c7q1b">Polyethnic-immigrant group</label></div>
+      <div class="option"><input type="radio" name="c7q1" id="c7q1c" value="Neither fits"><label for="c7q1c">Neither fits Kymlicka's categories</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q2. What type of right is being claimed or denied? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c7q2" id="c7q2a" value="Self-government rights" required><label for="c7q2a">Self-government rights</label></div>
+      <div class="option"><input type="radio" name="c7q2" id="c7q2b" value="Polyethnic rights"><label for="c7q2b">Polyethnic rights</label></div>
+      <div class="option"><input type="radio" name="c7q2" id="c7q2c" value="Special representation rights"><label for="c7q2c">Special representation rights</label></div>
+      <div class="option"><input type="radio" name="c7q2" id="c7q2d" value="Basic human rights"><label for="c7q2d">Basic human rights (beyond Kymlicka's framework)</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q3. Does the bi-communal constitutional framework represent an external protection or an internal restriction for the Maronites? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c7q3" id="c7q3a" value="External protection" required><label for="c7q3a">External protection</label></div>
+      <div class="option"><input type="radio" name="c7q3" id="c7q3b" value="Internal restriction"><label for="c7q3b">Internal restriction</label></div>
+      <div class="option"><input type="radio" name="c7q3" id="c7q3c" value="Both"><label for="c7q3c">Both</label></div>
+      <div class="option"><input type="radio" name="c7q3" id="c7q3d" value="Neither"><label for="c7q3d">Neither</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q4. Which of Benhabib's conditions are met in the Maronite case? <em>(select all that apply)</em> <span class="required-star">*</span></div>
+      <div class="option"><input type="checkbox" name="c7q4" id="c7q4a" value="Egalitarian reciprocity"><label for="c7q4a">Egalitarian reciprocity</label></div>
+      <div class="option"><input type="checkbox" name="c7q4" id="c7q4b" value="Voluntary self-ascription"><label for="c7q4b">Voluntary self-ascription</label></div>
+      <div class="option"><input type="checkbox" name="c7q4" id="c7q4c" value="Freedom of exit and association"><label for="c7q4c">Freedom of exit and association</label></div>
+      <div class="option"><input type="checkbox" name="c7q4" id="c7q4d" value="None are met"><label for="c7q4d">None are met</label></div>
+    </div>
+    <div class="divider"></div>
+    <div class="question">
+      <div class="q-label">Q5. Does Kymlicka's framework adequately address this case? <span class="required-star">*</span></div>
+      <div class="option"><input type="radio" name="c7q5" id="c7q5a" value="Yes" required><label for="c7q5a">Yes</label></div>
+      <div class="option"><input type="radio" name="c7q5" id="c7q5b" value="Partially"><label for="c7q5b">Partially</label></div>
+      <div class="option"><input type="radio" name="c7q5" id="c7q5c" value="No"><label for="c7q5c">No</label></div>
+    </div>
+  </div>
+</div>
+
+<!-- REFLECTION -->
+<div class="reflection">
+  <h2>Reflection</h2>
+  <p>Which of the seven cases challenged Kymlicka's framework the most, in your view? Explain in one or two sentences.</p>
+  <textarea id="reflection" name="reflection" required placeholder="Type your reflection here..."></textarea>
+</div>
+
+<!-- SUBMIT -->
+<div class="submit-area">
+  <button type="submit" class="submit-btn" id="submitBtn">Submit Responses</button>
+  <p class="error-msg" id="errorMsg">Please complete all required fields before submitting.</p>
+</div>
+
+</form>
+
+<!-- SUCCESS MESSAGE (hidden until submit) -->
+<div class="success-msg" id="successMsg">
+  <h2>Responses Recorded</h2>
+  <p>Your responses have been saved. Bring your results to Wednesday's workshop.<br><br><strong>See you on The Boundary.</strong></p>
 </div>
 
 <footer>
@@ -165,6 +758,149 @@
   Frameworks: Kymlicka, <em>Multicultural Citizenship</em> (1995) · Benhabib, <em>The Claims of Culture</em> (2002)<br>
   <a href="https://efkaymak-del.github.io/PSIR308/">← Back to PSIR 308</a></p>
 </footer>
+
+<script>
+/*
+ * DATA SUBMISSION
+ * Option A: Google Sheets via Apps Script (recommended)
+ * Option B: Local download as fallback
+ *
+ * To use Option A:
+ * 1. Create a new Google Sheet
+ * 2. Go to Extensions → Apps Script
+ * 3. Paste this code:
+ *
+ *    function doPost(e) {
+ *      var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+ *      var data = JSON.parse(e.postData.contents);
+ *      var row = [
+ *        new Date(),
+ *        data.fullName,
+ *        data.studentId,
+ *        data.c1q1, data.c1q2, data.c1q3, data.c1q4, data.c1q5,
+ *        data.c2q1, data.c2q2, data.c2q3, data.c2q4, data.c2q5,
+ *        data.c3q1, data.c3q2, data.c3q3, data.c3q4, data.c3q5,
+ *        data.c4q1, data.c4q2, data.c4q3, data.c4q4, data.c4q5,
+ *        data.c5q1, data.c5q2, data.c5q3, data.c5q4, data.c5q5,
+ *        data.c6q1, data.c6q2, data.c6q3, data.c6q4, data.c6q5,
+ *        data.c7q1, data.c7q2, data.c7q3, data.c7q4, data.c7q5,
+ *        data.reflection
+ *      ];
+ *      sheet.appendRow(row);
+ *      return ContentService.createTextOutput(
+ *        JSON.stringify({status: 'ok'})
+ *      ).setMimeType(ContentService.MimeType.JSON);
+ *    }
+ *
+ * 4. Click Deploy → New deployment → Web app
+ *    - Execute as: Me
+ *    - Who has access: Anyone
+ * 5. Copy the deployment URL and paste it below:
+ */
+
+const APPS_SCRIPT_URL = ''; // ← PASTE YOUR APPS SCRIPT URL HERE
+
+document.getElementById('boundaryForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const form = this;
+  const btn = document.getElementById('submitBtn');
+  const errorMsg = document.getElementById('errorMsg');
+
+  // Gather data
+  function getRadio(name) {
+    const el = form.querySelector('input[name="'+name+'"]:checked');
+    return el ? el.value : '';
+  }
+
+  function getCheckboxes(name) {
+    const els = form.querySelectorAll('input[name="'+name+'"]:checked');
+    return Array.from(els).map(e => e.value).join(', ');
+  }
+
+  const data = {
+    fullName: document.getElementById('fullName').value.trim(),
+    studentId: document.getElementById('studentId').value.trim(),
+    c1q1: getRadio('c1q1'), c1q2: getRadio('c1q2'), c1q3: getRadio('c1q3'),
+    c1q4: getCheckboxes('c1q4'), c1q5: getRadio('c1q5'),
+    c2q1: getRadio('c2q1'), c2q2: getRadio('c2q2'), c2q3: getRadio('c2q3'),
+    c2q4: getCheckboxes('c2q4'), c2q5: getRadio('c2q5'),
+    c3q1: getRadio('c3q1'), c3q2: getRadio('c3q2'), c3q3: getRadio('c3q3'),
+    c3q4: getCheckboxes('c3q4'), c3q5: getRadio('c3q5'),
+    c4q1: getRadio('c4q1'), c4q2: getRadio('c4q2'), c4q3: getRadio('c4q3'),
+    c4q4: getCheckboxes('c4q4'), c4q5: getRadio('c4q5'),
+    c5q1: getRadio('c5q1'), c5q2: getRadio('c5q2'), c5q3: getRadio('c5q3'),
+    c5q4: getCheckboxes('c5q4'), c5q5: getRadio('c5q5'),
+    c6q1: getRadio('c6q1'), c6q2: getRadio('c6q2'), c6q3: getRadio('c6q3'),
+    c6q4: getCheckboxes('c6q4'), c6q5: getRadio('c6q5'),
+    c7q1: getRadio('c7q1'), c7q2: getRadio('c7q2'), c7q3: getRadio('c7q3'),
+    c7q4: getCheckboxes('c7q4'), c7q5: getRadio('c7q5'),
+    reflection: document.getElementById('reflection').value.trim()
+  };
+
+  // Validate: check all required fields
+  const radioGroups = [
+    'c1q1','c1q2','c1q3','c1q5',
+    'c2q1','c2q2','c2q3','c2q5',
+    'c3q1','c3q2','c3q3','c3q5',
+    'c4q1','c4q2','c4q3','c4q5',
+    'c5q1','c5q2','c5q3','c5q5',
+    'c6q1','c6q2','c6q3','c6q5',
+    'c7q1','c7q2','c7q3','c7q5'
+  ];
+
+  const checkboxGroups = ['c1q4','c2q4','c3q4','c4q4','c5q4','c6q4','c7q4'];
+
+  let valid = true;
+
+  if (!data.fullName || !data.studentId || !data.reflection) valid = false;
+  radioGroups.forEach(name => { if (!getRadio(name)) valid = false; });
+  checkboxGroups.forEach(name => { if (!getCheckboxes(name)) valid = false; });
+
+  if (!valid) {
+    errorMsg.style.display = 'block';
+    errorMsg.textContent = 'Please complete all required fields before submitting.';
+    return;
+  }
+
+  errorMsg.style.display = 'none';
+  btn.disabled = true;
+  btn.textContent = 'Submitting...';
+
+  // Try Apps Script, fall back to local
+  if (APPS_SCRIPT_URL) {
+    fetch(APPS_SCRIPT_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }).then(() => {
+      showSuccess();
+    }).catch(() => {
+      downloadLocal(data);
+      showSuccess();
+    });
+  } else {
+    downloadLocal(data);
+    showSuccess();
+  }
+});
+
+function downloadLocal(data) {
+  const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'boundary_' + data.studentId + '_' + Date.now() + '.json';
+  a.click();
+}
+
+function showSuccess() {
+  document.getElementById('boundaryForm').style.display = 'none';
+  document.querySelector('.intro').style.display = 'none';
+  document.getElementById('successMsg').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
 
 </body>
 </html>
