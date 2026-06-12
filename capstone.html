@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>PSIR 308 — The Chain of Corrections: Capstone Review</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: Georgia, 'Times New Roman', serif;
+  background: #ffffff;
+  color: #1a1a1a;
+  padding: 16px;
+  line-height: 1.6;
+  font-size: 16px;
+}
+h1 { color: #1a1a1a; font-size: 1.5em; margin-bottom: 10px; }
+h2 { color: #1a1a1a; font-size: 1.3em; margin-bottom: 8px; }
+h3 { color: #333; font-size: 1.1em; margin-bottom: 6px; }
+p { margin-bottom: 12px; color: #333; }
+
+.box { background: #f8f8f8; border: 1px solid #ddd; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.blue-box { background: #eff6ff; border: 1px solid #3b82f6; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.gold-box { background: #fffbeb; border: 1px solid #d97706; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.green-box { background: #f0fdf4; border: 1px solid #22c55e; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.red-box { background: #fef2f2; border: 1px solid #dc2626; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+.purple-box { background: #faf5ff; border: 1px solid #9333ea; border-radius: 10px; padding: 16px; margin-bottom: 14px; }
+
+.btn { display: block; width: 100%; padding: 16px; border: none; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px; margin-bottom: 10px; font-family: Georgia, 'Times New Roman', serif; }
+.btn-blue { background: #1d4ed8; color: white; }
+.btn-gray { background: #e5e5e5; color: #333; border: 1px solid #ccc; }
+.btn-green { background: #15803d; color: white; }
+.btn-purple { background: #7c3aed; color: white; }
+
+.choice { display: block; width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 10px; background: #f8f8f8; color: #333; font-size: 15px; font-family: Georgia, 'Times New Roman', serif; text-align: left; cursor: pointer; margin-bottom: 10px; }
+.choice-selected { border-color: #1d4ed8; background: #eff6ff; color: #1d4ed8; }
+
+.tag { display: inline-block; padding: 4px 12px; border-radius: 12px; font-size: 13px; font-weight: bold; margin: 3px; }
+.tag-blue { background: #eff6ff; color: #1d4ed8; }
+.tag-green { background: #f0fdf4; color: #15803d; }
+.tag-red { background: #fef2f2; color: #b91c1c; }
+.tag-amber { background: #fffbeb; color: #b45309; }
+.tag-purple { background: #faf5ff; color: #7c3aed; }
+
+textarea { width: 100%; min-height: 100px; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-family: Georgia, 'Times New Roman', serif; font-size: 15px; color: #333; margin-bottom: 12px; resize: vertical; }
+
+.phase-indicator { display: flex; gap: 6px; margin-bottom: 16px; }
+.phase-dot { flex: 1; height: 6px; border-radius: 3px; background: #e5e5e5; }
+.phase-dot.active { background: #1d4ed8; }
+.phase-dot.done { background: #22c55e; }
+
+.chain-card { background: #f8f8f8; border: 1px solid #ddd; border-radius: 10px; padding: 14px; margin-bottom: 10px; cursor: pointer; transition: all 0.2s; }
+.chain-card:hover { border-color: #3b82f6; }
+.chain-card.expanded { border-color: #1d4ed8; background: #eff6ff; }
+.chain-card h3 { font-size: 1em; margin-bottom: 4px; }
+.chain-detail { display: none; margin-top: 10px; padding-top: 10px; border-top: 1px solid #ccc; }
+.chain-card.expanded .chain-detail { display: block; }
+
+.fault-line { border-left: 4px solid #d97706; padding-left: 14px; margin-bottom: 16px; }
+
+.save-area { background: #f0fdf4; border: 2px solid #22c55e; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; }
+
+@media print {
+  .btn, .phase-indicator { display: none; }
+  body { font-size: 12pt; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+var app = document.getElementById('app');
+var state = {
+  phase: 0,
+  initialPosition: '',
+  initialTheorist: '',
+  chainResponses: {},
+  faultResponses: {},
+  revisedPosition: ''
+};
+
+var CHAIN = [
+  { id: 'util', name: 'Utilitarianism', tag: 'tag-amber', corrects: 'Pre-modern appeals to hierarchy and divine right. Utilitarianism insists that everyone\'s welfare counts equally — no one\'s pleasure or pain matters more than anyone else\'s.', blindspot: 'The separateness of persons. By aggregating welfare, it permits sacrificing individuals for the collective good. It also cannot filter out illegitimate preferences — preferences whose satisfaction depends on the subordination of others.' },
+  { id: 'rawls', name: 'Rawls', tag: 'tag-blue', corrects: 'Utilitarian aggregation. The original position and veil of ignorance ensure that principles of justice are chosen without knowledge of one\'s social position. The difference principle requires that inequalities benefit the worst off.', blindspot: 'The distinction between choices and circumstances. Rawls may compensate people for bad choices while failing to compensate those disadvantaged by brute luck. He also assumes a disembodied, "unencumbered" self that communitarians and feminists will challenge.' },
+  { id: 'dworkin', name: 'Dworkin', tag: 'tag-blue', corrects: 'Rawls\'s insensitivity to personal responsibility. The hypothetical auction and the envy test produce a distribution that is ambition-sensitive (respects choices) and endowment-insensitive (compensates for circumstances). Brute luck vs. option luck.', blindspot: 'The structural conditions that determine whether "choice" is meaningful. A worker who "chooses" a dangerous job because no alternatives exist is not exercising genuine autonomy — a problem Marx will expose.' },
+  { id: 'nozick', name: 'Nozick', tag: 'tag-red', corrects: 'The assumption that redistribution is obviously justified. Self-ownership means your body, labour, and legitimately acquired property are yours. The Wilt Chamberlain argument: any patterned distribution requires continuous interference with liberty.', blindspot: 'That formal freedom without material resources may be meaningless. Historical acquisition is rarely as clean as the theory assumes. A starving person is "free" in Nozick\'s sense but not in any sense that matters.' },
+  { id: 'marx', name: 'Marx', tag: 'tag-red', corrects: 'The liberal fiction that consent within an unjust structure equals justice. Exploitation is structural: the worker produces surplus value appropriated by the owner. Alienation (from product, process, others, species-being) means wage labour deforms human life even when "voluntary."', blindspot: 'Forms of domination not reducible to class — gender, race, cultural identity. The base/superstructure model struggles with oppressions that precede or exceed capitalist production.' },
+  { id: 'civic', name: 'Citizenship Theory', tag: 'tag-green', corrects: 'The liberal tendency to treat citizens as passive rights-holders. Civic republicanism demands active participation, civic virtue, and public reasonableness. Democracy requires more than institutions — it requires engaged citizens.', blindspot: 'That demanding civic virtue equally ignores the unequal conditions under which people participate. Who has time to be an active citizen? Those freed from care work, precarious labour, and social marginalisation.' },
+  { id: 'feminism', name: 'Feminism & the Public/Private Divide', tag: 'tag-purple', corrects: 'The invisibility of the household in political theory. The public/private divide renders gendered labour, care, and bodily autonomy invisible. Formal gender-neutrality reproduces inequality on a field already shaped by patriarchy.', blindspot: 'Cultural and racial dimensions of subordination. The feminist critique of the public/private divide was initially articulated from a position that did not always account for how race and colonialism compound gendered oppression.' },
+  { id: 'beauvoir', name: 'De Beauvoir', tag: 'tag-purple', corrects: 'The assumption that subordination is merely legal or economic. Woman is constituted as "the Other" — the negative counterpart to a male subject taken as the universal norm. This is pre-political: it shapes who counts as a full subject before rights or redistribution apply.', blindspot: 'The specificity of colonial and racial othering, which Fanon addresses. De Beauvoir\'s framework illuminates gender but was not originally designed for the "zone of non-being" that colonialism creates.' },
+  { id: 'fanon', name: 'Fanon', tag: 'tag-red', corrects: 'The assumption that liberal categories (rights, consent, recognition) can simply be extended to those they were designed to exclude. Colonial domination constitutes the colonised as sub-human — the "zone of non-being." Liberation requires the destruction of the colonial symbolic order, not reform within it.', blindspot: 'How post-colonial states reproduce domination. The internal diversity of colonised communities. The question of what comes after the destruction of the colonial order — which Fanon\'s early death left unresolved.' },
+  { id: 'taylor', name: 'Taylor & Communitarianism', tag: 'tag-green', corrects: 'Liberal neutrality\'s blindness to the identity-forming role of community. The "unencumbered self" is an abstraction. Identity is dialogically constituted through recognition. The politics of recognition demands that the state affirm the value of particular cultural identities.', blindspot: 'The danger that "community" becomes a vehicle for conservative elites to suppress internal dissent, silence women, and enforce conformity. Who speaks for the community?' },
+  { id: 'kymlicka', name: 'Kymlicka', tag: 'tag-blue', corrects: 'Colour-blind liberalism\'s failure to see that identical treatment produces injustice for cultural minorities. Societal culture as the context of choice. Three group-differentiated rights (self-government, polyethnic, special representation). External protections are liberal; internal restrictions are not.', blindspot: 'Groups that don\'t fit the binary (Roma, Maronites). Cultures that are fluid rather than bounded. States that refuse to cooperate (Catalonia, Kurds, Uyghurs). And the internal power dynamics within groups — who defines the culture?' },
+  { id: 'benhabib', name: 'Benhabib', tag: 'tag-amber', corrects: 'Kymlicka\'s static categories and inattention to internal power. Three normative conditions: egalitarian reciprocity, voluntary self-ascription, freedom of exit. Democratic iteration replaces fixed cultural boundaries with ongoing renegotiation. Warns against the "reductionist sociology of culture."', blindspot: 'Democratic iteration requires a functioning public sphere — which may not exist in authoritarian, deeply divided, or post-conflict contexts. The theory is strongest where conditions are already relatively favourable.' }
+];
+
+var FAULTS = [
+  { id: 'f1', title: 'Fault Line 1: Rawls Absorbs the Utilitarian Critique', desc: 'The original position is designed to solve the separateness-of-persons problem. But does it genuinely solve it — or does it create a new abstraction? The "unencumbered self" behind the veil knows nothing about itself. Communitarians will later argue that this self cannot make meaningful moral choices because it has been stripped of everything that makes moral reasoning possible. Feminists will argue that the veil hides the gendered structure of the household. Fanon will argue that some people were never behind the veil at all — they were outside the room.', questionA: 'Does the original position genuinely correct utilitarianism\'s aggregation problem, or does it merely replace one abstraction with another?', questionB: 'If the self behind the veil is truly "unencumbered," can it reason about justice at all — or does it need the attachments that communitarians insist upon?' },
+  { id: 'f2', title: 'Fault Line 2: Kymlicka Absorbs Taylor\'s Communitarian Critique', desc: 'Taylor argues that identity is dialogically constituted and that communities deserve recognition as intrinsically valuable. Kymlicka takes this insight and translates it into liberal language: culture matters because it provides a "context of choice" for individual autonomy. Taylor might respond that this instrumentalises culture — it matters only insofar as it serves individual freedom. The deep communitarian insight about belonging, identity, and the common good is flattened into a liberal tool.', questionA: 'Does Kymlicka genuinely honour Taylor\'s insight about identity and belonging, or does he reduce culture to an instrument of individual autonomy?', questionB: 'If Kymlicka is right that culture is valuable because it enables choice, what happens to communities that don\'t value individual choice — are they less deserving of protection?' },
+  { id: 'f3', title: 'Fault Line 3: Liberal Multiculturalism Encounters Fanon', desc: 'Kymlicka offers minority cultures recognition and group-differentiated rights within the liberal democratic framework. Fanon would ask: who built this framework? The liberal order emerged from — and was sustained by — colonial domination. Offering the colonised "recognition" within the coloniser\'s framework may be the most sophisticated form of containment. It says: you may have your culture, your language, your festivals — as long as you accept the legitimacy of the system that subjugated you in the first place.', questionA: 'Can Kymlicka\'s framework meaningfully address communities whose subordination was constituted by the very liberal order now offering them recognition?', questionB: 'Is there a difference between Fanon\'s rejection of the liberal framework and simply refusing to engage with any institutional accommodation? What is the alternative?' }
+];
+
+function render() {
+  switch(state.phase) {
+    case 0: renderIntro(); break;
+    case 1: renderPhase1(); break;
+    case 2: renderPhase2(); break;
+    case 3: renderPhase3(); break;
+    case 4: renderPhase4(); break;
+    case 5: renderFinal(); break;
+  }
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function phaseBar() {
+  var labels = ['Start','Position','Chain','Fault Lines','Revise','Summary'];
+  var html = '<div class="phase-indicator">';
+  for (var i = 0; i < 6; i++) {
+    var cls = 'phase-dot';
+    if (i < state.phase) cls += ' done';
+    else if (i === state.phase) cls += ' active';
+    html += '<div class="' + cls + '" title="' + labels[i] + '"></div>';
+  }
+  html += '</div>';
+  return html;
+}
+
+function renderIntro() {
+  app.innerHTML =
+    '<h1>The Chain of Corrections</h1>' +
+    '<p style="color:#1d4ed8;font-size:13px;">PSIR 308 — Capstone Review — Final Exam Preparation</p>' +
+    '<div class="box" style="margin-top:14px;">' +
+      '<h3>What This Is</h3>' +
+      '<p>This app walks you through the central question of the entire semester: <strong>does liberal political theory bend or break under critique?</strong></p>' +
+      '<p>Over thirteen weeks, we traced a chain of corrections — each theoretical tradition emerging to fix what the previous one could not see. The question is what the chain adds up to.</p>' +
+    '</div>' +
+    '<div class="blue-box">' +
+      '<h3>How It Works</h3>' +
+      '<p><strong>Phase 1:</strong> You commit to an initial position — does the chain show self-correction or domestication?</p>' +
+      '<p><strong>Phase 2:</strong> You walk through all twelve links in the chain, articulating what each corrects and what it misses.</p>' +
+      '<p><strong>Phase 3:</strong> You confront three fault lines — moments where the question of bending vs. breaking is sharpest.</p>' +
+      '<p><strong>Phase 4:</strong> You revise your position in light of what you\'ve worked through.</p>' +
+      '<p style="margin-bottom:0;">By the end, you will have a draft argument for <strong>Section 5 of the final exam</strong>.</p>' +
+    '</div>' +
+    '<div class="gold-box">' +
+      '<h3>Time</h3>' +
+      '<p style="margin-bottom:0;">This takes 30–45 minutes if you engage seriously. Your responses are not submitted anywhere — this is a thinking tool. You can print or save your final summary.</p>' +
+    '</div>' +
+    '<button class="btn btn-blue" onclick="state.phase=1;render();">Begin</button>' +
+    '<p style="text-align:center;font-size:13px;color:#999;margin-top:12px;"><a href="https://efkaymak-del.github.io/PSIR308/" style="color:#1d4ed8;">← Back to PSIR 308</a></p>';
+}
+
+function renderPhase1() {
+  app.innerHTML = phaseBar() +
+    '<h2>Phase 1 — Your Initial Position</h2>' +
+    '<p>Before you review anything, commit to a first instinct. You can change your mind later — that\'s the point.</p>' +
+    '<div class="blue-box">' +
+      '<h3>The Question</h3>' +
+      '<p style="margin-bottom:0;">We have traced a chain of corrections across twelve theoretical traditions. Does this chain show that <strong>liberal theory is genuinely self-correcting</strong> — absorbing critiques and becoming more just? Or does it show a pattern of <strong>structural domestication</strong> — absorbing challenges just enough to neutralise them?</p>' +
+    '</div>' +
+    '<p><strong>Which position do you lean toward?</strong></p>' +
+    '<button class="choice" id="posA" onclick="selectPos(\'A\')">Position A — The plateau holds. Liberal theory bends but does not break. Each correction makes the framework more capacious.</button>' +
+    '<button class="choice" id="posB" onclick="selectPos(\'B\')">Position B — The plateau is an illusion. Liberal theory absorbs radical challenges to neutralise them. Self-correction is really self-preservation.</button>' +
+    '<button class="choice" id="posC" onclick="selectPos(\'C\')">Position C — It\'s more complicated. The chain shows both genuine correction and domestication, depending on which transition you examine.</button>' +
+    '<div style="margin-top:14px;">' +
+      '<p><strong>Which single theorist from the semester most supports your initial instinct?</strong></p>' +
+      '<textarea id="theoristInput" placeholder="Name one theorist and explain in one sentence why they support your position...">' + state.initialTheorist + '</textarea>' +
+    '</div>' +
+    '<button class="btn btn-blue" id="p1next" style="display:none;" onclick="savePhase1()">Continue to the Chain →</button>';
+}
+
+function selectPos(pos) {
+  state.initialPosition = pos;
+  document.getElementById('posA').className = 'choice' + (pos==='A' ? ' choice-selected' : '');
+  document.getElementById('posB').className = 'choice' + (pos==='B' ? ' choice-selected' : '');
+  document.getElementById('posC').className = 'choice' + (pos==='C' ? ' choice-selected' : '');
+  document.getElementById('p1next').style.display = 'block';
+}
+
+function savePhase1() {
+  state.initialTheorist = document.getElementById('theoristInput').value;
+  state.phase = 2;
+  state.chainIndex = 0;
+  render();
+}
+
+function renderPhase2() {
+  var c = CHAIN[state.chainIndex];
+  var progress = (state.chainIndex + 1) + ' of ' + CHAIN.length;
+  var prevResponse = state.chainResponses[c.id] || '';
+
+  app.innerHTML = phaseBar() +
+    '<h2>Phase 2 — The Chain Walk</h2>' +
+    '<p style="color:#1d4ed8;font-size:13px;font-weight:bold;">Link ' + progress + '</p>' +
+    '<div class="box">' +
+      '<h3>' + c.name + ' <span class="tag ' + c.tag + '">' + c.name + '</span></h3>' +
+      '<p><strong>What it corrects:</strong> ' + c.corrects + '</p>' +
+      '<p><strong>What it cannot see:</strong> ' + c.blindspot + '</p>' +
+    '</div>' +
+    '<div class="gold-box">' +
+      '<p style="margin-bottom:4px;"><strong>Your turn:</strong> In this transition — from what came before to ' + c.name + ' — does the chain show genuine self-correction or domestication? Why?</p>' +
+      '<textarea id="chainResp" placeholder="One or two sentences...">' + prevResponse + '</textarea>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;">' +
+      (state.chainIndex > 0 ? '<button class="btn btn-gray" style="flex:1;" onclick="saveChainResp();state.chainIndex--;render();">← Previous</button>' : '') +
+      (state.chainIndex < CHAIN.length - 1 ?
+        '<button class="btn btn-blue" style="flex:1;" onclick="saveChainResp();state.chainIndex++;render();">Next Link →</button>' :
+        '<button class="btn btn-green" style="flex:1;" onclick="saveChainResp();state.phase=3;state.faultIndex=0;render();">Continue to Fault Lines →</button>') +
+    '</div>' +
+    '<div style="margin-top:12px;">' +
+      '<p style="font-size:13px;color:#999;">You can skip ahead or return to any link. Your notes are saved as you go.</p>' +
+    '</div>';
+}
+
+function saveChainResp() {
+  var c = CHAIN[state.chainIndex];
+  state.chainResponses[c.id] = document.getElementById('chainResp').value;
+}
+
+function renderPhase3() {
+  var f = FAULTS[state.faultIndex];
+  var prevA = (state.faultResponses[f.id] && state.faultResponses[f.id].a) || '';
+  var prevB = (state.faultResponses[f.id] && state.faultResponses[f.id].b) || '';
+
+  app.innerHTML = phaseBar() +
+    '<h2>Phase 3 — Fault Lines</h2>' +
+    '<p style="color:#d97706;font-size:13px;font-weight:bold;">Fault Line ' + (state.faultIndex + 1) + ' of 3</p>' +
+    '<div class="gold-box">' +
+      '<div class="fault-line">' +
+        '<h3>' + f.title + '</h3>' +
+        '<p>' + f.desc + '</p>' +
+      '</div>' +
+    '</div>' +
+    '<div class="box">' +
+      '<p><strong>Question A:</strong> ' + f.questionA + '</p>' +
+      '<textarea id="faultA" placeholder="Your response...">' + prevA + '</textarea>' +
+      '<p><strong>Question B:</strong> ' + f.questionB + '</p>' +
+      '<textarea id="faultB" placeholder="Your response...">' + prevB + '</textarea>' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;">' +
+      (state.faultIndex > 0 ? '<button class="btn btn-gray" style="flex:1;" onclick="saveFaultResp();state.faultIndex--;render();">← Previous</button>' : '') +
+      (state.faultIndex < 2 ?
+        '<button class="btn btn-blue" style="flex:1;" onclick="saveFaultResp();state.faultIndex++;render();">Next Fault Line →</button>' :
+        '<button class="btn btn-green" style="flex:1;" onclick="saveFaultResp();state.phase=4;render();">Continue to Revision →</button>') +
+    '</div>';
+}
+
+function saveFaultResp() {
+  var f = FAULTS[state.faultIndex];
+  state.faultResponses[f.id] = {
+    a: document.getElementById('faultA').value,
+    b: document.getElementById('faultB').value
+  };
+}
+
+function renderPhase4() {
+  var posLabel = state.initialPosition === 'A' ? 'The plateau holds (bends)' :
+                 state.initialPosition === 'B' ? 'The plateau is an illusion (breaks)' :
+                 'It\'s complicated (both)';
+
+  app.innerHTML = phaseBar() +
+    '<h2>Phase 4 — Revise Your Position</h2>' +
+    '<div class="blue-box">' +
+      '<p><strong>Your initial position was:</strong> ' + posLabel + '</p>' +
+      '<p style="margin-bottom:0;"><strong>Your supporting theorist:</strong> ' + (state.initialTheorist || '<em>not specified</em>') + '</p>' +
+    '</div>' +
+    '<p>You have now walked the full chain and confronted three fault lines. It is time to revise.</p>' +
+    '<div class="purple-box">' +
+      '<h3>Your Revised Position</h3>' +
+      '<p>Write 3–5 sentences. State your position. Name at least <strong>four theorists</strong> spanning both halves of the course. Use at least one <strong>specific concept</strong> from each theorist — not just their name. This is your exam preparation draft for Section 5.</p>' +
+      '<textarea id="revisedPos" style="min-height:180px;" placeholder="Write your revised position here...">' + state.revisedPosition + '</textarea>' +
+    '</div>' +
+    '<div class="gold-box">' +
+      '<h3>Checklist</h3>' +
+      '<p id="checkResult" style="margin-bottom:0;"></p>' +
+    '</div>' +
+    '<button class="btn btn-green" onclick="savePhase4();">View Summary →</button>';
+
+  checkRevised();
+  document.getElementById('revisedPos').addEventListener('input', checkRevised);
+}
+
+function checkRevised() {
+  var text = document.getElementById('revisedPos').value.toLowerCase();
+  var theorists = ['rawls','dworkin','nozick','marx','kymlicka','benhabib','taylor','fanon','beauvoir','okin','bentham','mill'];
+  var found = [];
+  for (var i = 0; i < theorists.length; i++) {
+    if (text.indexOf(theorists[i]) !== -1) found.push(theorists[i]);
+  }
+  var concepts = ['veil of ignorance','difference principle','original position','envy test','brute luck','option luck','self-ownership','wilt chamberlain','surplus value','alienation','exploitation','species-being','public/private','the other','zone of non-being','dialogical','recognition','societal culture','context of choice','external protection','internal restriction','polyethnic','self-government','democratic iteration','egalitarian reciprocity','voluntary self-ascription','freedom of exit','separateness of persons','maximin','unencumbered self','reductionist sociology'];
+  var foundConcepts = [];
+  for (var j = 0; j < concepts.length; j++) {
+    if (text.indexOf(concepts[j]) !== -1) foundConcepts.push(concepts[j]);
+  }
+
+  var html = '<strong>Theorists detected:</strong> ' + (found.length > 0 ? found.join(', ') : '<em>none yet</em>') + ' (' + found.length + '/4 minimum)';
+  html += '<br><strong>Concepts detected:</strong> ' + (foundConcepts.length > 0 ? foundConcepts.join(', ') : '<em>none yet</em>');
+  html += '<br>';
+  if (found.length >= 4 && foundConcepts.length >= 4) {
+    html += '<span style="color:#15803d;font-weight:bold;">✓ You are meeting the exam requirements.</span>';
+  } else {
+    html += '<span style="color:#b45309;">Add more theorists or specific concepts to strengthen your argument.</span>';
+  }
+  document.getElementById('checkResult').innerHTML = html;
+}
+
+function savePhase4() {
+  state.revisedPosition = document.getElementById('revisedPos').value;
+  state.phase = 5;
+  render();
+}
+
+function renderFinal() {
+  var posLabel = state.initialPosition === 'A' ? 'The plateau holds' :
+                 state.initialPosition === 'B' ? 'The plateau is an illusion' : 'It\'s complicated';
+
+  var chainSummary = '';
+  for (var i = 0; i < CHAIN.length; i++) {
+    var resp = state.chainResponses[CHAIN[i].id] || '';
+    if (resp.trim()) {
+      chainSummary += '<p><strong>' + CHAIN[i].name + ':</strong> ' + resp + '</p>';
+    }
+  }
+
+  var faultSummary = '';
+  for (var j = 0; j < FAULTS.length; j++) {
+    var fr = state.faultResponses[FAULTS[j].id] || {};
+    if ((fr.a && fr.a.trim()) || (fr.b && fr.b.trim())) {
+      faultSummary += '<p><strong>' + FAULTS[j].title + '</strong></p>';
+      if (fr.a) faultSummary += '<p><em>Q-A:</em> ' + fr.a + '</p>';
+      if (fr.b) faultSummary += '<p><em>Q-B:</em> ' + fr.b + '</p>';
+    }
+  }
+
+  app.innerHTML = phaseBar() +
+    '<h2>Summary — Your Capstone Argument</h2>' +
+    '<div class="green-box">' +
+      '<h3>Initial Position</h3>' +
+      '<p><strong>' + posLabel + '</strong></p>' +
+      '<p>' + (state.initialTheorist || '<em>No theorist specified</em>') + '</p>' +
+    '</div>' +
+    (chainSummary ? '<div class="box"><h3>Your Chain Walk Notes</h3>' + chainSummary + '</div>' : '') +
+    (faultSummary ? '<div class="gold-box"><h3>Your Fault Line Responses</h3>' + faultSummary + '</div>' : '') +
+    '<div class="purple-box">' +
+      '<h3>Your Revised Position (Exam Draft)</h3>' +
+      '<p>' + (state.revisedPosition || '<em>No revised position written</em>') + '</p>' +
+    '</div>' +
+    '<div class="save-area">' +
+      '<h3>Save Your Work</h3>' +
+      '<p>Print this page or copy your revised position into your exam notes. This app does not save your responses — when you close it, they are gone.</p>' +
+      '<button class="btn btn-green" style="width:auto;display:inline-block;padding:12px 24px;" onclick="window.print();">Print This Summary</button>' +
+    '</div>' +
+    '<button class="btn btn-gray" onclick="state.phase=4;render();">← Back to Revision</button>' +
+    '<button class="btn btn-gray" onclick="state.phase=0;render();">Start Over</button>' +
+    '<p style="text-align:center;font-size:13px;color:#999;margin-top:16px;"><a href="https://efkaymak-del.github.io/PSIR308/" style="color:#1d4ed8;">← Back to PSIR 308</a></p>';
+}
+
+render();
+</script>
+
+</body>
+</html>
